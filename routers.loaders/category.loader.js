@@ -1,7 +1,6 @@
-import { redirect } from "react-router";
 import axios from "axios";
 
-export default async function homerLoader({ request, params }) {
+export default async function CategoryLoader({ params }) {
   let data = {};
   const CARDS_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery";
   console.log("loader params", params);

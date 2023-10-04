@@ -16,13 +16,12 @@ export default function CardsList() {
   let NumberOfCardsOffset = useRef(0);
   let NumberOfCardsLimit = useRef(4);
   const pageDocument = document.location.pathname.split("/")[1];
-  console.log("pageDocument", pageDocument);
-  console.log("receiveItemMessage", receiveItemMessage);
 
   const resetData = () => {
     console.log("resetData");
     setTempItemsNumber(0);
     setHasMore(true);
+    //scroll to top
     window.scrollTo(0, -200);
     NumberOfCardsLimit.current = 4;
     NumberOfCardsOffset.current = 0;
@@ -34,17 +33,8 @@ export default function CardsList() {
     setItems(data);
   }, [pageDocument]);
 
-  // useEffect(() => {
-  //   // resetData();
-  //   // console.log("hasMore", hasMore);
-  //   // console.log("performance.navigation.TYPE_RELOAD");
-  // }, []);
-
   useEffect(() => {
-    console.log("items.length");
     if (TempItemsNumber === items.length && TempItemsNumber !== 0) {
-      console.log("no more data");
-      console.log("TempItemsNumber", TempItemsNumber);
       setHasMore(false);
       return;
     }
@@ -53,15 +43,10 @@ export default function CardsList() {
 
   const fetchMoreData = () => {
     if (hasMore === false) {
-      console.log("has more is false in fetchMoreData");
       return;
     }
-    console.log("has more is true in fetchMoreData");
     setTempItemsNumber(items.length);
-    console.log("TempItemsNumber", TempItemsNumber);
     NumberOfCardsOffset.current += 4;
-    console.log("NumberOfCardsOffset.current", NumberOfCardsOffset.current);
-    console.log("NumberOfCardsLimit.current", NumberOfCardsLimit.current);
     axios
       .get(CARDS_URL, {
         params: { limit: NumberOfCardsLimit.current, offset: NumberOfCardsOffset.current, page: pageDocument },

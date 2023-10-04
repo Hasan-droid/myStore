@@ -12,14 +12,14 @@ let loadStateFromLocalStorage = loadState();
 console.log("loadState", loadStateFromLocalStorage);
 console.log("hello");
 const initialState = {
-  ChartData: loadStateFromLocalStorage?.ChartData ?? [],
+  chartData: loadStateFromLocalStorage?.ChartData ?? [],
 };
 
 export const receiveItemFromLocalStorage = (dispatch, item) => {
   dispatch(receiveItem(item));
   loadStateFromLocalStorage = loadState();
   saveState(item, loadStateFromLocalStorage);
-  console.log("loadStateFromLocalStorage", loadStateFromLocalStorage);
+  console.log("loadStateFromLocalStorage/////", loadStateFromLocalStorage);
 };
 export const emptyChart = (dispatch) => {
   dispatch(emptyLocalStorage());
@@ -33,11 +33,11 @@ const ChartSlicer = createSlice({
   initialState,
   reducers: {
     receiveItem: (state, action) => {
-      state.ChartData.push(action.payload);
+      state.chartData.push(action.payload);
       // localStorage.setItem("state", JSON.stringify({ ChartData: state.ChartData }));
     },
-    emptyLocalStorage: (state, action) => {
-      state.ChartData = [];
+    emptyLocalStorage: (state) => {
+      state.chartData = [];
     },
   },
 });

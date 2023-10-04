@@ -10,8 +10,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider, Route, Link } from "react-router-dom";
 import { Provider } from "react-redux";
 import SignInAction from "../routers.Actions/SignIn.action.js";
-import ChartAction from "../routers.Actions/Chart.action.js";
-import categoryLoader from "../routers.loaders/category.loader.js";
+import CategoryLoader from "../routers.loaders/category.loader.js";
 import store from "../redux/store/store.js";
 const router = createBrowserRouter([
   {
@@ -22,17 +21,16 @@ const router = createBrowserRouter([
       {
         path: "/waterSpaces",
         element: <App />,
-        loader: categoryLoader,
+        loader: CategoryLoader,
       },
       {
         path: "/candles",
         element: <App />,
-        loader: categoryLoader,
+        loader: CategoryLoader,
       },
       {
         path: "/chart",
         element: <Chart />,
-        action: ChartAction,
       },
     ],
   },

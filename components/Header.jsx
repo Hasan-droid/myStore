@@ -6,42 +6,30 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Header.css";
 import { BsFillCartFill } from "react-icons/bs";
 import Footer from "./Footer";
-import { Outlet, Link, useActionData } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { fetchItemsData } from "../redux/features/ChartItemsDataSlicer";
-import { Box, position } from "@chakra-ui/react";
-import { NavLink, NavbarBrand } from "react-bootstrap";
+import { Box } from "@chakra-ui/react";
+import { NavbarBrand } from "react-bootstrap";
 
 export default function Header() {
-  const dataFromActions = useActionData();
   const [items, setItems] = React.useState([]);
-  useEffect(() => {
-    if (!localStorage.getItem("state")) {
-      setItems([]);
-    }
-  }, [window.location.pathname]);
   const itemsData = useSelector((state) => {
-    console.log("state.ChartSlicer", state.ChartSlicer);
     return state.ChartSlicer;
   });
+
   useEffect(() => {
-    setItems(itemsData.ChartData);
+    setItems(itemsData.chartData);
   }, [itemsData]);
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 0) {
-        // document.getElementById("hd").classList.add("headerScroll");
-      } else {
-        document.getElementById("hd").classList.remove("headerScroll");
-      }
-    });
-  }, []);
 
   // useEffect(() => {
-  //   dispatch(fetchItemsData());
-  // }, [dispatch]);
-  console.log("itemsData", itemsData);
+  //   window.addEventListener("scroll", () => {
+  //     if (window.scrollY > 0) {
+  //       // document.getElementById("hd").classList.add("headerScroll");
+  //     } else {
+  //       document.getElementById("hd").classList.remove("headerScroll");
+  //     }
+  //   });
+  // }, []);
   return (
     <>
       <Navbar id="hd" className="header" data-bs-theme="light">

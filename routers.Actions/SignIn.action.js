@@ -49,7 +49,9 @@ export default async function SignInaction({ request, params }) {
       //save token in local storage
       localStorage.setItem("token", status.data.token);
 
-      console.log("redirect to user");
+      if (localStorage.getItem("state")) {
+        return redirect("/chart");
+      }
       return redirect("/");
     }
   }
