@@ -5,6 +5,7 @@ const userSignInURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/user/signin";
 let status = {};
 export default async function SignInaction({ request, params }) {
   //check if the user username and password is empty
+  console.log("userSignInURL ", userSignInURL);
   const formData = await request.formData();
   const user = Object.fromEntries(formData);
   if (user.username === "" && user.password === "") {

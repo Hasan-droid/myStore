@@ -35,6 +35,9 @@ export default function Chart() {
     const decodedToken = jwtDecode(userToken);
     if (!decodedToken.role) return navigate("/signin");
     const role = decodedToken.role;
+    //check if the token expired
+    const currentTime = Date.now() / 1000;
+    if (decodedToken.exp < currentTime) return navigate("/signin");
     if (role !== "user") return navigate("/signin");
     //run emptyLocalStorage action
     emptyChart(dispatch);

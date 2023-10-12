@@ -13,8 +13,9 @@ import {
   Text,
   useColorModeValue,
   FormErrorMessage,
+  Divider,
 } from "@chakra-ui/react";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 export default function SignIn() {
   const dataFromActions = useActionData();
@@ -92,6 +93,15 @@ export default function SignIn() {
                 </Button>
               </Stack>
             </Stack>
+            <Divider borderColor="black" />
+
+            <Text align={"center"} fontSize={"sm"} color={"gray.600"}>
+              Don't have account{" "}
+              <Link to="/signup" color={"blue.400"}>
+                signup
+              </Link>{" "}
+              ✌️
+            </Text>
           </Box>
         </Form>
       </Stack>
