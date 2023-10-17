@@ -72,6 +72,7 @@ export default async function SignUpAction({ request, params }) {
     if (decodedToken.role === "user") {
       //save token in local storage
       localStorage.setItem("token", status.data.token);
+      //save the token in the axios header
       return redirect("/");
     }
     // return redirect("/");

@@ -13,6 +13,7 @@ import SignInAction from "../routers.Actions/SignIn.action.js";
 import SignUpAction from "../routers.Actions/SignUp.action.js";
 import CategoryLoader from "../routers.loaders/category.loader.js";
 import store from "../redux/store/store.js";
+import CategoryAction from "../routers.Actions/Category.action.js";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,11 +24,13 @@ const router = createBrowserRouter([
         path: "/waterSpaces",
         element: <App />,
         loader: CategoryLoader,
+        action: CategoryAction,
       },
       {
         path: "/candles",
         element: <App />,
         loader: CategoryLoader,
+        action: CategoryAction,
       },
       {
         path: "/chart",

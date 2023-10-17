@@ -19,21 +19,25 @@ export default async function SignInaction({ request, params }) {
   }
   try {
     const response = await axios.post(userSignInURL, user).then((res) => {
+      const token = res.data?.token;
+      const decodedToken = jwtDecode(token);
+      if (!token)
+        return {
+          data: { state: true, type: "username and password field", message: "Invalid username or password" },
+        };
+      if (!decodedToken.role)
+        return {
+          data: { state: true, type: "username and password field", message: "Invalid username or password" },
+        };
       console.log("res.data ", res.data);
       console.log("res.headers ", res.headers);
       if (res.status === 200) {
-        if (res.data.role == "user") {
-          const token = res.data.token;
+        if (decodedToken.role == "user" || decodedToken.role == "admin") {
           //decode token using and extract role
-          const decodedToken = jwtDecode(token);
-          if (!decodedToken.role)
-            return {
-              data: { state: true, type: "username and password field", message: "Invalid username or password" },
-            };
           const role = decodedToken.role;
           console.log("decodedToken ", decodedToken);
 
-          return (status = { data: { state: 200, role: role, token: token } });
+          status = { data: { state: 200, role: role, token: token } };
         }
       }
     });
@@ -45,8 +49,9 @@ export default async function SignInaction({ request, params }) {
     console.log(error.response);
   }
   console.log("status ", status);
+  //redirect function won't work from the response of the server
   if (status?.data.state === 200) {
-    if (status.data.role === "user") {
+    if (status.data.role === "user" || status.data.role === "admin") {
       //save token in local storage
       localStorage.setItem("token", status.data.token);
 
