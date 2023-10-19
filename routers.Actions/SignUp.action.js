@@ -12,10 +12,10 @@ export default async function SignUpAction({ request, params }) {
   let errorReturn = {
     data: { state: true, type: "Filed Required", message: "Filed Required", filed: inputFields },
   };
+  let filedEmpty = false;
   const formData = await request.formData();
   const user = Object.fromEntries(formData);
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  let filedEmpty = false;
 
   if (user.firstname === "") {
     filedEmpty = true;

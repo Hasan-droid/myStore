@@ -8,10 +8,15 @@ import { BsFillCartFill } from "react-icons/bs";
 import Footer from "./Footer";
 import { Outlet, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Box } from "@chakra-ui/react";
+import { Box, Spacer } from "@chakra-ui/react";
 import { NavbarBrand } from "react-bootstrap";
+import { Button, Flex } from "@chakra-ui/react";
+import { BiLogOut } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const userToken = localStorage.getItem("token");
   const [items, setItems] = React.useState([]);
   const itemsData = useSelector((state) => {
     return state.ChartSlicer;
@@ -20,7 +25,10 @@ export default function Header() {
   useEffect(() => {
     setItems(itemsData.chartData);
   }, [itemsData]);
-
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    navigate("/waterSpaces");
+  };
   // useEffect(() => {
   //   window.addEventListener("scroll", () => {
   //     if (window.scrollY > 0) {
@@ -32,39 +40,49 @@ export default function Header() {
   // }, []);
   return (
     <>
-      <Navbar id="hd" className="header" data-bs-theme="light">
-        <Container>
-          <NavbarBrand>
-            <Link to="/waterSpaces" id="waterSpaces">
-              {" "}
-              Home
-            </Link>
-          </NavbarBrand>
-          <Nav className="me-auto">
-            <Nav.Link>
+      <Flex justifyContent="space-between" alignItems="center" p={4}>
+        <Navbar id="hd" className="header">
+          <Container>
+            <NavbarBrand>
               <Link to="/waterSpaces" id="waterSpaces">
                 {" "}
-                Water Spaces
+                Home
               </Link>
-            </Nav.Link>
+            </NavbarBrand>
+            <Nav className="me-auto">
+              <Nav.Link>
+                <Link to="/waterSpaces" id="waterSpaces">
+                  {" "}
+                  Water Spaces
+                </Link>
+              </Nav.Link>
+              <Nav.Link>
+                <Link to="/candles" id="candles">
+                  {" "}
+                  Candles
+                </Link>
+              </Nav.Link>
+            </Nav>
             <Nav.Link>
-              <Link to="/candles" id="candles">
+              <Link className="h" to="/chart" id="chart">
                 {" "}
-                Candles
+                <div className="chartIcon">
+                  <BsFillCartFill size={40} />
+                  <p>{items.length}</p>
+                </div>
               </Link>
             </Nav.Link>
-          </Nav>
-          <Nav.Link>
-            <Link className="h" to="/chart" id="chart">
-              {" "}
-              <div className="chartIcon">
-                <BsFillCartFill size={40} />
-                <p>{items.length}</p>
-              </div>
-            </Link>
-          </Nav.Link>
-        </Container>
-      </Navbar>
+          </Container>
+        </Navbar>
+        <Spacer />
+
+        {userToken && (
+          <Button position="relative" colorScheme="red" variant="outline" mt="-7" onClick={() => handleLogOut()}>
+            <BiLogOut size={30} />
+            Log Out
+          </Button>
+        )}
+      </Flex>
       <Box minH={"75vh"} id="cardsList">
         <Outlet />
       </Box>

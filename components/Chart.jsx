@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { List, ListItem, ListIcon, Divider, Button, Box, Flex, Spacer } from "@chakra-ui/react";
+import { List, ListItem, ListIcon, Divider, Button, Box, Flex, Spacer, Text } from "@chakra-ui/react";
 import jwtDecode from "jwt-decode";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import Card from "./Cards";
@@ -17,7 +17,7 @@ export default function Chart() {
     window.scrollTo(0, -200);
   }, []);
 
-  const CardsMaps = data.ChartData.map((item, index) => {
+  const CardsMaps = data?.ChartData.map((item, index) => {
     return (
       <>
         <ListItem>
@@ -47,9 +47,15 @@ export default function Chart() {
   return (
     <>
       <Flex>
-        <Box>
-          <List>{CardsMaps}</List>
-        </Box>
+        {CardsMaps && <List>{CardsMaps}</List>}
+        {!CardsMaps && (
+          //center the elements in the Box
+          <Box w="100%" h="100%" display="flex" justifyContent="center" alignItems="center" mt="10%">
+            <Text fontSize="4xl" color={"gray.500"}>
+              Your chart is empty
+            </Text>
+          </Box>
+        )}
         <Spacer />
         <Box>
           <Button

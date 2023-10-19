@@ -19,32 +19,28 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  FormErrorMessage,
   Stack,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
 import CustomToast from "./Toast";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function CardModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showToast, setShowToast] = useState(false);
   const [toastReceivedStatus, setToastReceivedStatus] = useState("");
   const [itemPrice, setItemPrice] = useState(0);
+  const [itemDescription, setItemDescription] = useState("");
+  const [itemName, setItemName] = useState("");
+  const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
   const dataFromActions = useActionData();
   //count how many times this component is rendered
   const clearDataInputs = () => {
-    const textArea = document.querySelector("textarea");
-    const item_name = document.querySelector("input[name=item_name]");
-    const item_price = document.querySelector("input[name=item_price]");
-    if (!textArea || !item_price || !item_name) return;
-    console.log("item price", item_price);
-    textArea.value = "";
-
-    //clear item_price numeric input
-    //clear area-valuenow property from  item_price
     setItemPrice(0);
-    item_name.value = "";
+    setItemDescription("");
+    setItemName("");
   };
 
   useEffect(() => {
@@ -62,10 +58,20 @@ export default function CardModal() {
         setShowToast(false);
       }, 100);
     }
+    if (dataFromActions?.data?.state && dataFromActions?.data?.type === "Filed Required") {
+      setError({
+        state: true,
+        type: dataFromActions?.data?.type,
+        message: dataFromActions?.data?.message,
+        filed: dataFromActions?.data?.filed,
+      });
+      console.log("data from actions", dataFromActions);
+    }
   }, [dataFromActions]);
 
   return (
     <>
+      {console.log("error", error)}
       {showToast && (
         <CustomToast
           receivedPosition="top"
@@ -95,17 +101,41 @@ export default function CardModal() {
             <ModalBody>
               <Box>
                 <Stack direction={["column", "row"]} spacing={["0px", "20px"]}>
-                  <FormControl>
+                  <FormControl isInvalid={error.filed.item_name?.required}>
                     <FormLabel>item name</FormLabel>
-                    <Input placeholder="item name" name="item_name" />
+                    <Input
+                      placeholder="item name"
+                      name="item_name"
+                      value={itemName}
+                      onChange={(e) => {
+                        setItemName(e.target.value);
+                        error.filed.item_name.required = false;
+                        setError({
+                          type: "Filed Required",
+                          message: "Filed Required",
+                          filed: error.filed,
+                        });
+                      }}
+                    />
+                    <FormErrorMessage>
+                      {error.filed.item_name?.required === true ? error.message : ""}
+                    </FormErrorMessage>
                   </FormControl>
 
-                  <FormControl>
+                  <FormControl isInvalid={error.filed.item_price?.required}>
                     <FormLabel>Price</FormLabel>
                     <NumberInput
                       name="item_price"
                       value={itemPrice}
-                      onChange={(e) => setItemPrice(e)}
+                      onChange={(e) => {
+                        setItemPrice(e);
+                        error.filed.item_price.required = false;
+                        setError({
+                          type: "Filed Required",
+                          message: "Filed Required",
+                          filed: error.filed,
+                        });
+                      }}
                       allowMouseWheel
                     >
                       <NumberInputField />
@@ -114,13 +144,33 @@ export default function CardModal() {
                         <NumberDecrementStepper />
                       </NumberInputStepper>
                     </NumberInput>
+                    <FormErrorMessage>{error.filed.item_price?.required ? error.message : ""}</FormErrorMessage>
                   </FormControl>
                 </Stack>
               </Box>
               <Box mt="8%">
-                <FormControl>
+                <FormControl isInvalid={error.filed.item_description?.required}>
                   <FormLabel>Description</FormLabel>
-                  <Textarea placeholder="Description" type="text" size="sm" height="3xs" name="item_description" />
+                  <Textarea
+                    placeholder="Description"
+                    type="text"
+                    size="sm"
+                    height="3xs"
+                    name="item_description"
+                    value={itemDescription}
+                    onChange={(e) => {
+                      setItemDescription(e.target.value);
+                      error.filed.item_description.required = false;
+                      setError({
+                        type: "Filed Required",
+                        message: "Filed Required",
+                        filed: error.filed,
+                      });
+                    }}
+                  />
+                  <FormErrorMessage>
+                    {error.filed.item_description?.required ? error.message : ""}
+                  </FormErrorMessage>
                 </FormControl>
               </Box>
             </ModalBody>

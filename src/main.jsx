@@ -5,6 +5,7 @@ import Chart from "../components/Chart.jsx";
 import Header from "../components/Header.jsx";
 import SignIn from "../components/SignIn.jsx";
 import SignupCard from "../components/signup.jsx";
+import ChartII from "../components/ChartII.jsx";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider, Route, Link } from "react-router-dom";
@@ -21,20 +22,20 @@ const router = createBrowserRouter([
 
     children: [
       {
-        path: "/waterSpaces",
+        path: "/:waterSpaces",
         element: <App />,
         loader: CategoryLoader,
         action: CategoryAction,
       },
       {
-        path: "/candles",
+        path: "/:candles",
         element: <App />,
         loader: CategoryLoader,
         action: CategoryAction,
       },
       {
         path: "/chart",
-        element: <Chart />,
+        element: <ChartII />,
       },
     ],
   },

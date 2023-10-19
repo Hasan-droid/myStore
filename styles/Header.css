@@ -5,21 +5,12 @@
   color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   /* margin: 2% 45px; */
-  width: 80vw;
+  width: 78vw;
   position: sticky;
   z-index: 1;
   left: 10vw;
-  /* margin-left: auto; */
-  /* margin-right: auto; */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* justify-content: center;  */
-  /* align-items: center; */
   top: 10px;
   margin-bottom: 2%;
-  /* position: fixed; */
-  /* z-index: 50; */
-  /* left: 10%; */
 }
 
 .headerScroll {
@@ -49,7 +40,8 @@
   transform: translate(-50%, -50%);
   color: #451d1d52;
 }
-
+.logout {
+}
 .onScrollHeader {
 }
 

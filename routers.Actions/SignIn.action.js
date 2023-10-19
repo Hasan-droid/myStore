@@ -43,7 +43,10 @@ export default async function SignInaction({ request, params }) {
     });
   } catch (error) {
     console.log("error.response ", error);
-    if (error.response.status === 401 || error.response.status === 404) {
+    if (error.message === "Network Error") {
+      return { data: { state: true, type: "toast", message: "Network Error" } };
+    }
+    if (error.response?.status === 401 || error.response.status === 404) {
       return { data: { state: true, type: "invalid", message: "Invalid username or password" } };
     }
     console.log(error.response);
