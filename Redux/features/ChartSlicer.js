@@ -42,7 +42,6 @@ export const receiveItemFromLocalStorage = (dispatch, item) => {
   const newItem = { ...item, quantity: 1 };
   dispatch(receiveItem(newItem));
   saveState(newItem, ChartData);
-  console.log("loadStateFromLocalStorage/////", loadStateFromLocalStorage);
 };
 export const emptyChart = (dispatch) => {
   dispatch(emptyLocalStorage());
