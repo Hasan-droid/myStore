@@ -8,19 +8,23 @@ export const loadState = () => {
     console.log("//////serializedState////", JSON.parse(serializedState));
     return JSON.parse(serializedState);
   } catch (err) {
-    return err.message;
+    return { "error from load state": err.message };
   }
 };
 
 export const saveState = (state, loadStateFromLocalStorage) => {
   try {
-    localStorage.setItem(
-      "state",
-      JSON.stringify({ ChartData: [...(loadStateFromLocalStorage?.ChartData ?? []), state] })
-    );
+    debugger;
+    console.log("loadStateFromLocalStorage", loadStateFromLocalStorage);
+    if (!loadStateFromLocalStorage) {
+      localStorage.setItem("state", JSON.stringify({ ChartData: [state] }));
+      return "Item Added To Chart";
+    }
+    localStorage.setItem("state", JSON.stringify({ ChartData: [...loadStateFromLocalStorage, state] }));
     return "Item Added To Chart";
-  } catch {
+  } catch (err) {
     // Handle errors here
+    console.log("error from save state", err.message);
     return "Something Went Wrong";
   }
 };

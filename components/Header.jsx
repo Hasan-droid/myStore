@@ -17,13 +17,19 @@ import { useNavigate } from "react-router-dom";
 export default function Header() {
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
-  const [items, setItems] = React.useState([]);
+  const [cartItemsNumber, setCartItemNumber] = React.useState([]);
   const itemsData = useSelector((state) => {
     return state.ChartSlicer;
   });
 
   useEffect(() => {
-    setItems(itemsData.chartData);
+    let count = 0;
+    itemsData.chartData.forEach((item) => {
+      console.log("item ]]]]]]]]]", item);
+      count += item?.quantity;
+    });
+
+    setCartItemNumber(count);
   }, [itemsData]);
   const handleLogOut = () => {
     localStorage.removeItem("token");
@@ -68,7 +74,8 @@ export default function Header() {
                 {" "}
                 <div className="chartIcon">
                   <BsFillCartFill size={40} />
-                  <p>{items.length}</p>
+                  {console.log("cartItemsNumber", cartItemsNumber)}
+                  <p>{cartItemsNumber}</p>
                 </div>
               </Link>
             </Nav.Link>
