@@ -6,12 +6,6 @@ import {
   Image,
   Text,
   useBreakpointValue,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverBody,
   Button,
   Grid,
   useDisclosure,
@@ -27,7 +21,7 @@ import {
   decreaseItemQuantityByOne,
   removeItemFromCart,
 } from "../Redux/features/ChartSlicer";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import CartMediumSizeView from "./cartMediumSizeView";
 
 const CartPage = () => {
@@ -97,7 +91,6 @@ const CartPage = () => {
 
   const handleShowImageForPhone = (id) => {
     //get the previous state of the showImage
-    debugger;
     setShowImage((prevState) => {
       if (prevState.id !== id) {
         return { render: true, id: id };
@@ -199,14 +192,12 @@ const CartPage = () => {
                     alignItems="center"
                     mb={4}
                     _hover={{
-                      cursor: "pointer",
                       transform: "scale(1.03)",
                       transition: "all 0.4s ease-in-out",
                     }}
                     transition="all 0.2s ease-in-out"
-                    onClick={() => handlePreviewImage(item)}
                   >
-                    <Box position="relative">
+                    <Box position="relative" onClick={() => handlePreviewImage(item)} cursor="pointer">
                       <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={1} />
                     </Box>
 
