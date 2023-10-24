@@ -15,21 +15,11 @@ import {
 } from "@chakra-ui/react";
 import "../styles/Cards.css";
 import { useDispatch } from "react-redux";
-import { receiveItemFromLocalStorage } from "../redux/features/ChartSlicer";
+import { increaseItemQuantityByOne } from "../redux/features/ChartSlicer";
 
 export default function Cards({ cardsType, item }) {
   const dispatch = useDispatch();
-  // const handleAddToCart = (item) => {
-  //   const itemsFromLocalStorage = JSON.parse(localStorage.getItem("state"))?.ChartData;
-  //   console.log("itemsFromLocalStorage", itemsFromLocalStorage);
-  //   const itemExist = itemsFromLocalStorage?.find((i) => i.id === item.id);
-  //   if (itemExist) {
-  //     console.log("item exist");
-  //     itemExist.quantity += 1;
-  //     receiveItemFromLocalStorage(dispatch, itemExist);
-  //     return;
-  //   }
-  // };
+
   return (
     //add some animation to the card
     //add some transition to the card
@@ -86,7 +76,7 @@ export default function Cards({ cardsType, item }) {
             <Button variant="solid" colorScheme="blue">
               Buy now
             </Button>
-            <Button variant="ghost" colorScheme="blue" onClick={() => receiveItemFromLocalStorage(dispatch, item)}>
+            <Button variant="ghost" colorScheme="blue" onClick={() => increaseItemQuantityByOne(dispatch, item)}>
               Add to cart
             </Button>
           </ButtonGroup>
