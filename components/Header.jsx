@@ -13,11 +13,13 @@ import { NavbarBrand } from "react-bootstrap";
 import { Button, Flex } from "@chakra-ui/react";
 import { BiLogOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 export default function Header() {
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
   const [cartItemsNumber, setCartItemNumber] = React.useState([]);
+  const dispatch = useDispatch();
   const itemsData = useSelector((state) => {
     return state.ChartSlicer;
   });
@@ -35,15 +37,6 @@ export default function Header() {
     localStorage.removeItem("token");
     navigate("/waterSpaces");
   };
-  // useEffect(() => {
-  //   window.addEventListener("scroll", () => {
-  //     if (window.scrollY > 0) {
-  //       // document.getElementById("hd").classList.add("headerScroll");
-  //     } else {
-  //       document.getElementById("hd").classList.remove("headerScroll");
-  //     }
-  //   });
-  // }, []);
   return (
     <>
       <Flex justifyContent="space-between" alignItems="center" p={4}>
@@ -84,7 +77,16 @@ export default function Header() {
         <Spacer />
 
         {userToken && (
-          <Button position="relative" colorScheme="red" variant="outline" mt="-7" onClick={() => handleLogOut()}>
+          //make the button fixed and on the right side
+          <Button
+            id="logOutBtn"
+            onClick={handleLogOut}
+            bg="transparent"
+            border="1px"
+            borderColor="black"
+            color="black"
+            _hover={{ bg: "black", color: "white" }}
+          >
             <BiLogOut size={30} />
             Log Out
           </Button>

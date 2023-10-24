@@ -14,13 +14,15 @@ export const loadState = () => {
 
 export const saveState = (state, loadStateFromLocalStorage) => {
   try {
-    debugger;
     console.log("loadStateFromLocalStorage", loadStateFromLocalStorage);
     if (!loadStateFromLocalStorage) {
       localStorage.setItem("state", JSON.stringify({ ChartData: [state] }));
       return "Item Added To Chart";
     }
-    localStorage.setItem("state", JSON.stringify({ ChartData: [...loadStateFromLocalStorage, state] }));
+    localStorage.setItem(
+      "state",
+      JSON.stringify({ ChartData: state ? [...loadStateFromLocalStorage, state] : [...loadStateFromLocalStorage] })
+    );
     return "Item Added To Chart";
   } catch (err) {
     // Handle errors here
