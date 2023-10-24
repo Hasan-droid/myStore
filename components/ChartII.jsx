@@ -13,21 +13,52 @@ import {
   PopoverCloseButton,
   PopoverBody,
   Button,
+  Grid,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { emptyChart } from "../Redux/features/ChartSlicer";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
+import {
+  increaseItemQuantityByOne,
+  decreaseItemQuantityByOne,
+  removeItemFromCart,
+} from "../Redux/features/ChartSlicer";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CartPage = () => {
+  const images = [
+    "https://m.media-amazon.com/images/I/81c6H2eE+kL._AC_UF1000,1000_QL80_.jpg",
+    "https://www.dexerto.com/cdn-cgi/image/width=3840,quality=75,format=auto/https://editors.dexerto.com/wp-content/uploads/2022/12/15/Man-of-Steel.jpg",
+    "https://m.media-amazon.com/images/M/MV5BMzM0MDUwMDU1MV5BMl5BanBnXkFtZTcwOTUyMjU1OQ@@._V1_.jpg",
+  ];
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const data = JSON.parse(localStorage.getItem("state"));
   const cartData = data?.ChartData;
-  const ml = useBreakpointValue({ base: "column", md: "row" });
+  //let the useBreakpoint give size that less than the half of the row size
+
+  const ml = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
+  console.log("ml ////////!!!!!!!!", ml);
   const [previewImage, setPreviewImage] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [quantityState, setQuantityState] = useState(0);
+  const [showImage, setShowImage] = useState({ render: false, id: null });
+  const firstFieldRef = useRef(null);
+  let temproryTotalPrice = 0;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (cartData) {
+      cartData.forEach((item) => {
+        temproryTotalPrice += item.price * item.quantity;
+      });
+      setTotalPrice(temproryTotalPrice);
+    }
+  }, [cartData]);
 
   useEffect(() => {
     window.scrollTo(0, -200);
@@ -35,10 +66,44 @@ const CartPage = () => {
 
   const handleRemoveItem = (id) => {
     // remove item from cart
+    const item = cartData.find((item) => item.id === id);
+    removeItemFromCart(dispatch, item);
+    setQuantityState(quantityState - 1);
   };
 
   const handlePreviewImage = (item) => {
-    setPreviewImage(item.previewImage);
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+    setPreviewImage(randomImage);
+  };
+
+  const handleQuantityIncrease = (id) => {
+    const item = cartData.find((item) => item.id === id);
+    increaseItemQuantityByOne(dispatch, item);
+    setQuantityState(quantityState + 1);
+    // setTotalPrice(totalPrice + updatedCartData.find((item) => item.id === id).price);
+  };
+
+  const handleQuantityDecrease = (id) => {
+    const item = cartData.find((item) => item.id === id);
+    decreaseItemQuantityByOne(dispatch, item);
+    setQuantityState(quantityState - 1);
+    // setTotalPrice(totalPrice - updatedCartData.find((item) => item.id === id).price);
+  };
+
+  const handlePopoverTrigger = () => {
+    console.log("popover trigger");
+  };
+
+  const handleShowImageForPhone = (id) => {
+    //get the previous state of the showImage
+    debugger;
+    setShowImage((prevState) => {
+      if (prevState.id !== id) {
+        return { render: true, id: id };
+        //exit
+      }
+      return { render: !showImage.render, id: id };
+    });
   };
 
   const handleCheckOut = () => {
@@ -59,132 +124,229 @@ const CartPage = () => {
 
   return (
     <Box maxW="100%" mt={8} px={4}>
-      <Heading as="h1" size="lg" mb={4}>
-        Cart
-      </Heading>
+      {!cartData && (
+        //center the text in the middle of the Box
+
+        <Box
+          w="100%"
+          h="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+          mt="3%"
+        >
+          <Text fontSize="4xl" color={"gray.500"}>
+            Your chart is empty
+          </Text>
+        </Box>
+      )}
       <Flex direction={{ base: "column", md: "row" }}>
-        <Box flex="1">
-          {!cartData && (
-            //center the elements in the Box
-            <Box w="100%" h="100%" display="flex" justifyContent="center" alignItems="center" mt="10%">
-              <Text fontSize="4xl" color={"gray.500"}>
-                Your chart is empty
-              </Text>
-            </Box>
+        <Box flex="2">
+          {cartData && (
+            <Heading as="h2" size="lg" mb={5}>
+              Your Chart
+            </Heading>
+          )}
+
+          {cartData && ml === "lg" && (
+            <Grid templateColumns="repeat(11, 1fr)" gap={4} bg="white" p={2}>
+              <Box gridColumn="1 /4" textAlign="left">
+                <Text fontWeight="bold">Product</Text>
+              </Box>
+              <Box gridColumn="4 / 5">
+                <Text fontWeight="bold">Price</Text>
+              </Box>
+              <Box gridColumn="6/10">
+                <Text fontWeight="bold">Quantity</Text>
+              </Box>
+              <Box gridColumn="10 / 11">
+                <Text fontWeight="bold">Total</Text>
+              </Box>
+            </Grid>
+          )}
+          {cartData && ml === "720" && (
+            <Grid templateColumns="repeat(11, 1fr)" gap={4} bg="white" p={2}>
+              <Box gridColumn="1 /5" textAlign="left">
+                <Text fontWeight="bold">Product</Text>
+              </Box>
+              <Box gridColumn="5 / 7">
+                <Text fontWeight="bold">Price</Text>
+              </Box>
+              <Box gridColumn="7/10">
+                <Text fontWeight="bold">Quantity</Text>
+              </Box>
+              <Box gridColumn="10 / 11">
+                <Text fontWeight="bold">Total</Text>
+              </Box>
+            </Grid>
           )}
           {cartData &&
             cartData.map((item) => {
               const { id, title, image, category, price, quantity } = item;
-              if (ml === "row") {
+
+              if (ml === "lg") {
                 return (
-                  <Flex
+                  <Grid
                     key={id}
+                    templateColumns="repeat(11, 1fr)"
+                    gap={4}
                     bg="white"
-                    p={4}
+                    p={2}
                     rounded="md"
                     shadow="md"
                     alignItems="center"
                     mb={4}
                     _hover={{
-                      bg: "gray.400",
                       cursor: "pointer",
-                      transform: "scale(1.01)",
-                      transition: "all 0.2s ease-in-out",
-                    }}
-                    _active={{
-                      transform: "scale(0.99)",
+                      transform: "scale(1.03)",
+                      transition: "all 0.4s ease-in-out",
                     }}
                     transition="all 0.2s ease-in-out"
                     onClick={() => handlePreviewImage(item)}
                   >
                     <Box position="relative">
-                      <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
+                      <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={1} />
                     </Box>
-                    <Box>
+
+                    <Box gridColumn="2 /4">
                       <Text fontWeight="bold">{title}</Text>
 
                       <Text fontSize="sm" color="gray.500" fontStyle="italic">
                         {category}
                       </Text>
+                    </Box>
+                    <Box gridColumn="4 / 5">
                       <Text fontSize="sm" color="gray.500">
-                        ${price} x {quantity}
+                        ${price}
                       </Text>
                     </Box>
-                    <IconButton
-                      icon={<FaTrash />}
-                      aria-label="Remove item"
-                      ml="auto"
-                      onClick={() => handleRemoveItem(id)}
-                    />
-                  </Flex>
+                    <Box gridColumn="6/ 10">
+                      <Box border="1px" p={2} borderColor="black" borderRadius="l" display="inline-block">
+                        <Button size="xs" mr={2} onClick={() => handleQuantityDecrease(id)}>
+                          -
+                        </Button>
+                        {quantity}
+
+                        <Button size="xs" ml={2} onClick={() => handleQuantityIncrease(id)}>
+                          +
+                        </Button>
+                      </Box>
+                    </Box>
+                    <Box gridColumn="10 / 11">
+                      <IconButton
+                        icon={<FaTrash />}
+                        aria-label="Remove item"
+                        ml="auto"
+                        onClick={() => handleRemoveItem(id)}
+                      />
+                    </Box>
+                  </Grid>
                 );
               }
-
-              if (ml === "column") {
+              if (ml === "720") {
                 return (
-                  <Popover
-                    key={id}
-                    // returnFocusOnClose={false}
-                    // isOpen={isOpen}
-                    // onClose={onClose}
-                    strategy="fixed"
-                    placement="bottom"
-                    closeOnBlur={true}
-                  >
-                    <PopoverTrigger>
-                      <Flex
-                        bg="white"
-                        p={4}
-                        rounded="md"
-                        shadow="md"
-                        alignItems="center"
-                        mb={4}
-                        _hover={{
-                          bg: "gray.400",
-                          cursor: "pointer",
-                          transform: "scale(1.01)",
-                          transition: "all 0.2s ease-in-out",
-                        }}
-                        _active={{
-                          transform: "scale(0.99)",
-                        }}
-                        transition="all 0.2s ease-in-out"
-                        onClick={() => handlePreviewImage(item)}
+                  <>
+                    <AnimatePresence>
+                      <motion.div
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 50 }}
+                        transition={{ duration: 0.5 }}
                       >
-                        <Box position="relative">
-                          <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
-                        </Box>
-                        <Box>
-                          <Text fontWeight="bold">{title}</Text>
-                          <Text fontSize="sm" color="gray.500" fontStyle="italic">
-                            {category}
-                          </Text>
-                          <Text fontSize="sm" color="gray.500">
-                            ${price} x {quantity}
-                          </Text>
-                        </Box>
-                        <IconButton
-                          icon={<FaTrash />}
-                          aria-label="Remove item"
-                          ml="auto"
-                          onClick={() => handleRemoveItem(id)}
-                        />
-                      </Flex>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <PopoverArrow />
-                      <PopoverCloseButton />
-                      <PopoverBody>
-                        <Image src={image} alt={title} boxSize={{ base: "300px" }} mr={4} />
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
+                        <Grid
+                          templateColumns="repeat(11, 1fr)"
+                          bg="white"
+                          p={4}
+                          rounded="md"
+                          shadow="md"
+                          alignItems="center"
+                          mb={4}
+                          _hover={{
+                            bg: "gray.400",
+                            transform: "scale(1.01)",
+                            transition: "all 0.2s ease-in-out",
+                          }}
+                          _active={{
+                            bg: "gray.400",
+                          }}
+                          transition="all 0.6s ease-in-out"
+                          initial={{ opacity: 0, y: -50 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 50 }}
+                          // transition={{ duration: 0.5 }}
+                        >
+                          <Box
+                            position="relative"
+                            cursor="pointer"
+                            onClick={() => handleShowImageForPhone(item.id)}
+                          >
+                            <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
+                          </Box>
+                          <Box gridColumn="2 /5">
+                            <Text fontWeight="bold">{title}</Text>
+                            <Text fontSize="sm" color="gray.500" fontStyle="italic">
+                              {category}
+                            </Text>
+                          </Box>
+                          <Box gridColumn="5/7" testAlign="center">
+                            <Text fontSize="sm" color="gray.500">
+                              ${price}
+                            </Text>
+                          </Box>
+                          <Box gridColumn="7/ 10">
+                            <Box
+                              border="1px"
+                              p={2}
+                              borderColor="black"
+                              borderRadius="l"
+                              display="inline-block"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Button size="xs" mr={2} onClick={() => handleQuantityDecrease(id)}>
+                                -
+                              </Button>
+                              {quantity}
+
+                              <Button size="xs" ml={2} onClick={() => handleQuantityIncrease(id)}>
+                                +
+                              </Button>
+                            </Box>
+                          </Box>
+                          <IconButton
+                            icon={<FaTrash />}
+                            aria-label="Remove item"
+                            ml="auto"
+                            onClick={() => handleRemoveItem(id)}
+                          />
+                        </Grid>
+                      </motion.div>
+                    </AnimatePresence>
+                    {console.log("((((((showImage)))))", showImage)}
+                    {showImage.render && showImage.id === id && (
+                      //add some animation to the box
+                      <AnimatePresence>
+                        <motion.Box
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          <Image
+                            src={images[Math.floor(Math.random() * images.length)]}
+                            alt={title}
+                            boxSize={{ base: "250px", md: "400px" }}
+                          />
+                        </motion.Box>
+                      </AnimatePresence>
+                    )}
+                  </>
                 );
               }
             })}
         </Box>
 
-        {ml === "row" && (
+        {ml === "lg" && (
           <Box
             display="flex"
             alignItems="center"
@@ -208,7 +370,7 @@ const CartPage = () => {
           flexDirection="column"
         >
           <Text fontWeight="bold" fontSize="lg">
-            Total: $27.97
+            Total: ${totalPrice}
           </Text>
           <Button
             colorScheme="teal"
