@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Grid, Image, Text, IconButton, Button } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
@@ -13,7 +13,7 @@ export default function CartMediumSizeView({
   images,
 }) {
   const { id, title, price, category, image, quantity } = item;
-
+  useEffect(() => {}, [item]);
   console.log("show Image", showImage);
   return (
     <>
@@ -42,7 +42,8 @@ export default function CartMediumSizeView({
           transition="all 0.5s ease-in-out"
           style={{
             opacity: showImage.render && showImage.id !== id ? 0.7 : 1,
-            transform: showImage.render && showImage.id === id ? "translateY(0)" : "translateY(40px)",
+            //only items with id greater than the current id will be transformed
+            transform: showImage.render && id > showImage.id ? "translateY(400px)" : "none",
           }}
 
           // onAnimationEnd={() => (true)}
@@ -97,6 +98,9 @@ export default function CartMediumSizeView({
               src={images[Math.floor(Math.random() * images.length)]}
               alt={title}
               boxSize={{ base: "250px", md: "400px" }}
+              //i want the position of the image to not affect the other items
+              position="absolute"
+              zIndex="100"
             />
           </motion.Box>
         </AnimatePresence>

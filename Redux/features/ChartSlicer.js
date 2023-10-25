@@ -29,6 +29,9 @@ export const increaseItemQuantityByOne = (dispatch, item) => {
     const itemIndex = filteredData.findIndex((chart) => chart.id === isItemExist.id);
     ChartData[itemIndex] = isItemExist;
     //send empty state to saveState function
+    //sort ChartData according to the id's
+    ChartData.sort((a, b) => a.id - b.id);
+
     saveState(null, ChartData);
     // localStorage.setItem("state", JSON.stringify({ ChartData: ChartData }));
     // saveState(isItemExist, filteredData);
@@ -48,6 +51,7 @@ export const decreaseItemQuantityByOne = (dispatch, item) => {
   itemToDelete.quantity -= 1;
   const itemIndex = ChartData.findIndex((chart) => chart.id === itemToDelete.id);
   ChartData[itemIndex] = itemToDelete;
+  ChartData.sort((a, b) => a.id - b.id);
   saveState(null, ChartData);
   dispatch(decreaseQuantity(itemToDelete));
 };
