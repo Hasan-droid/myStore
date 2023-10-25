@@ -13,6 +13,7 @@ export default function CartMediumSizeView({
   images,
 }) {
   const { id, title, price, category, image, quantity } = item;
+
   console.log("show Image", showImage);
   return (
     <>
@@ -24,7 +25,7 @@ export default function CartMediumSizeView({
       >
         <Grid
           templateColumns="repeat(11, 1fr)"
-          bg="white"
+          bg={showImage.render && showImage.id === id ? "gray.400" : "white"}
           p={4}
           rounded="md"
           shadow="md"
@@ -40,12 +41,10 @@ export default function CartMediumSizeView({
           }}
           transition="all 0.5s ease-in-out"
           style={{
-            opacity: showImage.render ? 0.5 : 1,
-            transform: showImage.render ? "translateY(0)" : "translateY(40px)",
+            opacity: showImage.render && showImage.id !== id ? 0.7 : 1,
+            transform: showImage.render && showImage.id === id ? "translateY(0)" : "translateY(40px)",
           }}
-          _focus={{
-            bg: "gray.400",
-          }}
+
           // onAnimationEnd={() => (true)}
           // transition={{ duration: 0.5 }}
         >
@@ -53,7 +52,7 @@ export default function CartMediumSizeView({
             position="relative"
             cursor="pointer"
             onClick={() => {
-              handleShowImageForPhone(item.id);
+              handleShowImageForPhone(id);
             }}
           >
             <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />

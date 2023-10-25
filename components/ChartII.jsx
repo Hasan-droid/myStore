@@ -178,7 +178,7 @@ const CartPage = () => {
           {cartData &&
             cartData.map((item) => {
               const { id, title, image, category, price, quantity } = item;
-
+ 
               if (ml === "lg") {
                 return (
                   <Grid
@@ -236,7 +236,7 @@ const CartPage = () => {
                   </Grid>
                 );
               }
-              if (ml === "720") {
+              if (ml === "720" || ml === "column") {
                 return (
                   <CartMediumSizeView
                     item={item}
