@@ -21,18 +21,17 @@ import {
   decreaseItemQuantityByOne,
   removeItemFromCart,
 } from "../Redux/features/ChartSlicer";
-import { motion } from "framer-motion";
 import CartMediumSizeView from "./cartMediumSizeView";
 
-const CartPage = () => {
+const CartPage = ({ currentItems }) => {
   const images = [
     "https://m.media-amazon.com/images/I/81c6H2eE+kL._AC_UF1000,1000_QL80_.jpg",
     "https://www.dexerto.com/cdn-cgi/image/width=3840,quality=75,format=auto/https://editors.dexerto.com/wp-content/uploads/2022/12/15/Man-of-Steel.jpg",
     "https://m.media-amazon.com/images/M/MV5BMzM0MDUwMDU1MV5BMl5BanBnXkFtZTcwOTUyMjU1OQ@@._V1_.jpg",
   ];
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-  const data = JSON.parse(localStorage.getItem("state"));
-  const cartData = data?.ChartData;
+
+  const cartData = JSON.parse(localStorage.getItem("state"))?.ChartData ?? [];
   //let the useBreakpoint give size that less than the half of the row size
 
   const ml = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
@@ -41,6 +40,8 @@ const CartPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantityState, setQuantityState] = useState(0);
   const [showImage, setShowImage] = useState({ render: false, id: null });
+  //this state is to take the clicked item out of the cart.map
+  const [itemId, setItemId] = useState(null);
   const firstFieldRef = useRef(null);
   let temproryTotalPrice = 0;
   const navigate = useNavigate();
@@ -98,6 +99,16 @@ const CartPage = () => {
       }
       return { render: !showImage.render, id: id };
     });
+  };
+
+  const pullDownFooter = () => {
+    console.log("pullDownFooter", itemId);
+    if (!itemId || !showImage.render) return 0;
+    //find how many items remain in the cart that higher id than the current item
+    if (ml === "720") {
+      const remainItems = cartData.filter((item) => item.id > itemId);
+      return remainItems.length * 20 + 400;
+    }
   };
 
   const handleCheckOut = () => {
@@ -178,7 +189,7 @@ const CartPage = () => {
           {cartData &&
             cartData.map((item) => {
               const { id, title, image, category, price, quantity } = item;
- 
+
               if (ml === "lg") {
                 return (
                   <Grid
@@ -238,16 +249,17 @@ const CartPage = () => {
               }
               if (ml === "720" || ml === "column") {
                 return (
-                  <CartMediumSizeView
-                    item={item}
-                    handleQuantityDecrease={handleQuantityDecrease}
-                    handleQuantityIncrease={handleQuantityIncrease}
-                    handleRemoveItem={handleRemoveItem}
-                    showImage={showImage}
-                    handleShowImageForPhone={handleShowImageForPhone}
-                    images={images}
-                    key={id}
-                  />
+                  <Box onClick={() => setItemId(id)} key={id}>
+                    <CartMediumSizeView
+                      item={item}
+                      handleQuantityDecrease={handleQuantityDecrease}
+                      handleQuantityIncrease={handleQuantityIncrease}
+                      handleRemoveItem={handleRemoveItem}
+                      showImage={showImage}
+                      handleShowImageForPhone={handleShowImageForPhone}
+                      images={images}
+                    />
+                  </Box>
                 );
               }
             })}
@@ -273,7 +285,9 @@ const CartPage = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          mt="3%"
+          //add some animation when margin top change
+          transition="margin-top 0.5s ease-in-out"
+          mt={pullDownFooter()}
           flexDirection="column"
         >
           <Text fontWeight="bold" fontSize="lg">
