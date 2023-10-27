@@ -1,19 +1,8 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  Image,
-  Text,
-  useBreakpointValue,
-  Button,
-  Grid,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, IconButton, Image, Text, Button, Grid, useDisclosure } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 import { emptyChart } from "../Redux/features/ChartSlicer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import {
@@ -22,8 +11,11 @@ import {
   removeItemFromCart,
 } from "../Redux/features/ChartSlicer";
 import CartMediumSizeView from "./cartMediumSizeView";
+import CartSmallSizeView from "./CartSmallSizeView";
 
 const CartPage = ({ currentItems }) => {
+  const [useBreakpointValue] = useOutletContext();
+  //turn the useBreakpointValue into a function
   const images = [
     "https://m.media-amazon.com/images/I/81c6H2eE+kL._AC_UF1000,1000_QL80_.jpg",
     "https://www.dexerto.com/cdn-cgi/image/width=3840,quality=75,format=auto/https://editors.dexerto.com/wp-content/uploads/2022/12/15/Man-of-Steel.jpg",
@@ -34,8 +26,8 @@ const CartPage = ({ currentItems }) => {
   const cartData = JSON.parse(localStorage.getItem("state"))?.ChartData ?? [];
   //let the useBreakpoint give size that less than the half of the row size
 
-  const ml = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
-  console.log("ml ////////!!!!!!!!", ml);
+  const windowSize = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
+  console.log("ml ////////!!!!!!!!", windowSize);
   const [previewImage, setPreviewImage] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantityState, setQuantityState] = useState(0);
@@ -105,7 +97,7 @@ const CartPage = ({ currentItems }) => {
     console.log("pullDownFooter", itemId);
     if (!itemId || !showImage.render) return 0;
     //find how many items remain in the cart that higher id than the current item
-    if (ml === "720") {
+    if (windowSize === "720") {
       const remainItems = cartData.filter((item) => item.id > itemId);
       return remainItems.length * 20 + 400;
     }
@@ -154,7 +146,7 @@ const CartPage = ({ currentItems }) => {
             </Heading>
           )}
 
-          {cartData && ml === "lg" && (
+          {cartData && windowSize === "lg" && (
             <Grid templateColumns="repeat(11, 1fr)" gap={4} bg="white" p={2}>
               <Box gridColumn="1 /4" textAlign="left">
                 <Text fontWeight="bold">Product</Text>
@@ -170,7 +162,7 @@ const CartPage = ({ currentItems }) => {
               </Box>
             </Grid>
           )}
-          {cartData && ml === "720" && (
+          {cartData && windowSize === "720" && (
             <Grid templateColumns="repeat(11, 1fr)" gap={4} bg="white" p={2}>
               <Box gridColumn="1 /5" textAlign="left">
                 <Text fontWeight="bold">Product</Text>
@@ -190,7 +182,7 @@ const CartPage = ({ currentItems }) => {
             cartData.map((item) => {
               const { id, title, image, category, price, quantity } = item;
 
-              if (ml === "lg") {
+              if (windowSize === "lg") {
                 return (
                   <Grid
                     key={id}
@@ -247,7 +239,7 @@ const CartPage = ({ currentItems }) => {
                   </Grid>
                 );
               }
-              if (ml === "720" || ml === "column") {
+              if (windowSize === "720") {
                 return (
                   <Box onClick={() => setItemId(id)} key={id}>
                     <CartMediumSizeView
@@ -262,10 +254,25 @@ const CartPage = ({ currentItems }) => {
                   </Box>
                 );
               }
+              if (windowSize === "column") {
+                return (
+                  <Box onClick={() => setItemId(id)} key={id}>
+                    <CartSmallSizeView
+                      item={item}
+                      handleQuantityDecrease={handleQuantityDecrease}
+                      handleQuantityIncrease={handleQuantityIncrease}
+                      handleRemoveItem={handleRemoveItem}
+                      showImage={showImage}
+                      handleShowImageForPhone={handleShowImageForPhone}
+                      images={images}
+                    />
+                  </Box>
+                );
+              }
             })}
         </Box>
 
-        {ml === "lg" && (
+        {windowSize === "lg" && (
           <Box
             display="flex"
             alignItems="center"

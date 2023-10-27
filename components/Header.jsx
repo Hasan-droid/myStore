@@ -13,13 +13,16 @@ import { NavbarBrand } from "react-bootstrap";
 import { Button, Flex } from "@chakra-ui/react";
 import { BiLogOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useBreakpointValue } from "@chakra-ui/react";
+import NavBar_Med_Lg_Size from "./NavBar_Med_Lg_Size";
+import NavBar_sm_Size from "./NavBar_sm_Size";
 
 export default function Header() {
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
   const [cartItemsNumber, setCartItemNumber] = React.useState([]);
-  const dispatch = useDispatch();
+  const windowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
+  console.log("windowSize", windowSize);
   const itemsData = useSelector((state) => {
     return state.ChartSlicer;
   });
@@ -40,40 +43,8 @@ export default function Header() {
   return (
     <>
       <Flex justifyContent="space-between" alignItems="center" p={4}>
-        <Navbar id="hd" className="header">
-          <Container>
-            <NavbarBrand>
-              <Link to="/waterSpaces" id="waterSpaces">
-                {" "}
-                Home
-              </Link>
-            </NavbarBrand>
-            <Nav className="me-auto">
-              <Nav.Link>
-                <Link to="/waterSpaces" id="waterSpaces">
-                  {" "}
-                  Water Spaces
-                </Link>
-              </Nav.Link>
-              <Nav.Link>
-                <Link to="/candles" id="candles">
-                  {" "}
-                  Candles
-                </Link>
-              </Nav.Link>
-            </Nav>
-            <Nav.Link>
-              <Link className="h" to="/chart" id="chart">
-                {" "}
-                <div className="chartIcon">
-                  <BsFillCartFill size={40} />
-                  {console.log("cartItemsNumber", cartItemsNumber)}
-                  <p>{cartItemsNumber}</p>
-                </div>
-              </Link>
-            </Nav.Link>
-          </Container>
-        </Navbar>
+        {(windowSize === "lg" || windowSize === "md") && <NavBar_Med_Lg_Size cartItemsNumber={cartItemsNumber} />}
+        {windowSize === "base" && <NavBar_sm_Size cartItemsNumber={cartItemsNumber} />}
         <Spacer />
 
         {userToken && (
@@ -93,7 +64,8 @@ export default function Header() {
         )}
       </Flex>
       <Box minH={"75vh"} id="cardsList">
-        <Outlet />
+        {/* send useBreakpointValue as function to outlet context */}
+        <Outlet context={[useBreakpointValue]} />
       </Box>
       <Footer />
     </>
