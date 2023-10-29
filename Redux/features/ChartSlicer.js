@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadState, saveState } from "../features/localStorage";
 import axios from "axios";
-import Chart from "../../components/Chart";
 const CARDS_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/charts";
 
 export const getItemsDataInChart = axios.get(`${CARDS_URL}`).then((res) => {

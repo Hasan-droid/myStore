@@ -14,6 +14,7 @@ export default async function CategoryLoader({ params }) {
       params: { limit: 4, offset: 0, page: params.waterSpaces },
     })
     .then((res) => {
+      console.log("loaders:::::::: ");
       return (data = { data: res.data, state: true });
     })
     .catch((err) => {

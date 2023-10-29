@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import Chart from "../components/Chart.jsx";
 import Header from "../components/Header.jsx";
 import SignIn from "../components/SignIn.jsx";
 import SignupCard from "../components/signup.jsx";

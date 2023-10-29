@@ -1,7 +1,5 @@
-import React from "react";
 import {
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   ButtonGroup,
@@ -12,12 +10,14 @@ import {
   Divider,
   Button,
   Box,
+  Input,
 } from "@chakra-ui/react";
 import "../styles/Cards.css";
 import { useDispatch } from "react-redux";
 import { increaseItemQuantityByOne } from "../redux/features/ChartSlicer";
+import { Form } from "react-router-dom";
 
-export default function Cards({ cardsType, item }) {
+export default function Cards({ cardsType, item, verifyAdmin }) {
   const dispatch = useDispatch();
 
   return (
@@ -72,14 +72,35 @@ export default function Cards({ cardsType, item }) {
         </CardBody>
         <Divider />
         <CardFooter>
-          <ButtonGroup spacing="2">
-            <Button variant="solid" colorScheme="blue">
-              Buy now
-            </Button>
-            <Button variant="ghost" colorScheme="blue" onClick={() => increaseItemQuantityByOne(dispatch, item)}>
-              Add to cart
-            </Button>
-          </ButtonGroup>
+          {!verifyAdmin() ? (
+            <ButtonGroup spacing="2">
+              <Button variant="solid" colorScheme="blue">
+                Buy now
+              </Button>
+              <Button variant="ghost" colorScheme="blue" onClick={() => increaseItemQuantityByOne(dispatch, item)}>
+                Add to cart
+              </Button>
+            </ButtonGroup>
+          ) : (
+            <Form method="post">
+              <Input type="hidden" name="id" value={item.id} />
+              <ButtonGroup spacing="2">
+                <Button
+                  variant="ghost"
+                  //use this color #C6EBBE as colorScheme
+                  colorScheme="green"
+                  type="submit"
+                  name="intent"
+                  value="edit 1"
+                >
+                  Edit
+                </Button>
+                <Button variant="ghost" colorScheme="red" type="submit" name="intent" value="delete 1">
+                  Delete
+                </Button>
+              </ButtonGroup>
+            </Form>
+          )}
         </CardFooter>
       </Card>
     </Box>
