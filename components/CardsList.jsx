@@ -7,6 +7,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/CardsList.css";
 import { useLoaderData } from "react-router-dom";
+import { motion } from "framer-motion";
 import jwtDecode from "jwt-decode";
 import CardModal from "./CardModal";
 
@@ -67,6 +68,7 @@ export default function CardsList() {
       })
       .then((res) => {
         console.log(res.data);
+        //just add the new data to the old data
         setItems(items.concat(res.data));
       })
       .catch((err) => {
@@ -76,7 +78,9 @@ export default function CardsList() {
   };
 
   // get the url params
-  const CardsMaps = items.map((i, index) => <Card key={index} cardsType={pageDocument} item={i} />);
+  const CardsMaps = items.map((i, index) => (
+    <Card key={index} cardsType={pageDocument} item={i} verifyAdmin={verifyAdmin} />
+  ));
 
   return (
     <>
@@ -99,30 +103,38 @@ export default function CardsList() {
           </p>
         }
       >
-        <Grid
-          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
-          gap={6}
-          align="center"
-          justify="center"
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          transition={{ duration: 0.5 }}
         >
-          {verifyAdmin() && (
-            <Box
-              //mover the box little bit down
-              mt="18%"
-              bg="white.100"
-              align="center"
-              justify="center"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <CardModal />
-            </Box>
-          )}
+          <Grid
+            templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
+            transition="all 0.5s ease-in-out"
+            gap={6}
+            align="center"
+            justify="center"
+          >
+            {verifyAdmin() && (
+              <Box
+                //mover the box little bit down
+                mt="18%"
+                bg="white.100"
+                align="center"
+                justify="center"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <CardModal />
+              </Box>
+            )}
 
-          {CardsMaps}
-        </Grid>
+            {CardsMaps}
+          </Grid>
+        </motion.div>
       </InfiniteScroll>
     </>
   );
