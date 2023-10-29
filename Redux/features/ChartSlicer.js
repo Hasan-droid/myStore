@@ -68,6 +68,19 @@ export const removeItemFromCart = (dispatch, item) => {
   dispatch(removeItem(item));
 };
 
+export const listenItemQuantity = (dispatch, item) => {
+  const { clickedItem, quantity } = item;
+  loadStateFromLocalStorage = loadState();
+  const { ChartData } = loadStateFromLocalStorage;
+  const itemToUpdate = ChartData.find((chart) => chart.id === clickedItem.id);
+  itemToUpdate.quantity = parseInt(quantity);
+  const itemIndex = ChartData.findIndex((chart) => chart.id === itemToUpdate.id);
+  ChartData[itemIndex] = itemToUpdate;
+  ChartData.sort((a, b) => a.id - b.id);
+  saveState(null, ChartData);
+  dispatch(listenQuantity(itemToUpdate));
+};
+
 export const emptyChart = (dispatch) => {
   dispatch(emptyLocalStorage());
   //remove all items from local storage
@@ -97,6 +110,12 @@ const ChartSlicer = createSlice({
         state.chartData[itemIndex].quantity -= 1;
       }
     },
+    listenQuantity: (state, action) => {
+      const itemIndex = state.chartData.findIndex((item) => item.id === action.payload.id);
+      if (itemIndex !== -1) {
+        state.chartData[itemIndex].quantity = action.payload.quantity;
+      }
+    },
     removeItem: (state, action) => {
       const itemIndex = state.chartData.findIndex((item) => item.id === action.payload.id);
       if (itemIndex !== -1) {
@@ -109,6 +128,6 @@ const ChartSlicer = createSlice({
   },
 });
 
-export const { receiveItem, emptyLocalStorage, removeItem, increaseQuantity, decreaseQuantity } =
+export const { receiveItem, emptyLocalStorage, removeItem, increaseQuantity, decreaseQuantity, listenQuantity } =
   ChartSlicer.actions;
 export default ChartSlicer.reducer;

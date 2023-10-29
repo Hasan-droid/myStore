@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, IconButton, Image, Text, Button, Grid, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Heading, IconButton, Image, Text, Button, Grid } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 import { emptyChart } from "../Redux/features/ChartSlicer";
@@ -21,10 +21,8 @@ const CartPage = ({ currentItems }) => {
     "https://www.dexerto.com/cdn-cgi/image/width=3840,quality=75,format=auto/https://editors.dexerto.com/wp-content/uploads/2022/12/15/Man-of-Steel.jpg",
     "https://m.media-amazon.com/images/M/MV5BMzM0MDUwMDU1MV5BMl5BanBnXkFtZTcwOTUyMjU1OQ@@._V1_.jpg",
   ];
-  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
 
   const cartData = JSON.parse(localStorage.getItem("state"))?.ChartData ?? [];
-  //let the useBreakpoint give size that less than the half of the row size
 
   const windowSize = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
   console.log("ml ////////!!!!!!!!", windowSize);
@@ -34,12 +32,13 @@ const CartPage = ({ currentItems }) => {
   const [showImage, setShowImage] = useState({ render: false, id: null });
   //this state is to take the clicked item out of the cart.map
   const [itemId, setItemId] = useState(null);
-  const firstFieldRef = useRef(null);
+  const [scaleFooterState, setScaleFooterState] = useState(false);
   let temproryTotalPrice = 0;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    //calculate the total price of the cart items and set it to the state totalPrice to render it in the UI
     if (cartData) {
       cartData.forEach((item) => {
         temproryTotalPrice += item.price * item.quantity;
@@ -49,6 +48,7 @@ const CartPage = ({ currentItems }) => {
   }, [cartData]);
 
   useEffect(() => {
+    //scroll to the top of the page
     window.scrollTo(0, -200);
   }, []);
 
@@ -101,6 +101,16 @@ const CartPage = ({ currentItems }) => {
       const remainItems = cartData.filter((item) => item.id > itemId);
       return remainItems.length * 20 + 400;
     }
+  };
+  //pull down the footer when the user click on the item to show the image
+  const scaleFooter = (itemId) => {
+    const itemIdBeforeLastItem = cartData[cartData.length - 2].id;
+    const itemIdLastItem = cartData[cartData.length - 1].id;
+    if (itemIdBeforeLastItem <= itemId && itemId <= itemIdLastItem) {
+      setScaleFooterState(true);
+      return;
+    }
+    setScaleFooterState(false);
   };
 
   const handleCheckOut = () => {
@@ -259,12 +269,11 @@ const CartPage = ({ currentItems }) => {
                   <Box onClick={() => setItemId(id)} key={id}>
                     <CartSmallSizeView
                       item={item}
-                      handleQuantityDecrease={handleQuantityDecrease}
-                      handleQuantityIncrease={handleQuantityIncrease}
                       handleRemoveItem={handleRemoveItem}
                       showImage={showImage}
                       handleShowImageForPhone={handleShowImageForPhone}
                       images={images}
+                      scaleFooter={scaleFooter}
                     />
                   </Box>
                 );
@@ -284,7 +293,7 @@ const CartPage = ({ currentItems }) => {
           </Box>
         )}
       </Flex>
-      {cartData && (
+      {cartData && (windowSize === "lg" || windowSize === "720") && (
         //center the elements in the Box
         <Flex
           w="100%"
@@ -303,6 +312,40 @@ const CartPage = ({ currentItems }) => {
           <Button
             colorScheme="teal"
             size="lg"
+            onClick={() => {
+              handleCheckOut();
+            }}
+          >
+            Check out
+          </Button>
+        </Flex>
+      )}
+      {cartData && windowSize === "column" && (
+        //center the elements in the Box
+        <Flex
+          w="100%"
+          h="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          style={
+            scaleFooterState && showImage.render
+              ? { transform: "scale(0.9)", transition: "all 0.5s ease-in-out", opacity: "0.5" }
+              : { transform: "scale(1)", transition: "all 0.5s ease-in-out" }
+          }
+          //prevent click on the Flex when the scaleFooter is true
+          pointerEvents={scaleFooterState && showImage.render ? "none" : "auto"}
+          //add some animation when margin top change
+          transition="margin-top 0.5s ease-in-out"
+          mt={pullDownFooter()}
+          flexDirection="column"
+        >
+          <Text fontWeight="bold" fontSize="sm">
+            Total: ${totalPrice}
+          </Text>
+          <Button
+            colorScheme="teal"
+            size="sm"
             onClick={() => {
               handleCheckOut();
             }}

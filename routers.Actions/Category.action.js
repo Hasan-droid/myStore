@@ -11,6 +11,7 @@ export default async function CategoryAction({ request, params }) {
     data: { state: true, type: "Filed Required", message: "Filed Required", filed: inputFields },
   };
   if (intent === "add 1") {
+    debugger;
     const adminToken = localStorage.getItem("token");
     const card = Object.fromEntries(formData);
     console.log("card ", card);

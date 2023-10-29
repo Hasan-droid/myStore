@@ -43,25 +43,17 @@ export default function Header() {
   return (
     <>
       <Flex justifyContent="space-between" alignItems="center" p={4}>
-        {(windowSize === "lg" || windowSize === "md") && <NavBar_Med_Lg_Size cartItemsNumber={cartItemsNumber} />}
-        {windowSize === "base" && <NavBar_sm_Size cartItemsNumber={cartItemsNumber} />}
-        <Spacer />
-
-        {userToken && (
-          //make the button fixed and on the right side
-          <Button
-            id="logOutBtn"
-            onClick={handleLogOut}
-            bg="transparent"
-            border="1px"
-            borderColor="black"
-            color="black"
-            _hover={{ bg: "black", color: "white" }}
-          >
-            <BiLogOut size={30} />
-            Log Out
-          </Button>
+        {(windowSize === "lg" || windowSize === "md") && (
+          <NavBar_Med_Lg_Size
+            cartItemsNumber={cartItemsNumber}
+            userToken={userToken}
+            handleLogOut={handleLogOut}
+          />
         )}
+        {windowSize === "base" && (
+          <NavBar_sm_Size cartItemsNumber={cartItemsNumber} userToken={userToken} handleLogOut={handleLogOut} />
+        )}
+        <Spacer />
       </Flex>
       <Box minH={"75vh"} id="cardsList">
         {/* send useBreakpointValue as function to outlet context */}
