@@ -11,7 +11,7 @@ export default async function CategoryLoader({ params }) {
 
   await axios
     .get(CARDS_URL, {
-      params: { limit: 4, offset: 0, page: params.waterSpaces },
+      params: { limit: 8, offset: 0, page: params.waterSpaces },
     })
     .then((res) => {
       console.log("loaders:::::::: ");

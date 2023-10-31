@@ -72,11 +72,6 @@ export default async function CategoryAction({ request, params }) {
       id: formData.get("id"),
     };
     //check admin token date if expired redirect to login
-    const decodedToken = jwtDecode(adminToken);
-    const currentTime = Date.now() / 1000;
-    if (decodedToken.exp < currentTime) {
-      return redirect("/signin");
-    }
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${adminToken}`,
@@ -88,7 +83,7 @@ export default async function CategoryAction({ request, params }) {
         console.log("res.data ", res.data);
         console.log("res.headers ", res.headers);
         if (res.status === 200) {
-          status = { data: { state: 200, type: "delete", message: "card deleted successfully" } };
+          status = { data: { state: 200, type: "delete", message: "card deleted successfully", id: param.id } };
         }
       });
     } catch (error) {

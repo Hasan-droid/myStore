@@ -16,9 +16,19 @@ import "../styles/Cards.css";
 import { useDispatch } from "react-redux";
 import { increaseItemQuantityByOne } from "../redux/features/ChartSlicer";
 import { Form } from "react-router-dom";
+import { useState } from "react";
 
 export default function Cards({ cardsType, item, verifyAdmin }) {
   const dispatch = useDispatch();
+  const [changeStyle, setChangeStyle] = useState({ changeStyle: false, id: null });
+
+  const handleChangeStyle = (item) => {
+    debugger;
+    setChangeStyle({ changeStyle: true, id: item });
+    // const getForm = document.querySelector("Form");
+    // getForm.submit();
+    console.log("handleChangeStyle");
+  };
 
   return (
     //add some animation to the card
@@ -28,7 +38,18 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
       transition="all 0.2s ease-in-out"
       cursor="pointer"
     >
-      <Card maxW="sm" m={4} boxShadow="2xl">
+      {console.log("item received from parent component", item)}
+      <Card
+        maxW="sm"
+        m={4}
+        boxShadow="2xl"
+        bg={changeStyle.changeStyle && changeStyle.id === item.id ? "red.100" : "white"}
+        //transform translateX all the items.id that are less than the item.id
+        //animate the rest of the cards
+        //add some transition to the card
+        //animate the rest of the cards when the card is deleted
+        //add some transition to the card when the card is deleted
+      >
         <CardBody>
           {cardsType === "waterSpaces" ? (
             <>
@@ -95,7 +116,14 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
                 >
                   Edit
                 </Button>
-                <Button variant="ghost" colorScheme="red" type="submit" name="intent" value="delete 1">
+                <Button
+                  variant="ghost"
+                  colorScheme="red"
+                  type="submit"
+                  name="intent"
+                  value="delete 1"
+                  onClick={() => handleChangeStyle(item.id)}
+                >
                   Delete
                 </Button>
               </ButtonGroup>

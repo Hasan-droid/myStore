@@ -13,7 +13,8 @@ import CardModal from "./CardModal";
 
 export default function CardsList() {
   const [TempItemsNumber, setTempItemsNumber] = useState(0); // this is the number of items that will be fetched from the backend// this is the number of items that will be fetched from the backend
-  const [items, setItems] = useState(Array.from({ length: 0 }));
+  //use node linked list to store the data in the items state
+  const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
@@ -40,7 +41,18 @@ export default function CardsList() {
   // from react router dom and only when the page is loaded for the first time
   useEffect(() => {
     console.log("dataFromActions", dataFromActions);
-    if (dataFromActions?.data.state === 200 && dataFromActions?.data.type === "delete") return;
+    if (dataFromActions?.data.state === 200 && dataFromActions?.data.type === "delete") {
+      console.log("dataFromActions", dataFromActions);
+      const DeletedItem = items.find((item) => item.id === parseInt(dataFromActions?.data.id));
+      const newArray = items
+        .slice(0, items.indexOf(DeletedItem))
+        .concat(items.slice(items.indexOf(DeletedItem) + 1, items.length));
+
+      setItems(newArray);
+
+      return;
+    }
+    //add data as node to the linked list
     setItems(data);
     console.log("loader Data", data);
     // if (!dataFromActions?.state === 200 && !dataFromActions?.type === "delete")
@@ -76,7 +88,8 @@ export default function CardsList() {
       .then((res) => {
         console.log(res.data);
         //just add the new data to the old data
-        setItems(items.concat(res.data));
+        //link the items using the linked list
+        setItems([...items, ...res.data]);
       })
       .catch((err) => {
         console.log(err);
@@ -123,6 +136,7 @@ export default function CardsList() {
             align="center"
             justify="center"
           >
+            {console.log("verfyAdmin")}
             {verifyAdmin() && (
               <Box
                 //mover the box little bit down
