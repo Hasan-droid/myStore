@@ -17,6 +17,11 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import NavBar_Med_Lg_Size from "./NavBar_Med_Lg_Size";
 import NavBar_sm_Size from "./NavBar_sm_Size";
 
+export const CheckTokenExperimentData = (token) => {
+  const currentTime = new Date().getTime() / 1000;
+  token.exp < currentTime ? true : false;
+};
+
 export default function Header() {
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
@@ -40,6 +45,7 @@ export default function Header() {
     localStorage.removeItem("token");
     navigate("/waterSpaces");
   };
+
   return (
     <>
       <Flex justifyContent="space-between" alignItems="center" p={4}>

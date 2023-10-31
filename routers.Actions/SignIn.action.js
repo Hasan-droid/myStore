@@ -54,14 +54,13 @@ export default async function SignInaction({ request, params }) {
   console.log("status ", status);
   //redirect function won't work from the response of the server
   if (status?.data.state === 200) {
+    debugger;
     if (status.data.role === "user" || status.data.role === "admin") {
       //save token in local storage
       localStorage.setItem("token", status.data.token);
 
-      if (localStorage.getItem("state")) {
-        return redirect("/chart");
-      }
-      return redirect("/");
+      if (status.data.role === "user") return redirect("/chart");
+      return redirect("/waterSpaces");
     }
   }
   console.log("status ", status);

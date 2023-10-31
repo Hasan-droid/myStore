@@ -1,7 +1,8 @@
 import axios from "axios";
 import { redirect } from "../node_modules/react-router-dom/dist/index";
+import jwtDecode from "jwt-decode";
+import { CheckTokenExperimentData as CheckTokenExperimentData } from "../components/Header";
 export default async function CategoryAction({ request, params }) {
-  debugger;
   const backEndURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery/";
   const formData = await request.formData();
   const intent = formData.get("intent");
@@ -12,6 +13,8 @@ export default async function CategoryAction({ request, params }) {
   let errorReturn = {
     data: { state: true, type: "Filed Required", message: "Filed Required", filed: inputFields },
   };
+  const adminToken = localStorage.getItem("token");
+  if (CheckTokenExperimentData(adminToken)) return redirect("/signin");
   if (intent === "add 1") {
     const adminToken = localStorage.getItem("token");
     console.log("card ", card);
@@ -65,12 +68,15 @@ export default async function CategoryAction({ request, params }) {
     return status;
   }
   if (intent === "delete 1") {
-    debugger;
-    const adminToken = localStorage.getItem("token");
     const param = {
       id: formData.get("id"),
     };
-
+    //check admin token date if expired redirect to login
+    const decodedToken = jwtDecode(adminToken);
+    const currentTime = Date.now() / 1000;
+    if (decodedToken.exp < currentTime) {
+      return redirect("/signin");
+    }
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${adminToken}`,
@@ -78,11 +84,11 @@ export default async function CategoryAction({ request, params }) {
     try {
       console.log("backEndURL ", backEndURL);
       //send request to backend with headers and param id
-      await axios.delete(backEndURL, { headers, params: param }).then((res) => {
+      await axios.delete(backEndURL + `${param.id}`, { headers }).then((res) => {
         console.log("res.data ", res.data);
         console.log("res.headers ", res.headers);
         if (res.status === 200) {
-          status = { data: { state: 200, message: "card deleted successfully" } };
+          status = { data: { state: 200, type: "delete", message: "card deleted successfully" } };
         }
       });
     } catch (error) {

@@ -2,7 +2,7 @@ import { Box, Flex, Heading, IconButton, Image, Text, Button, Grid } from "@chak
 import { FaTrash } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 import { emptyChart } from "../Redux/features/ChartSlicer";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useActionData } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import {
@@ -12,6 +12,7 @@ import {
 } from "../Redux/features/ChartSlicer";
 import CartMediumSizeView from "./cartMediumSizeView";
 import CartSmallSizeView from "./CartSmallSizeView";
+import { CheckTokenExperimentData } from "./Header";
 
 const CartPage = ({ currentItems }) => {
   const [useBreakpointValue] = useOutletContext();
@@ -120,8 +121,7 @@ const CartPage = ({ currentItems }) => {
     if (!decodedToken.role) return navigate("/signin");
     const role = decodedToken.role;
     //check if the token expired
-    const currentTime = Date.now() / 1000;
-    if (decodedToken.exp < currentTime) return navigate("/signin");
+    if (CheckTokenExperimentData(decodedToken)) return navigate("/signin");
     if (role !== "user") return navigate("/signin");
     //run emptyLocalStorage action
     emptyChart(dispatch);

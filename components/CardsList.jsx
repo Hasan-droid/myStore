@@ -6,7 +6,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/CardsList.css";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useActionData } from "react-router-dom";
 import { motion } from "framer-motion";
 import jwtDecode from "jwt-decode";
 import CardModal from "./CardModal";
@@ -23,7 +23,8 @@ export default function CardsList() {
   let NumberOfCardsLimit = useRef(4);
   const pageDocument = document.location.pathname.split("/")[1];
   console.log("data uploaded from this page");
-
+  const dataFromActions = useActionData();
+  console.log("dataFromActions??????", dataFromActions);
   const resetData = () => {
     console.log("resetData");
     setTempItemsNumber(0);
@@ -35,9 +36,15 @@ export default function CardsList() {
   };
   //use params of of loader data and send numberOfCardsLimit and numberOfCardsOffset to backend
   const { data } = useLoaderData();
+  //this useEffect will be called when the data is fetched from the data loader
+  // from react router dom and only when the page is loaded for the first time
   useEffect(() => {
-    resetData();
+    console.log("dataFromActions", dataFromActions);
+    if (dataFromActions?.data.state === 200 && dataFromActions?.data.type === "delete") return;
     setItems(data);
+    console.log("loader Data", data);
+    // if (!dataFromActions?.state === 200 && !dataFromActions?.type === "delete")
+    resetData();
   }, [pageDocument, data]);
 
   const verifyAdmin = () => {
