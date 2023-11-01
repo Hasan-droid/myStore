@@ -21,22 +21,22 @@ import {
   NumberDecrementStepper,
   FormErrorMessage,
   Stack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
-import CustomToast from "./Toast";
 import { useEffect, useState } from "react";
 
 export default function CardModal({ item }) {
-  console.log("item", item);
+  debugger;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [showToast, setShowToast] = useState(false);
-  const [toastReceivedStatus, setToastReceivedStatus] = useState("");
+
   const [itemPrice, setItemPrice] = useState(item?.price || 0);
   const [itemDescription, setItemDescription] = useState(item?.description || "");
   const [itemName, setItemName] = useState(item?.title || "");
   const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
   const dataFromActions = useActionData();
+  const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
   //count how many times this component is rendered
   const clearDataInputs = () => {
     setItemPrice(0);
@@ -45,22 +45,10 @@ export default function CardModal({ item }) {
   };
 
   useEffect(() => {
-    if (dataFromActions?.data?.state === 200) {
-      setShowToast(true);
-      setToastReceivedStatus("success");
-      if (dataFromActions?.data?.type === "add") {
-        clearDataInputs();
-      }
-      setTimeout(() => {
-        setShowToast(false);
-      }, 100);
-    } else if (dataFromActions?.data?.state === 400) {
-      setShowToast(true);
-      setToastReceivedStatus("error");
-      setTimeout(() => {
-        setShowToast(false);
-      }, 100);
+    if (dataFromActions?.data?.type === "add") {
+      clearDataInputs();
     }
+
     if (dataFromActions?.data?.state && dataFromActions?.data?.type === "Filed Required") {
       setError({
         state: true,
@@ -70,18 +58,10 @@ export default function CardModal({ item }) {
       });
       console.log("data from actions", dataFromActions);
     }
-  }, [dataFromActions]);
+  }, [dataFromActions?.data]);
 
   return (
     <>
-      {console.log("error", error)}
-      {showToast && (
-        <CustomToast
-          receivedPosition="top"
-          receivedStatus={toastReceivedStatus}
-          receivedTitle={dataFromActions?.data.message}
-        />
-      )}
       {!item ? (
         <Box
           cursor="pointer"
@@ -101,13 +81,13 @@ export default function CardModal({ item }) {
           variant="ghost"
           //use this color #C6EBBE as colorScheme
           colorScheme="green"
-          onClick={onOpen}
+          {...(item && { onClick: onOpen })}
         >
           Edit
         </Button>
       )}
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"} size={windowSize}>
         <Form method="post">
           <ModalOverlay />
           <ModalContent>

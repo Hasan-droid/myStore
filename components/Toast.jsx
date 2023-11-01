@@ -21,6 +21,7 @@ export default function CustomToast({ receivedPosition, receivedStatus, received
             position: receivedPosition,
             // isClosable: true,
             status: receivedStatus,
+            duration: 700,
           })}
         </Wrap>
       )}

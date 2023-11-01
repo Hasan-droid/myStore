@@ -3,6 +3,7 @@ import { redirect } from "../node_modules/react-router-dom/dist/index";
 import jwtDecode from "jwt-decode";
 import { CheckTokenExperimentData as CheckTokenExperimentData } from "../components/Header";
 export default async function CategoryAction({ request, params }) {
+  console.log("params from actions ", params);
   const backEndURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery/";
   const formData = await request.formData();
   const intent = formData.get("intent");
@@ -40,7 +41,7 @@ export default async function CategoryAction({ request, params }) {
       name: card.item_name,
       description: card.item_description,
       price: card.item_price,
-      category: document.location.pathname.split("/")[1],
+      category: params.waterSpaces,
     };
     const headers = {
       "Content-Type": "application/json",
@@ -99,7 +100,6 @@ export default async function CategoryAction({ request, params }) {
   }
 
   if (intent === "edit 1") {
-    debugger;
     const param = {
       id: formData.get("id"),
     };
@@ -107,7 +107,7 @@ export default async function CategoryAction({ request, params }) {
       name: card.item_name,
       description: card.item_description,
       price: card.item_price,
-      category: document.location.pathname.split("/")[1],
+      category: params.waterSpaces,
     };
     //check admin token date if expired redirect to login
     const headers = {
@@ -121,7 +121,19 @@ export default async function CategoryAction({ request, params }) {
         console.log("res.data ", res.data);
         console.log("res.headers ", res.headers);
         if (res.status === 200) {
-          status = { data: { state: 200, type: "edit", message: "card edited successfully", id: param.id } };
+          status = {
+            data: {
+              state: 200,
+              type: "edit",
+              message: "card edited successfully",
+              item: {
+                id: parseInt(param.id),
+                title: card.item_name,
+                description: card.item_description,
+                price: card.item_price,
+              },
+            },
+          };
         }
       });
     } catch (error) {

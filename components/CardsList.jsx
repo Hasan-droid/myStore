@@ -23,11 +23,10 @@ export default function CardsList() {
   let NumberOfCardsOffset = useRef(0);
   let NumberOfCardsLimit = useRef(4);
   const pageDocument = document.location.pathname.split("/")[1];
-  console.log("data uploaded from this page");
+
   const dataFromActions = useActionData();
-  console.log("dataFromActions??????", dataFromActions);
+
   const resetData = () => {
-    console.log("resetData");
     setTempItemsNumber(0);
     setHasMore(true);
     //scroll to top
@@ -40,7 +39,6 @@ export default function CardsList() {
   //this useEffect will be called when the data is fetched from the data loader
   // from react router dom and only when the page is loaded for the first time
   useEffect(() => {
-    console.log("dataFromActions", dataFromActions);
     if (dataFromActions?.data?.state === 200 && dataFromActions?.data.type === "delete") {
       console.log("dataFromActions", dataFromActions);
       const DeletedItem = items.find((item) => item.id === parseInt(dataFromActions?.data.id));
@@ -53,10 +51,30 @@ export default function CardsList() {
       return;
     }
     //add data as node to the linked list
-    setItems(data);
-    console.log("loader Data", data);
+
     // if (!dataFromActions?.state === 200 && !dataFromActions?.type === "delete")
+    if (dataFromActions?.data?.state === 200 && dataFromActions?.data?.type === "edit") {
+      debugger;
+      console.log("dataFromActions", dataFromActions);
+      const indexOfEditedItem = items.findIndex((item) => item.id === parseInt(dataFromActions?.data.item.id));
+      const item = dataFromActions?.data?.item;
+      const EditedItem = {
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        price: item.price,
+      };
+
+      //replace the old item with the new item
+      const newArray = items
+        .slice(0, indexOfEditedItem)
+        .concat(EditedItem)
+        .concat(items.slice(indexOfEditedItem + 1, items.length));
+      setItems(newArray);
+      return;
+    }
     resetData();
+    setItems(data);
   }, [pageDocument, data]);
 
   const verifyAdmin = () => {
@@ -72,7 +90,6 @@ export default function CardsList() {
       setHasMore(false);
       return;
     }
-    console.log("TempItemsNumber", TempItemsNumber);
   }, [items]);
 
   const fetchMoreData = () => {
@@ -86,7 +103,6 @@ export default function CardsList() {
         params: { limit: NumberOfCardsLimit.current, offset: NumberOfCardsOffset.current, page: pageDocument },
       })
       .then((res) => {
-        console.log(res.data);
         //just add the new data to the old data
         //link the items using the linked list
         setItems([...items, ...res.data]);
@@ -136,7 +152,6 @@ export default function CardsList() {
             align="center"
             justify="center"
           >
-            {console.log("verfyAdmin")}
             {verifyAdmin() && (
               <Box
                 //mover the box little bit down

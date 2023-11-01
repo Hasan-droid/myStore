@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -16,16 +16,24 @@ import { useNavigate } from "react-router-dom";
 import { useBreakpointValue } from "@chakra-ui/react";
 import NavBar_Med_Lg_Size from "./NavBar_Med_Lg_Size";
 import NavBar_sm_Size from "./NavBar_sm_Size";
+import jwtDecode from "jwt-decode";
+import { useActionData } from "react-router-dom";
+import CustomToast from "./Toast";
 
 export const CheckTokenExperimentData = (token) => {
   const currentTime = new Date().getTime() / 1000;
-  token.exp < currentTime ? true : false;
+  const decodeToken = jwtDecode(token);
+  return decodeToken.exp < currentTime ? true : false;
 };
 
 export default function Header() {
+  const dataFromActions = useActionData();
+  console.log("[[[[[[datafromAction]]]]", dataFromActions);
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
   const [cartItemsNumber, setCartItemNumber] = React.useState([]);
+  const [showToast, setShowToast] = useState(false);
+  const [toastReceivedStatus, setToastReceivedStatus] = useState("");
   const windowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
   console.log("windowSize", windowSize);
   const itemsData = useSelector((state) => {
@@ -38,9 +46,26 @@ export default function Header() {
       console.log("item ]]]]]]]]]", item);
       count += item?.quantity;
     });
-
     setCartItemNumber(count);
   }, [itemsData]);
+
+  useEffect(() => {
+    if (!dataFromActions) return;
+    if (dataFromActions?.data?.state === 200) {
+      setShowToast(true);
+      setToastReceivedStatus("success");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 100);
+    } else if (dataFromActions?.data?.state === 400) {
+      setShowToast(true);
+      setToastReceivedStatus("error");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 100);
+    }
+  }, [dataFromActions]);
+
   const handleLogOut = () => {
     localStorage.removeItem("token");
     navigate("/waterSpaces");
@@ -48,6 +73,13 @@ export default function Header() {
 
   return (
     <>
+      {showToast && (
+        <CustomToast
+          receivedPosition="top"
+          receivedStatus={toastReceivedStatus}
+          receivedTitle={dataFromActions?.data.message}
+        />
+      )}
       <Flex justifyContent="space-between" alignItems="center" p={4}>
         {(windowSize === "lg" || windowSize === "md") && (
           <NavBar_Med_Lg_Size
