@@ -39,7 +39,6 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
       transition="all 0.2s ease-in-out"
       cursor="pointer"
     >
-      {console.log("item received from parent component", item)}
       <Card
         maxW="sm"
         m={4}

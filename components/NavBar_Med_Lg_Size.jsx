@@ -36,7 +36,7 @@ export default function NavBar_Med_Lg_Size({ cartItemsNumber, userToken, handleL
               {" "}
               <div className="chartIcon">
                 <BsFillCartFill size={40} />
-                {console.log("cartItemsNumber", cartItemsNumber)}
+
                 <p className="counter">{cartItemsNumber}</p>
               </div>
             </Link>
