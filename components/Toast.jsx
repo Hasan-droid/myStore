@@ -10,7 +10,7 @@ export default function CustomToast({ receivedPosition, receivedStatus, received
     setHoldSecound(false);
     setTimeout(() => {
       setHoldSecound(true);
-    }, 1000);
+    }, 100);
   }, []);
   return (
     <>

@@ -41,7 +41,7 @@ export default function CardsList() {
   // from react router dom and only when the page is loaded for the first time
   useEffect(() => {
     console.log("dataFromActions", dataFromActions);
-    if (dataFromActions?.data.state === 200 && dataFromActions?.data.type === "delete") {
+    if (dataFromActions?.data?.state === 200 && dataFromActions?.data.type === "delete") {
       console.log("dataFromActions", dataFromActions);
       const DeletedItem = items.find((item) => item.id === parseInt(dataFromActions?.data.id));
       const newArray = items

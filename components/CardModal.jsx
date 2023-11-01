@@ -27,13 +27,14 @@ import { Form, useActionData } from "react-router-dom";
 import CustomToast from "./Toast";
 import { useEffect, useState } from "react";
 
-export default function CardModal() {
+export default function CardModal({ item }) {
+  console.log("item", item);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showToast, setShowToast] = useState(false);
   const [toastReceivedStatus, setToastReceivedStatus] = useState("");
-  const [itemPrice, setItemPrice] = useState(0);
-  const [itemDescription, setItemDescription] = useState("");
-  const [itemName, setItemName] = useState("");
+  const [itemPrice, setItemPrice] = useState(item?.price || 0);
+  const [itemDescription, setItemDescription] = useState(item?.description || "");
+  const [itemName, setItemName] = useState(item?.title || "");
   const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
   const dataFromActions = useActionData();
   //count how many times this component is rendered
@@ -47,7 +48,9 @@ export default function CardModal() {
     if (dataFromActions?.data?.state === 200) {
       setShowToast(true);
       setToastReceivedStatus("success");
-      clearDataInputs();
+      if (dataFromActions?.data?.type === "add") {
+        clearDataInputs();
+      }
       setTimeout(() => {
         setShowToast(false);
       }, 100);
@@ -79,18 +82,30 @@ export default function CardModal() {
           receivedTitle={dataFromActions?.data.message}
         />
       )}
-      <Box
-        cursor="pointer"
-        onClick={onOpen}
-        _hover={{ transform: "scale(1.4)", transition: "all 0.2s ease-in-out" }}
-        transition="all 0.2s ease-in-out"
-        //change the color and the size of the icon when hovering
-      >
-        <AddIcon color="gray.500" fontSize="6xl" />
-        <Text fontSize="xl" color="gray.500">
-          Add new item
-        </Text>
-      </Box>
+      {!item ? (
+        <Box
+          cursor="pointer"
+          //add condition that fire the modal when the user is admin
+          onClick={onOpen}
+          _hover={{ transform: "scale(1.4)", transition: "all 0.2s ease-in-out" }}
+          transition="all 0.2s ease-in-out"
+          //change the color and the size of the icon when hovering
+        >
+          <AddIcon color="gray.500" fontSize="6xl" />
+          <Text fontSize="xl" color="gray.500">
+            Add new item
+          </Text>
+        </Box>
+      ) : (
+        <Button
+          variant="ghost"
+          //use this color #C6EBBE as colorScheme
+          colorScheme="green"
+          onClick={onOpen}
+        >
+          Edit
+        </Button>
+      )}
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <Form method="post">
@@ -176,12 +191,21 @@ export default function CardModal() {
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
+              <Button colorScheme="red" mr={3} onClick={onClose} variant="ghost">
                 Close
               </Button>
-              <Button colorScheme="green" name="intent" value="add 1" type="submit">
-                Add
-              </Button>
+              {!item ? (
+                <Button colorScheme="green" name="intent" value="add 1" type="submit" variant="ghost">
+                  Add
+                </Button>
+              ) : (
+                <>
+                  <Input type="hidden" name="id" value={item.id} />
+                  <Button colorScheme="green" name="intent" value="edit 1" type="submit" variant="ghost">
+                    Edit
+                  </Button>
+                </>
+              )}
             </ModalFooter>
           </ModalContent>
         </Form>

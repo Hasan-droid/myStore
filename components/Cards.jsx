@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { increaseItemQuantityByOne } from "../redux/features/ChartSlicer";
 import { Form } from "react-router-dom";
 import { useState } from "react";
+import CardModal from "./CardModal";
 
 export default function Cards({ cardsType, item, verifyAdmin }) {
   const dispatch = useDispatch();
@@ -106,16 +107,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
             <Form method="post">
               <Input type="hidden" name="id" value={item.id} />
               <ButtonGroup spacing="2">
-                <Button
-                  variant="ghost"
-                  //use this color #C6EBBE as colorScheme
-                  colorScheme="green"
-                  type="submit"
-                  name="intent"
-                  value="edit 1"
-                >
-                  Edit
-                </Button>
+                <CardModal item={item} />
                 <Button
                   variant="ghost"
                   colorScheme="red"
