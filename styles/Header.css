@@ -40,6 +40,21 @@
   transform: translate(-50%, -50%);
   color: #451d1d52;
 }
+
+.chartIcon > .inbox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #451d1d52;
+  border: 1px solid red;
+  padding: 2px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+  font-size: 12px;
+}
+
 .logout {
 }
 .onScrollHeader {

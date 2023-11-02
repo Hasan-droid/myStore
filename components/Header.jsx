@@ -66,6 +66,14 @@ export default function Header() {
     navigate("/waterSpaces");
   };
 
+  const verifyAdmin = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+    const decodeToken = jwtDecode(token);
+    if (decodeToken.role === "admin") return true;
+    return false;
+  };
+
   return (
     <>
       {showToast && (
@@ -81,6 +89,7 @@ export default function Header() {
             cartItemsNumber={cartItemsNumber}
             userToken={userToken}
             handleLogOut={handleLogOut}
+            verifyAdmin={verifyAdmin}
           />
         )}
         {windowSize === "base" && (
@@ -90,7 +99,7 @@ export default function Header() {
       </Flex>
       <Box minH={"75vh"} id="cardsList">
         {/* send useBreakpointValue as function to outlet context */}
-        <Outlet context={[useBreakpointValue]} />
+        <Outlet context={[useBreakpointValue, verifyAdmin]} />
       </Box>
       <Footer />
     </>
