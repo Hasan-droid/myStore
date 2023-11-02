@@ -113,15 +113,15 @@ const CartPage = ({ currentItems }) => {
     }
     setScaleFooterState(false);
   };
-
+  //NOTE : checkout buuton had been used instaed of react router action because of the bug in the react router
+  // whuch use not update the cart state when the user click on the checkout button
   const handleCheckOut = () => {
     const userToken = localStorage.getItem("token");
-    if (!userToken) return navigate("/signin");
+    if (CheckTokenExperimentData(userToken)) return navigate("/signin");
     const decodedToken = jwtDecode(userToken);
     if (!decodedToken.role) return navigate("/signin");
     const role = decodedToken.role;
     //check if the token expired
-    if (CheckTokenExperimentData(decodedToken)) return navigate("/signin");
     if (role !== "user") return navigate("/signin");
     //run emptyLocalStorage action
     emptyChart(dispatch);
