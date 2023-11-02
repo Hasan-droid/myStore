@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Card from "./Cards";
 import axios from "axios";
-import { Grid, Progress, Box, Text, useDisclosure } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { Grid, Progress, Box } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useDispatch, useSelector } from "react-redux";
 import "../styles/CardsList.css";
 import { useLoaderData, useActionData } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -16,9 +14,6 @@ export default function CardsList() {
   //use node linked list to store the data in the items state
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch();
-  const receiveItemMessage = useSelector((state) => state.ChartSlicer);
   const CARDS_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery";
   let NumberOfCardsOffset = useRef(0);
   let NumberOfCardsLimit = useRef(4);
