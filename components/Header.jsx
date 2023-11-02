@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Header.css";
-import { BsFillCartFill } from "react-icons/bs";
 import Footer from "./Footer";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Box, Spacer } from "@chakra-ui/react";
-import { NavbarBrand } from "react-bootstrap";
-import { Button, Flex } from "@chakra-ui/react";
-import { BiLogOut } from "react-icons/bi";
+import { Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useBreakpointValue } from "@chakra-ui/react";
 import NavBar_Med_Lg_Size from "./NavBar_Med_Lg_Size";

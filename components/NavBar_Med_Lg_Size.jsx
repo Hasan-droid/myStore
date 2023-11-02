@@ -2,7 +2,7 @@
 import React from "react";
 import { Navbar, Container, Nav, NavbarBrand } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { BsFillCartFill } from "react-icons/bs";
+import { BsFillCartFill , BsFillInboxFill } from "react-icons/bs";
 import { Button, Flex } from "@chakra-ui/react";
 import { BiLogOut } from "react-icons/bi";
 

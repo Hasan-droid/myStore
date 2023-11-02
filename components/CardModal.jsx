@@ -26,7 +26,6 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { title } from "process";
 
 export default function CardModal({ item }) {
   debugger;
