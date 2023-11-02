@@ -26,14 +26,18 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { title } from "process";
 
 export default function CardModal({ item }) {
   debugger;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  //destructuring the item object
+  const { title, description, price } = item || {};
 
-  const [itemPrice, setItemPrice] = useState(item?.price || 0);
-  const [itemDescription, setItemDescription] = useState(item?.description || "");
-  const [itemName, setItemName] = useState(item?.title || "");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  console.log("price", price);
+  const [itemPrice, setItemPrice] = useState(price || 0);
+  const [itemDescription, setItemDescription] = useState(description || "");
+  const [itemName, setItemName] = useState(title || "");
   const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
   const dataFromActions = useActionData();
   const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
@@ -43,6 +47,16 @@ export default function CardModal({ item }) {
     setItemDescription("");
     setItemName("");
   };
+
+  const fillInitialState = () => {
+    setItemName(title);
+    setItemPrice(price);
+    setItemDescription(description);
+  };
+
+  useEffect(() => {
+    fillInitialState();
+  }, [title]);
 
   useEffect(() => {
     if (dataFromActions?.data?.type === "add") {
@@ -87,7 +101,7 @@ export default function CardModal({ item }) {
         </Button>
       )}
 
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"} size={windowSize}>
+      <Modal isOpen={isOpen} onClose={onClose} size={windowSize}>
         <Form method="post">
           <ModalOverlay />
           <ModalContent>

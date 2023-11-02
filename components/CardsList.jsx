@@ -73,8 +73,9 @@ export default function CardsList() {
       setItems(newArray);
       return;
     }
-    resetData();
+    console.log("[[[[[data]]]", data);
     setItems(data);
+    resetData();
   }, [pageDocument, data]);
 
   const verifyAdmin = () => {
