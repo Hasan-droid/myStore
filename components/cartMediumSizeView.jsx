@@ -43,7 +43,7 @@ export default function CartMediumSizeView({
           style={{
             opacity: showImage.render && showImage.id !== id ? 0.7 : 1,
             //only items with id greater than the current id will be transformed
-            transform: showImage.render && id < showImage.id ? "translateY(400px)" : "none",
+            transform: showImage.render && id > showImage.id ? "translateY(400px)" : "none",
           }}
 
           // onAnimationEnd={() => (true)}
