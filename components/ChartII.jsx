@@ -196,22 +196,27 @@ const CartPage = ({ currentItems }) => {
               if (windowSize === "lg") {
                 return (
                   <Grid
+                    onClick={() => {
+                      handleShowImageForPhone(id);
+                      handlePreviewImage(item);
+                    }}
                     key={id}
                     templateColumns="repeat(11, 1fr)"
                     gap={4}
-                    bg="white"
+                    bg={showImage.render && showImage.id === id ? "gray.400" : "white"}
                     p={2}
                     rounded="md"
                     shadow="md"
                     alignItems="center"
                     mb={4}
                     _hover={{
+                      bg: "gray.400",
                       transform: "scale(1.03)",
                       transition: "all 0.4s ease-in-out",
                     }}
                     transition="all 0.2s ease-in-out"
                   >
-                    <Box position="relative" onClick={() => handlePreviewImage(item)} cursor="pointer">
+                    <Box position="relative" cursor="pointer">
                       <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={1} />
                     </Box>
 
@@ -228,7 +233,14 @@ const CartPage = ({ currentItems }) => {
                       </Text>
                     </Box>
                     <Box gridColumn="6/ 10">
-                      <Box border="1px" p={2} borderColor="black" borderRadius="l" display="inline-block">
+                      <Box
+                        border="1px"
+                        p={2}
+                        borderColor="black"
+                        borderRadius="l"
+                        display="inline-block"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <Button size="xs" mr={2} onClick={() => handleQuantityDecrease(id)}>
                           -
                         </Button>
