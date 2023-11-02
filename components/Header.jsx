@@ -16,6 +16,7 @@ import { useActionData } from "react-router-dom";
 import CustomToast from "./Toast";
 
 export const CheckTokenExperimentData = (token) => {
+  if (!token) return true;
   const currentTime = new Date().getTime() / 1000;
   const decodeToken = jwtDecode(token);
   return decodeToken.exp < currentTime ? true : false;

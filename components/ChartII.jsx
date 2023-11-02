@@ -116,6 +116,7 @@ const CartPage = ({ currentItems }) => {
   //NOTE : checkout buuton had been used instaed of react router action because of the bug in the react router
   // whuch use not update the cart state when the user click on the checkout button
   const handleCheckOut = () => {
+    debugger;
     const userToken = localStorage.getItem("token");
     if (CheckTokenExperimentData(userToken)) return navigate("/signin");
     const decodedToken = jwtDecode(userToken);
