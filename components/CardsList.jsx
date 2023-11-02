@@ -4,7 +4,7 @@ import axios from "axios";
 import { Grid, Progress, Box } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../styles/CardsList.css";
-import { useLoaderData, useActionData } from "react-router-dom";
+import { useLoaderData, useActionData, useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
 import jwtDecode from "jwt-decode";
 import CardModal from "./CardModal";
@@ -15,11 +15,14 @@ export default function CardsList() {
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const CARDS_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery";
+  const pageDocument = document.location.pathname.split("/")[1];
+  const dataFromActions = useActionData();
+  const { data } = useLoaderData();
+  //only take the verifyAdmin function from the outlet context array
+  const [, verifyAdmin] = useOutletContext();
+
   let NumberOfCardsOffset = useRef(0);
   let NumberOfCardsLimit = useRef(4);
-  const pageDocument = document.location.pathname.split("/")[1];
-
-  const dataFromActions = useActionData();
 
   const resetData = () => {
     setTempItemsNumber(0);
@@ -30,7 +33,6 @@ export default function CardsList() {
     NumberOfCardsOffset.current = 0;
   };
   //use params of of loader data and send numberOfCardsLimit and numberOfCardsOffset to backend
-  const { data } = useLoaderData();
   //this useEffect will be called when the data is fetched from the data loader
   // from react router dom and only when the page is loaded for the first time
   useEffect(() => {
@@ -72,14 +74,6 @@ export default function CardsList() {
     setItems(data);
     resetData();
   }, [pageDocument, data]);
-
-  const verifyAdmin = () => {
-    const token = localStorage.getItem("token");
-    if (!token) return false;
-    const decodeToken = jwtDecode(token);
-    if (decodeToken.role === "admin") return true;
-    return false;
-  };
 
   useEffect(() => {
     if (TempItemsNumber === items.length && TempItemsNumber !== 0) {
