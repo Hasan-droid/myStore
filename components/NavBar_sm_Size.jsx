@@ -21,7 +21,6 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import "../styles/PhoneDrawer.css";
 import "../styles/Header.css";
-import { on } from "process";
 import { useEffect } from "react";
 
 export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOut, verifyAdmin }) {
@@ -30,6 +29,8 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
   const navigate = useNavigate();
   const [categoryClicked, setCategoryClicked] = useState({ category: "", clicked: false });
 
+  //handle the navigation to the clicked element from the drawer
+  //this functionality runs from here not from the action router
   const handleNavigation = (e) => {
     //get the name of the clicked element
     console.log("e.target.id", e.target.id);
@@ -76,7 +77,7 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
               <Link className="h" to="/chart" id="chart">
                 {" "}
                 <div className="chartIcon">
-                  <BsFillCartFill size={40} />
+                  <BsFillCartFill size={40} color={"#c6ebbe"} />
 
                   <p className="counter">{cartItemsNumber}</p>
                 </div>
@@ -87,7 +88,7 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
               <Link className="h" id="chart">
                 {" "}
                 <div className="chartIcon">
-                  <BsFillInboxFill size={45} />
+                  <BsFillInboxFill size={40} />
                   <p className="inbox">{13}</p>
                 </div>
               </Link>
@@ -112,7 +113,7 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
               Home
             </Box>
 
-            <Box
+            <Button
               w="90%"
               className="drawer"
               name="waterSpaces"
@@ -123,8 +124,8 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
               }}
             >
               Water Spaces
-            </Box>
-            <Box
+            </Button>
+            <Button
               w="90%"
               className="drawer"
               id="candles"
@@ -134,10 +135,10 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
               }}
             >
               Candles
-            </Box>
+            </Button>
             {userToken && (
-              <Box
-                // w="100%"
+              <Button
+                w="90%"
                 className="drawer"
                 id="candles"
                 bg={categoryClicked.clicked && categoryClicked.category === "logout" ? "#647AA3" : "white"}
@@ -147,16 +148,9 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
                 }}
               >
                 logOut
-              </Box>
+              </Button>
             )}
           </DrawerBody>
-
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

@@ -38,7 +38,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #451d1d52;
+  color: rgba(0, 0, 0, 0.255);
 }
 
 .chartIcon > .inbox {
