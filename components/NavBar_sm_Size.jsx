@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { Navbar, Container, Nav, NavbarBrand } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { BsFillCartFill } from "react-icons/bs";
+import { BsFillCartFill, BsFillInboxFill } from "react-icons/bs";
 import {
   Drawer,
   DrawerBody,
@@ -24,7 +24,7 @@ import "../styles/Header.css";
 import { on } from "process";
 import { useEffect } from "react";
 
-export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOut }) {
+export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOut, verifyAdmin }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const navigate = useNavigate();
@@ -71,16 +71,28 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
         <Box
         //
         >
-          <Nav.Link>
-            <Link className="h" to="/chart" id="chart">
-              {" "}
-              <div className="chartIcon">
-                <BsFillCartFill size={40} color="#c6ebbe" />
-                {console.log("cartItemsNumber", cartItemsNumber)}
-                <p className="counter">{cartItemsNumber}</p>
-              </div>
-            </Link>
-          </Nav.Link>
+          {!verifyAdmin() ? (
+            <Nav.Link>
+              <Link className="h" to="/chart" id="chart">
+                {" "}
+                <div className="chartIcon">
+                  <BsFillCartFill size={40} />
+
+                  <p className="counter">{cartItemsNumber}</p>
+                </div>
+              </Link>
+            </Nav.Link>
+          ) : (
+            <Nav.Link>
+              <Link className="h" id="chart">
+                {" "}
+                <div className="chartIcon">
+                  <BsFillInboxFill size={45} />
+                  <p className="inbox">{13}</p>
+                </div>
+              </Link>
+            </Nav.Link>
+          )}
         </Box>
       </Flex>
 

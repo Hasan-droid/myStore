@@ -94,7 +94,12 @@ export default function Header() {
           />
         )}
         {windowSize === "base" && (
-          <NavBar_sm_Size cartItemsNumber={cartItemsNumber} userToken={userToken} handleLogOut={handleLogOut} />
+          <NavBar_sm_Size
+            cartItemsNumber={cartItemsNumber}
+            userToken={userToken}
+            handleLogOut={handleLogOut}
+            verifyAdmin={verifyAdmin}
+          />
         )}
         <Spacer />
       </Flex>
