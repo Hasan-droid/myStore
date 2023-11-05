@@ -224,7 +224,6 @@ export default function SignupCard() {
                 </Stack>
                 <Stack pt={6}>
                   <Text align={"center"}>
-                    Already a user? // Render a regular link when isLoading is false
                     <Link to="/signin" color={"blue.400"}>
                       Sign in
                     </Link>
