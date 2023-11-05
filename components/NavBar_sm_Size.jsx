@@ -55,14 +55,26 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
 
   return (
     <>
-      <Flex width="100%" alignItems="center" justifyContent="space-between" p={4}>
+      <Flex
+        width="100%"
+        alignItems="center"
+        justifyContent="space-between"
+        p={8}
+        position="fixed"
+        mt={7}
+        zIndex={4}
+        ml={-5}
+        //let the background red when Y scroll is bigger than 0
+        bg={"white"}
+        borderBottom="1px solid #c6ebbe"
+        h={2}
+      >
         <Box>
           <Button
             ref={btnRef}
             bg="#c6ebbe"
             onClick={onOpen}
             className="hamburger"
-            zIndex="15"
             //use the hamburger icon from chakra-ui
           >
             <HamburgerIcon />
