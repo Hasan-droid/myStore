@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import "../styles/Cards.css";
 import { useDispatch } from "react-redux";
-import { increaseItemQuantityByOne } from "../redux/features/ChartSlicer";
+import { increaseItemQuantityByOne } from "../Redux/features/ChartSlicer";
 import { Form } from "react-router-dom";
 import { useState } from "react";
 import CardModal from "./CardModal";
