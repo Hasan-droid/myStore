@@ -7,12 +7,12 @@ import SignupCard from "../components/signup.jsx";
 import ChartII from "../components/ChartII.jsx";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import { createBrowserRouter, RouterProvider, Route, Link } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import SignInAction from "../routers.Actions/SignIn.action.js";
 import SignUpAction from "../routers.Actions/SignUp.action.js";
 import CategoryLoader from "../routers.loaders/category.loader.js";
-import store from "../redux/store/store.js";
+import store from "../Redux/store/store.js";
 import CategoryAction from "../routers.Actions/Category.action.js";
 const router = createBrowserRouter([
   {
