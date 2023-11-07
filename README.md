@@ -15,6 +15,10 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
   - sequelize
   - postgresql
 
+## Demo
+
+[7erfa](https://main--polite-moxie-b61165.netlify.app/waterSpaces)
+
 ## portals for 7erfa store
 
 ### user portal
@@ -25,3 +29,7 @@ the user portal can be accessed throw normal [sign up](https://main--polite-moxi
 
 because website still under building i haven't managed yet the way to register the admin
 , just use this email to explore the portal : adminIII@email.com
+
+## Back End Repo
+
+[Repository](https://github.com/Hasan-droid/myStoreServer)
