@@ -12,8 +12,8 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
   - Framer-motion
   - chakra-ui
   - Node Express js
-    -sequelize
-    -postgresql
+  - sequelize
+  - postgresql
 
 ## user portal
 
