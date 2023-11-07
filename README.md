@@ -7,4 +7,4 @@ the user portal can be accessed throw normal [sign up](https://main--polite-moxi
 ## admin portal
 
 because website still under building i haven't managed yet the way to register the admin
-use this email : adminIII@email.com
+, just use this email to explore the portal : adminIII@email.com
