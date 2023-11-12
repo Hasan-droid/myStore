@@ -21,14 +21,15 @@ import {
   NumberDecrementStepper,
   FormErrorMessage,
   Stack,
+  GridItem,
   useBreakpointValue,
+  Grid,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import ProductImage from "./ProductImage";
 export default function CardModal({ item }) {
-  debugger;
   //destructuring the item object
   const { title, description, price } = item || {};
 
@@ -37,6 +38,8 @@ export default function CardModal({ item }) {
   const [itemPrice, setItemPrice] = useState(price || 0);
   const [itemDescription, setItemDescription] = useState(description || "");
   const [itemName, setItemName] = useState(title || "");
+  const [fileState, setFile] = useState(null); //file is the image that the user will upload
+  const [objectState, setObject] = useState({ name: "hasan", age: 25 });
   const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
   const dataFromActions = useActionData();
   const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
@@ -101,62 +104,92 @@ export default function CardModal({ item }) {
       )}
 
       <Modal isOpen={isOpen} onClose={onClose} size={windowSize}>
-        <Form method="post">
+        <Form method="post" id="product form" encType="multipart/form-data">
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Modal Title</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Box>
-                <Stack direction={["column", "row"]} spacing={["0px", "20px"]}>
-                  <FormControl isInvalid={error.filed.item_name?.required}>
-                    <FormLabel>item name</FormLabel>
-                    <Input
-                      placeholder="item name"
-                      name="item_name"
-                      value={itemName}
-                      onChange={(e) => {
-                        setItemName(e.target.value);
-                        error.filed.item_name.required = false;
-                        setError({
-                          type: "Filed Required",
-                          message: "Filed Required",
-                          filed: error.filed,
-                        });
-                      }}
-                    />
-                    <FormErrorMessage>
-                      {error.filed.item_name?.required === true ? error.message : ""}
-                    </FormErrorMessage>
-                  </FormControl>
+                <Grid
+                  templateRows={{ base: "repeat(3, 1fr)", md: "repeat(1, 1fr)", lg: "repeat(1, 1fr)" }}
+                  templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)", lg: "repeat(5, 1fr)" }}
+                  gap={2}
+                >
+                  <GridItem
+                    colSpan={{ base: 5, md: 5, lg: 3 }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <ProductImage setFile={setFile} />
+                  </GridItem>
+                  <GridItem
+                    rowSpan={1}
+                    colSpan={{ base: 3, md: 3, lg: 3 }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    h={{ base: "0%", md: "30%", lg: "30%" }}
+                  >
+                    <FormControl isInvalid={error.filed.item_name?.required}>
+                      <FormLabel>item name</FormLabel>
+                      <Input
+                        placeholder="item name"
+                        name="item_name"
+                        value={itemName}
+                        onChange={(e) => {
+                          setItemName(e.target.value);
+                          error.filed.item_name.required = false;
+                          setError({
+                            type: "Filed Required",
+                            message: "Filed Required",
+                            filed: error.filed,
+                          });
+                        }}
+                      />
+                      <FormErrorMessage>
+                        {error.filed.item_name?.required === true ? error.message : ""}
+                      </FormErrorMessage>
+                    </FormControl>
+                  </GridItem>
 
-                  <FormControl isInvalid={error.filed.item_price?.required}>
-                    <FormLabel>Price</FormLabel>
-                    <NumberInput
-                      name="item_price"
-                      value={itemPrice}
-                      onChange={(e) => {
-                        setItemPrice(e);
-                        error.filed.item_price.required = false;
-                        setError({
-                          type: "Filed Required",
-                          message: "Filed Required",
-                          filed: error.filed,
-                        });
-                      }}
-                      allowMouseWheel
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                    <FormErrorMessage>{error.filed.item_price?.required ? error.message : ""}</FormErrorMessage>
-                  </FormControl>
-                </Stack>
+                  <GridItem
+                    rowSpan={1}
+                    colSpan={{ base: 3, md: 2, lg: 2 }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    h={{ base: "0%", md: "35%", lg: "30%" }}
+                  >
+                    <FormControl isInvalid={error.filed.item_price?.required}>
+                      <FormLabel>Price</FormLabel>
+                      <NumberInput
+                        name="item_price"
+                        value={itemPrice}
+                        onChange={(e) => {
+                          setItemPrice(e);
+                          error.filed.item_price.required = false;
+                          setError({
+                            type: "Filed Required",
+                            message: "Filed Required",
+                            filed: error.filed,
+                          });
+                        }}
+                        allowMouseWheel
+                      >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                      <FormErrorMessage>{error.filed.item_price?.required ? error.message : ""}</FormErrorMessage>
+                    </FormControl>
+                  </GridItem>
+                </Grid>
               </Box>
-              <Box mt="8%">
+              <Box>
                 <FormControl isInvalid={error.filed.item_description?.required}>
                   <FormLabel>Description</FormLabel>
                   <Textarea

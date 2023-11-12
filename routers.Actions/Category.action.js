@@ -3,9 +3,12 @@ import { redirect } from "../node_modules/react-router-dom/dist/index";
 import jwtDecode from "jwt-decode";
 import { CheckTokenExperimentData as CheckTokenExperimentData } from "../components/Header";
 export default async function CategoryAction({ request, params }) {
+  debugger;
+
   console.log("params from actions ", params);
   const backEndURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery/";
   const formData = await request.formData();
+  const entires = Object.fromEntries(formData);
   const intent = formData.get("intent");
   const card = Object.fromEntries(formData);
   let status = {};
@@ -16,7 +19,22 @@ export default async function CategoryAction({ request, params }) {
   };
   const adminToken = localStorage.getItem("token");
   if (CheckTokenExperimentData(adminToken)) return redirect("/signin");
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
   if (intent === "add 1") {
+    debugger;
     const adminToken = localStorage.getItem("token");
     console.log("card ", card);
     if (!card.item_name) {
@@ -36,12 +54,13 @@ export default async function CategoryAction({ request, params }) {
     if (filedEmpty) {
       return errorReturn;
     }
-
+    const image = await convertBase64(card.item_image);
     const bodyRequest = {
       name: card.item_name,
       description: card.item_description,
       price: card.item_price,
       category: params.waterSpaces,
+      image: image,
     };
     const headers = {
       "Content-Type": "application/json",
