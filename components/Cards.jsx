@@ -20,6 +20,7 @@ import { useState } from "react";
 import CardModal from "./CardModal";
 
 export default function Cards({ cardsType, item, verifyAdmin }) {
+  console.log("[[[[item]]]]]", item);
   const dispatch = useDispatch();
   const [changeStyle, setChangeStyle] = useState({ changeStyle: false, id: null });
 
@@ -29,6 +30,12 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
     // const getForm = document.querySelector("Form");
     // getForm.submit();
     console.log("handleChangeStyle");
+  };
+
+  const handleFireModal = (item) => {
+    //fire CardModal
+    debugger;
+    <CardModal item={item} />;
   };
 
   return (
@@ -54,10 +61,14 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
           {cardsType === "waterSpaces" ? (
             <>
               <Image
-                src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+                src={
+                  item.images[0]?.url ??
+                  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+                }
                 alt="Green double couch with wooden legs"
                 borderRadius="lg"
               />
+
               <Stack mt="3" spacing="2px">
                 <Heading size="md">{item.title}</Heading>
                 <Text>

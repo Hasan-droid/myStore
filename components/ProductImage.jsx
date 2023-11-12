@@ -95,7 +95,7 @@ const PreviewImage = forwardRef((props, ref) => {
   );
 });
 
-export default function ProductImage({ setFile }) {
+export default function ProductImage({ image }) {
   console.log("calling product image");
   const controls = useAnimation();
   const startAnimation = () => controls.start("hover");
@@ -130,27 +130,23 @@ export default function ProductImage({ setFile }) {
               flexDirection="column"
             >
               <Stack height="100%" width="100%" display="flex" alignItems="center" justify="center" spacing="4">
-                <Box height="16" width="12" position="relative">
-                  <PreviewImage
-                    variants={second}
-                    backgroundImage="url('https://image.shutterstock.com/image-photo/paella-traditional-classic-spanish-seafood-600w-1662253543.jpg')"
-                  />
-                  <PreviewImage
-                    variants={first}
-                    backgroundImage="url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2628&q=80')"
-                  />
+                <Box height="100%" width="100%" position="relative">
                   <PreviewImage
                     variants={third}
-                    backgroundImage={`url("https://images.unsplash.com/photo-1563612116625-3012372fccce?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2480&q=80")`}
+                    backgroundImage={
+                      image
+                        ? image[0].url
+                        : `url("https://images.unsplash.com/photo-1563612116625-3012372fccce?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2480&q=80")`
+                    }
                     newprops="just checking in"
                   />
                 </Box>
-                <Stack p="8" textAlign="center" spacing="1">
-                  <Heading fontSize="lg" color="gray.700" fontWeight="bold">
+                {/* <Stack p="8" textAlign="center" spacing="1">
+                  <Heading fontSize="sm" color="gray.700" fontWeight="bold">
                     Drop images here
                   </Heading>
                   <Text fontWeight="light">or click to upload</Text>
-                </Stack>
+                </Stack> */}
               </Stack>
             </Box>
             <Input

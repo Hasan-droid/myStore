@@ -31,7 +31,8 @@ import { useEffect, useState } from "react";
 import ProductImage from "./ProductImage";
 export default function CardModal({ item }) {
   //destructuring the item object
-  const { title, description, price } = item || {};
+  debugger;
+  const { title, description, price, images } = item || {};
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   console.log("price", price);
@@ -122,7 +123,7 @@ export default function CardModal({ item }) {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <ProductImage setFile={setFile} />
+                    <ProductImage image={images} />
                   </GridItem>
                   <GridItem
                     rowSpan={1}
