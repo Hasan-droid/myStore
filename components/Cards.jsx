@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Card,
   CardBody,
@@ -44,7 +45,6 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
     <Box
       _hover={{ transform: "scale(1.05)", transition: "all 0.2s ease-in-out" }}
       transition="all 0.2s ease-in-out"
-      cursor="pointer"
     >
       <Card
         maxW="sm"
@@ -60,15 +60,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
         <CardBody>
           {cardsType === "waterSpaces" ? (
             <>
-              <Image
-                src={
-                  item.images[0]?.url ??
-                  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                }
-                alt="Green double couch with wooden legs"
-                borderRadius="lg"
-              />
-
+              <CardModal image={item.images[0]} item={item} type={"image"} />
               <Stack mt="3" spacing="2px">
                 <Heading size="md">{item.title}</Heading>
                 <Text>
@@ -117,7 +109,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
             <Form method="post">
               <Input type="hidden" name="id" value={item.id} />
               <ButtonGroup spacing="2">
-                <CardModal item={item} />
+                <CardModal item={item} type={"edit"} />
                 <Button
                   variant="ghost"
                   colorScheme="red"

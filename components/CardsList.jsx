@@ -154,7 +154,7 @@ export default function CardsList() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <CardModal/>
+                <CardModal type={"add"} />
               </Box>
             )}
 

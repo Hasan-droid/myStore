@@ -24,14 +24,14 @@ import {
   GridItem,
   useBreakpointValue,
   Grid,
+  Image,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductImage from "./ProductImage";
-export default function CardModal({ item }) {
+export default function CardModal({ item, image, type }) {
   //destructuring the item object
-  debugger;
   const { title, description, price, images } = item || {};
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,6 +62,10 @@ export default function CardModal({ item }) {
   }, [title]);
 
   useEffect(() => {
+    console.log("image props", image);
+  }, [image]);
+
+  useEffect(() => {
     if (dataFromActions?.data?.type === "add") {
       clearDataInputs();
     }
@@ -79,7 +83,34 @@ export default function CardModal({ item }) {
 
   return (
     <>
-      {!item ? (
+      {type === "image" &&
+        (image?.url ? (
+          <Box cursor="pointer" onClick={onOpen}>
+            <Image src={image?.url} alt={item?.title} borderRadius="lg" />
+          </Box>
+        ) : (
+          <Box cursor="pointer" onClick={onOpen}>
+            <Image
+              src={
+                "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+              }
+              alt="Green double couch with wooden legs"
+              borderRadius="lg"
+            />
+          </Box>
+        ))}
+
+      {type === "edit" && (
+        <Button
+          variant="ghost"
+          //use this color #C6EBBE as colorScheme
+          colorScheme="green"
+          {...(item && { onClick: onOpen })}
+        >
+          Edit
+        </Button>
+      )}
+      {type === "add" && (
         <Box
           cursor="pointer"
           //add condition that fire the modal when the user is admin
@@ -93,15 +124,6 @@ export default function CardModal({ item }) {
             Add new item
           </Text>
         </Box>
-      ) : (
-        <Button
-          variant="ghost"
-          //use this color #C6EBBE as colorScheme
-          colorScheme="green"
-          {...(item && { onClick: onOpen })}
-        >
-          Edit
-        </Button>
       )}
 
       <Modal isOpen={isOpen} onClose={onClose} size={windowSize}>
