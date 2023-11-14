@@ -55,6 +55,8 @@ export default function ProductImage({ image }) {
   const stopAnimation = () => controls.stop();
 
   const handleImageChange = (e) => {
+    debugger;
+    const file = e.target.files[0];
     setImageFile(URL.createObjectURL(e.target.files[0]));
   };
   console.log("calling product image");
@@ -91,7 +93,7 @@ export default function ProductImage({ image }) {
                 <Box height="100%" width="100%" position="relative">
                   <PreviewImage
                     variants={third}
-                    backgroundImage={image?.url ? image.url : imageFile ? imageFile : addIcon}
+                    backgroundImage={imageFile ? imageFile : image?.url ? image.url : addIcon}
                     newprops="just checking in"
                   />
                 </Box>
