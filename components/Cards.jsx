@@ -17,13 +17,19 @@ import "../styles/Cards.css";
 import { useDispatch } from "react-redux";
 import { increaseItemQuantityByOne } from "../Redux/features/ChartSlicer";
 import { Form } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardModal from "./CardModal";
 
 export default function Cards({ cardsType, item, verifyAdmin }) {
   console.log("[[[[item]]]]]", item);
   const dispatch = useDispatch();
   const [changeStyle, setChangeStyle] = useState({ changeStyle: false, id: null });
+  const [itemImages, setItemImages] = useState([[]]);
+
+  useEffect(() => {
+    debugger;
+    setItemImages((item?.images || [])[0]);
+  }, [item]);
 
   const handleChangeStyle = (item) => {
     debugger;
@@ -31,12 +37,6 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
     // const getForm = document.querySelector("Form");
     // getForm.submit();
     console.log("handleChangeStyle");
-  };
-
-  const handleFireModal = (item) => {
-    //fire CardModal
-    debugger;
-    <CardModal item={item} />;
   };
 
   return (
@@ -60,7 +60,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
         <CardBody>
           {cardsType === "waterSpaces" ? (
             <>
-              <CardModal image={item.images[0]} item={item} type={"image"} />
+              <CardModal image={itemImages} item={item} type={"image"} />
               <Stack mt="3" spacing="2px">
                 <Heading size="md">{item.title}</Heading>
                 <Text>
@@ -109,7 +109,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
             <Form method="post">
               <Input type="hidden" name="id" value={item.id} />
               <ButtonGroup spacing="2">
-                <CardModal item={item} type={"edit"} />
+                <CardModal item={item} image={itemImages} type={"edit"} />
                 <Button
                   variant="ghost"
                   colorScheme="red"

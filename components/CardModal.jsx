@@ -33,15 +33,13 @@ import ProductImage from "./ProductImage";
 import addIcon from "../assets/images/pngtransparentaddimageiconthumbnail.png";
 export default function CardModal({ item, image, type }) {
   //destructuring the item object
-  const { title, description, price, images } = item || {};
+  const { title, description, price } = item || {};
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   console.log("price", price);
   const [itemPrice, setItemPrice] = useState(price || 0);
   const [itemDescription, setItemDescription] = useState(description || "");
   const [itemName, setItemName] = useState(title || "");
-  const [fileState, setFile] = useState(null); //file is the image that the user will upload
-  const [objectState, setObject] = useState({ name: "hasan", age: 25 });
   const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
   const dataFromActions = useActionData();
   const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
@@ -91,7 +89,7 @@ export default function CardModal({ item, image, type }) {
           </Box>
         ) : (
           <Box cursor="pointer" onClick={onOpen}>
-            <Image src={addIcon} alt="Green double couch with wooden legs" borderRadius="lg" />
+            <Image src={addIcon} alt={item?.title} borderRadius="lg" />
           </Box>
         ))}
 
@@ -140,7 +138,7 @@ export default function CardModal({ item, image, type }) {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <ProductImage image={images} />
+                    <ProductImage image={image} />
                   </GridItem>
                   <GridItem
                     rowSpan={1}
@@ -245,6 +243,7 @@ export default function CardModal({ item, image, type }) {
               ) : (
                 <>
                   <Input type="hidden" name="id" value={item.id} />
+                  <Input type="hidden" name="imageUrl" value={image?.url ?? ""} />
                   <Button colorScheme="green" name="intent" value="edit 1" type="submit" variant="ghost">
                     Edit
                   </Button>

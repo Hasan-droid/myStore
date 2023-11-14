@@ -3,8 +3,6 @@ import { redirect } from "../node_modules/react-router-dom/dist/index";
 import jwtDecode from "jwt-decode";
 import { CheckTokenExperimentData as CheckTokenExperimentData } from "../components/Header";
 export default async function CategoryAction({ request, params }) {
-  debugger;
-
   console.log("params from actions ", params);
   const backEndURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery/";
   const formData = await request.formData();
@@ -119,6 +117,7 @@ export default async function CategoryAction({ request, params }) {
   }
 
   if (intent === "edit 1") {
+    const image = await convertBase64(card.item_image);
     const param = {
       id: formData.get("id"),
     };
@@ -127,6 +126,8 @@ export default async function CategoryAction({ request, params }) {
       description: card.item_description,
       price: card.item_price,
       category: params.waterSpaces,
+      image: image,
+      imageUrl: card.imageUrl,
     };
     //check admin token date if expired redirect to login
     const headers = {
@@ -134,6 +135,7 @@ export default async function CategoryAction({ request, params }) {
       Authorization: `Bearer ${adminToken}`,
     };
     try {
+    
       console.log("backEndURL ", backEndURL);
       //send request to backend with headers and param id
       await axios.put(backEndURL + `${param.id}`, bodyRequest, { headers }).then((res) => {
@@ -150,6 +152,7 @@ export default async function CategoryAction({ request, params }) {
                 title: card.item_name,
                 description: card.item_description,
                 price: card.item_price,
+                image: res.data.images.url,
               },
             },
           };

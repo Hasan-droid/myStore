@@ -91,7 +91,7 @@ export default function ProductImage({ image }) {
                 <Box height="100%" width="100%" position="relative">
                   <PreviewImage
                     variants={third}
-                    backgroundImage={image ? image[0]?.url : imageFile ? imageFile : addIcon}
+                    backgroundImage={image?.url ? image.url : imageFile ? imageFile : addIcon}
                     newprops="just checking in"
                   />
                 </Box>

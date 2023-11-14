@@ -60,6 +60,7 @@ export default function CardsList() {
         title: item.title,
         description: item.description,
         price: item.price,
+        images: [item.image],
       };
 
       //replace the old item with the new item
