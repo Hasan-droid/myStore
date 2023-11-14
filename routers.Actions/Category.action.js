@@ -135,7 +135,6 @@ export default async function CategoryAction({ request, params }) {
       Authorization: `Bearer ${adminToken}`,
     };
     try {
-    
       console.log("backEndURL ", backEndURL);
       //send request to backend with headers and param id
       await axios.put(backEndURL + `${param.id}`, bodyRequest, { headers }).then((res) => {
@@ -152,7 +151,7 @@ export default async function CategoryAction({ request, params }) {
                 title: card.item_name,
                 description: card.item_description,
                 price: card.item_price,
-                image: res.data.images.url,
+                image: res.data.images,
               },
             },
           };
