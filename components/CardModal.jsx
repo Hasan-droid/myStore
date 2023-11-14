@@ -30,6 +30,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductImage from "./ProductImage";
+import addIcon from "../assets/images/pngtransparentaddimageiconthumbnail.png";
 export default function CardModal({ item, image, type }) {
   //destructuring the item object
   const { title, description, price, images } = item || {};
@@ -90,13 +91,7 @@ export default function CardModal({ item, image, type }) {
           </Box>
         ) : (
           <Box cursor="pointer" onClick={onOpen}>
-            <Image
-              src={
-                "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-              }
-              alt="Green double couch with wooden legs"
-              borderRadius="lg"
-            />
+            <Image src={addIcon} alt="Green double couch with wooden legs" borderRadius="lg" />
           </Box>
         ))}
 

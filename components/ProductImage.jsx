@@ -1,55 +1,8 @@
 import { AspectRatio, Box, Container, forwardRef, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
-
-const first = {
-  rest: {
-    rotate: "-15deg",
-    scale: 0.95,
-    x: "-50%",
-    filter: "grayscale(80%)",
-    transition: {
-      duration: 0.5,
-      type: "tween",
-      ease: "easeIn",
-    },
-  },
-  hover: {
-    x: "-70%",
-    scale: 1.1,
-    rotate: "-20deg",
-    filter: "grayscale(0%)",
-    transition: {
-      duration: 0.4,
-      type: "tween",
-      ease: "easeOut",
-    },
-  },
-};
-
-const second = {
-  rest: {
-    rotate: "15deg",
-    scale: 0.95,
-    x: "50%",
-    filter: "grayscale(80%)",
-    transition: {
-      duration: 0.5,
-      type: "tween",
-      ease: "easeIn",
-    },
-  },
-  hover: {
-    x: "70%",
-    scale: 1.1,
-    rotate: "20deg",
-    filter: "grayscale(0%)",
-    transition: {
-      duration: 0.4,
-      type: "tween",
-      ease: "easeOut",
-    },
-  },
-};
+import { useState } from "react";
+import uploadImageIcon from "../assets/images/pngtransparentaddimageiconthumbnail.png";
+import addIcon from "../assets/images/tranumberaddbuttonthumbnail.png";
 
 const third = {
   rest: {
@@ -96,10 +49,15 @@ const PreviewImage = forwardRef((props, ref) => {
 });
 
 export default function ProductImage({ image }) {
-  console.log("calling product image");
+  const [imageFile, setImageFile] = useState(null);
   const controls = useAnimation();
   const startAnimation = () => controls.start("hover");
   const stopAnimation = () => controls.stop();
+
+  const handleImageChange = (e) => {
+    setImageFile(URL.createObjectURL(e.target.files[0]));
+  };
+  console.log("calling product image");
   return (
     <Container my="12" display="flex" justifyContent="center" alignItem="center" width="100%">
       <AspectRatio width="100%" ratio={1}>
@@ -133,11 +91,7 @@ export default function ProductImage({ image }) {
                 <Box height="100%" width="100%" position="relative">
                   <PreviewImage
                     variants={third}
-                    backgroundImage={
-                      image
-                        ? image[0]?.url
-                        : `url("https://images.unsplash.com/photo-1563612116625-3012372fccce?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2480&q=80")`
-                    }
+                    backgroundImage={image ? image[0]?.url : imageFile ? imageFile : addIcon}
                     newprops="just checking in"
                   />
                 </Box>
@@ -162,7 +116,7 @@ export default function ProductImage({ image }) {
               accept="image/*"
               onDragEnter={startAnimation}
               onDragLeave={stopAnimation}
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) => handleImageChange(e)}
             />
           </Box>
         </Box>
