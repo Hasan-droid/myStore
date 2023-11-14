@@ -6,11 +6,13 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
 
 - technologies used so far:
   - React
+  * JWT
   - Redux-toolkit
   - React Router v6
   - Axios
   - Framer-motion
   - chakra-ui
+  * Cloudinary
   - Node Express js
   - sequelize
   - postgresql
