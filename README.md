@@ -15,6 +15,7 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
   * Cloudinary
   - Node Express js
   - sequelize
+  * sequelize-CLI
   - postgresql
 
 ## Demo
