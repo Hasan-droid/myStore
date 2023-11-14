@@ -58,41 +58,14 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
         //add some transition to the card when the card is deleted
       >
         <CardBody>
-          {cardsType === "waterSpaces" ? (
-            <>
-              <CardModal image={itemImages} item={item} type={"image"} />
-              <Stack mt="3" spacing="2px">
-                <Heading size="md">{item.title}</Heading>
-                <Text>
-                  {item.description
-                    ? item.description
-                    : "This sofa is perfect for modern tropical spaces, baroque inspired spaces, earthy toned spaces and for people who love a chic design with a sprinkle of vintage design."}
-                </Text>
-                <Text color="blue.600" fontSize="2xl">
-                  ${item.price}
-                </Text>
-              </Stack>
-            </>
-          ) : (
-            <>
-              <Image
-                src="https://www.ikea.com/jo/en/images/products/lugnare-scented-candle-in-glass-jasmine-pink__1096896_pe864577_s5.jpg"
-                alt="Green double couch with wooden legs"
-                borderRadius="lg"
-              />
-              <Stack mt="3" spacing="2px">
-                <Heading size="md">{item.title}</Heading>
-                <Text>
-                  {item.description
-                    ? item.description
-                    : " Urban Concepts by DECOCANDLES - Highly Scented Soy Candle - Long Lasting - Hand Poured in USA"}
-                </Text>
-                <Text color="blue.600" fontSize="2xl">
-                  ${item.price}
-                </Text>
-              </Stack>
-            </>
-          )}
+          <CardModal image={itemImages} item={item} type={"image"} />
+          <Stack mt="3" spacing="2px">
+            <Heading size="md">{item.title}</Heading>
+            <Text>{item.description}</Text>
+            <Text color="blue.600" fontSize="2xl">
+              ${item.price}
+            </Text>
+          </Stack>
         </CardBody>
         <Divider />
         <CardFooter>
