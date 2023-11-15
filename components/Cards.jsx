@@ -27,7 +27,6 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
   const [itemImages, setItemImages] = useState([[]]);
 
   useEffect(() => {
-    debugger;
     setItemImages((item?.images || [])[0]);
   }, [item]);
 
