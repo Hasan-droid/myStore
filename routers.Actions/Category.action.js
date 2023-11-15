@@ -31,6 +31,11 @@ export default async function CategoryAction({ request, params }) {
       };
     });
   };
+
+  if (intent === "clear errors") {
+    return errorReturn;
+  }
+
   if (intent === "add 1") {
     const adminToken = localStorage.getItem("token");
     console.log("card ", card);

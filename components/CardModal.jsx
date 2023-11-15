@@ -251,7 +251,15 @@ export default function CardModal({ item, image, type }) {
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="red" mr={3} onClick={onClose} variant="ghost">
+              <Button
+                colorScheme="red"
+                mr={3}
+                onClick={onClose}
+                type="submit"
+                name="intent"
+                value="clear errors"
+                variant="ghost"
+              >
                 Close
               </Button>
               {!item ? (
