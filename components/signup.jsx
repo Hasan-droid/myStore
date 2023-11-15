@@ -21,6 +21,7 @@ import {
 import { Link, useActionData, Form } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import LoadingScreen from "./LoadingScreen";
 import CustomToast from "./Toast";
 
 export default function SignupCard() {
@@ -64,39 +65,7 @@ export default function SignupCard() {
       {showToast && (
         <CustomToast receivedPosition="top" receivedStatus="error" receivedTitle={dataFromActions.data.message} />
       )}
-      {isLoading && (
-        <div
-          className="toto"
-          style={{
-            // filter: isLoading ? "blur(4px)" : "none",
-            backgroundColor: isLoading ? "rgba(255, 255, 255, 0.5)" : null,
-            // position: "relative",
-            zIndex: 5,
-            position: "absolute", // Position the spinner within the form
-            top: "0%",
-            left: "0%",
-            width: "100%",
-            height: "100%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
-          }}
-        ></div>
-      )}
-      {isLoading && (
-        <div className="spinner" style={{ zIndex: 50 }}>
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-            position="absolute" // Position the spinner within the form
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-
-            // Center the spinner
-          />
-        </div>
-      )}
+      <LoadingScreen isLoading={isLoading} />
       <Flex minH={"100vh"} align={"center"} justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
