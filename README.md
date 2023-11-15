@@ -6,6 +6,7 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
 
 - technologies used so far:
   - React
+  * Vite Framework
   * JWT
   - Redux-toolkit
   - React Router v6
