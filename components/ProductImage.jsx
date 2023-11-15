@@ -66,7 +66,6 @@ export default function ProductImage({ image, error }) {
   const stopAnimation = () => controls.stop();
 
   const handleImageChange = (e) => {
-    debugger;
     imageError.filed.item_image = { required: false };
     setImageError(imageError);
     setImageFile(URL.createObjectURL(e.target.files[0]));
