@@ -125,7 +125,13 @@ export default async function CategoryAction({ request, params }) {
   }
 
   if (intent === "edit 1") {
-    const image = await convertBase64(card.item_image);
+    let image = "";
+
+    if (card.item_image.size === 0) {
+      image = "";
+    } else {
+      image = await convertBase64(card.item_image);
+    }
     const param = {
       id: formData.get("id"),
     };
