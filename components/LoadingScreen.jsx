@@ -18,17 +18,15 @@ export default function LoadingScreen({ isLoading }) {
             width: "100%",
             height: "100%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
           }}
-        ></div>
-      )}
-      {isLoading && (
-        <div className="spinner" style={{ zIndex: 50 }}>
+        >
           <Spinner
+            position="absolute"
+            zIndex={100}
             thickness="4px"
             speed="0.65s"
             emptyColor="gray.200"
             color="blue.500"
             size="xl"
-            position="absolute" // Position the spinner within the form
             top="50%"
             left="50%"
             transform="translate(-50%, -50%)"
