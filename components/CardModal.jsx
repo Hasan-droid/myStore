@@ -62,21 +62,25 @@ export default function CardModal({ item, image, type }) {
     fillInitialState();
   }, [title]);
 
-  useEffect(() => {
-    console.log("image props", image);
-  }, [image]);
-
-  useEffect(() => {
+  const closeLoadingScreen = () => {
     setTimeout(() => {
       setIsLoading(false);
       //close the modal
       onClose();
     }, 2000);
+  };
+
+  useEffect(() => {
     if (dataFromActions?.data?.type === "add") {
       clearDataInputs();
+      closeLoadingScreen();
+    }
+    if (dataFromActions?.data?.type === "edit") {
+      closeLoadingScreen();
     }
 
     if (dataFromActions?.data?.state && dataFromActions?.data?.type === "Filed Required") {
+      setIsLoading(false);
       setError({
         state: true,
         type: dataFromActions?.data?.type,
@@ -84,6 +88,7 @@ export default function CardModal({ item, image, type }) {
         filed: dataFromActions?.data?.filed,
       });
       console.log("data from actions", dataFromActions);
+      return;
     }
   }, [dataFromActions?.data]);
 
@@ -144,13 +149,16 @@ export default function CardModal({ item, image, type }) {
                   gap={2}
                 >
                   <GridItem
+                    rowSpan={1}
                     colSpan={{ base: 5, md: 5, lg: 3 }}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
+                    flexDirection="column"
                   >
-                    <ProductImage image={image} />
+                    <ProductImage image={image} error={error} />
                   </GridItem>
+
                   <GridItem
                     rowSpan={1}
                     colSpan={{ base: 3, md: 3, lg: 3 }}
@@ -180,7 +188,6 @@ export default function CardModal({ item, image, type }) {
                       </FormErrorMessage>
                     </FormControl>
                   </GridItem>
-
                   <GridItem
                     rowSpan={1}
                     colSpan={{ base: 3, md: 2, lg: 2 }}
@@ -248,7 +255,14 @@ export default function CardModal({ item, image, type }) {
                 Close
               </Button>
               {!item ? (
-                <Button colorScheme="green" name="intent" value="add 1" type="submit" variant="ghost">
+                <Button
+                  colorScheme="green"
+                  name="intent"
+                  value="add 1"
+                  onClick={() => handleSubmit()}
+                  type="submit"
+                  variant="ghost"
+                >
                   Add
                 </Button>
               ) : (

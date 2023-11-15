@@ -11,7 +11,7 @@ export default async function CategoryAction({ request, params }) {
   const card = Object.fromEntries(formData);
   let status = {};
   let filedEmpty = false;
-  let inputFields = { item_name: "", item_description: "", item_price: 0 };
+  let inputFields = { item_name: "", item_description: "", item_price: 0, item_image: "" };
   let errorReturn = {
     data: { state: true, type: "Filed Required", message: "Filed Required", filed: inputFields },
   };
@@ -32,7 +32,6 @@ export default async function CategoryAction({ request, params }) {
     });
   };
   if (intent === "add 1") {
-    debugger;
     const adminToken = localStorage.getItem("token");
     console.log("card ", card);
     if (!card.item_name) {
@@ -44,9 +43,13 @@ export default async function CategoryAction({ request, params }) {
       errorReturn.data.filed.item_description = { required: true };
     }
 
-    if (card.item_price === "0") {
+    if (card.item_price === "0" || card.item_price === "") {
       filedEmpty = true;
       errorReturn.data.filed.item_price = { required: true };
+    }
+    if (card.item_image.size === 0) {
+      filedEmpty = true;
+      errorReturn.data.filed.item_image = { required: true };
     }
 
     if (filedEmpty) {
