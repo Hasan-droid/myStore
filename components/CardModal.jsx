@@ -67,7 +67,7 @@ export default function CardModal({ item, image, type }) {
       setIsLoading(false);
       //close the modal
       onClose();
-    }, 2000);
+    }, 750);
   };
 
   useEffect(() => {
