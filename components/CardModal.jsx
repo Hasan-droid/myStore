@@ -31,6 +31,7 @@ import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductImage from "./ProductImage";
 import addIcon from "../assets/images/pngtransparentaddimageiconthumbnail.png";
+import LoadingScreen from "./LoadingScreen";
 export default function CardModal({ item, image, type }) {
   //destructuring the item object
   const { title, description, price } = item || {};
@@ -41,6 +42,7 @@ export default function CardModal({ item, image, type }) {
   const [itemDescription, setItemDescription] = useState(description || "");
   const [itemName, setItemName] = useState(title || "");
   const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
+  const [isLoading, setIsLoading] = useState(false);
   const dataFromActions = useActionData();
   const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
   //count how many times this component is rendered
@@ -65,6 +67,11 @@ export default function CardModal({ item, image, type }) {
   }, [image]);
 
   useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      //close the modal
+      onClose();
+    }, 2000);
     if (dataFromActions?.data?.type === "add") {
       clearDataInputs();
     }
@@ -79,6 +86,10 @@ export default function CardModal({ item, image, type }) {
       console.log("data from actions", dataFromActions);
     }
   }, [dataFromActions?.data]);
+
+  const handleSubmit = () => {
+    setIsLoading(true);
+  };
 
   return (
     <>
@@ -118,8 +129,7 @@ export default function CardModal({ item, image, type }) {
           </Text>
         </Box>
       )}
-
-      <Modal isOpen={isOpen} onClose={onClose} size={windowSize}>
+      <Modal isOpen={isOpen} onClose={onClose} size={windowSize} closeOnOverlayClick={false}>
         <Form method="post" id="product form" encType="multipart/form-data">
           <ModalOverlay />
           <ModalContent>
@@ -127,6 +137,7 @@ export default function CardModal({ item, image, type }) {
             <ModalCloseButton />
             <ModalBody>
               <Box>
+                {isLoading && <LoadingScreen isLoading={isLoading} />}
                 <Grid
                   templateRows={{ base: "repeat(3, 1fr)", md: "repeat(1, 1fr)", lg: "repeat(1, 1fr)" }}
                   templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)", lg: "repeat(5, 1fr)" }}
@@ -244,7 +255,14 @@ export default function CardModal({ item, image, type }) {
                 <>
                   <Input type="hidden" name="id" value={item.id} />
                   <Input type="hidden" name="imageUrl" value={image?.url ?? ""} />
-                  <Button colorScheme="green" name="intent" value="edit 1" type="submit" variant="ghost">
+                  <Button
+                    colorScheme="green"
+                    name="intent"
+                    value="edit 1"
+                    onClick={() => handleSubmit()}
+                    type="submit"
+                    variant="ghost"
+                  >
                     Edit
                   </Button>
                 </>
