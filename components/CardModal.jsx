@@ -262,7 +262,7 @@ export default function CardModal({ item, image, type }) {
               >
                 Close
               </Button>
-              {!item ? (
+              {type === "add" && (
                 <Button
                   colorScheme="green"
                   name="intent"
@@ -273,7 +273,8 @@ export default function CardModal({ item, image, type }) {
                 >
                   Add
                 </Button>
-              ) : (
+              )}{" "}
+              {type === "edit" && (
                 <>
                   <Input type="hidden" name="id" value={item.id} />
                   <Input type="hidden" name="imageUrl" value={image?.url ?? ""} />
