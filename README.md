@@ -19,7 +19,7 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
   * sequelize-CLI
   - postgresql
 
-## Demo
+## Website
 
 [7erfa](https://main--polite-moxie-b61165.netlify.app/waterSpaces)
 
