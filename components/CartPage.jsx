@@ -167,7 +167,18 @@ const CartPage = ({ currentItems }) => {
               handleQuantityDecrease={handleQuantityDecrease}
             />
           )}
-          {cartData && windowSize === "720" && <CartHeaderMediumSize />}
+          {cartData && windowSize === "720" && (
+            <CartMediumSizeView
+              cartData={cartData}
+              // item={item}
+              handleQuantityDecrease={handleQuantityDecrease}
+              handleQuantityIncrease={handleQuantityIncrease}
+              handleRemoveItem={handleRemoveItem}
+              showImage={showImage}
+              handleShowImageForPhone={handleShowImageForPhone}
+              images={images}
+            />
+          )}
           {cartData && windowSize === "column" && (
             <>
               <CartHeaderSmallSize />
@@ -179,19 +190,7 @@ const CartPage = ({ currentItems }) => {
               const { id, title, image, category, price, quantity } = item;
 
               if (windowSize === "720") {
-                return (
-                  <Box onClick={() => setItemId(id)} key={id}>
-                    <CartMediumSizeView
-                      item={item}
-                      handleQuantityDecrease={handleQuantityDecrease}
-                      handleQuantityIncrease={handleQuantityIncrease}
-                      handleRemoveItem={handleRemoveItem}
-                      showImage={showImage}
-                      handleShowImageForPhone={handleShowImageForPhone}
-                      images={images}
-                    />
-                  </Box>
-                );
+                return <Box onClick={() => setItemId(id)} key={id}></Box>;
               }
               if (windowSize === "column") {
                 return (
