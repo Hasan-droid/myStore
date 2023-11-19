@@ -64,7 +64,7 @@ export default function CartSmallSizeView({
             <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
           </Box>
           <Box gridColumn="2 /6" ml={2}>
-            <Text fontWeight="600" fontSize="sm" mb={0}>
+            <Text fontWeight="400" fontSize="sm" mb={0}>
               {title}
             </Text>
             <Text fontSize="xs" color="gray.500" fontStyle="italic">
