@@ -273,8 +273,8 @@ export default function CardModal({ item, image, type }) {
                 >
                   Add
                 </Button>
-              )}{" "}
-              {type === "edit" && (
+              )}
+              {(type === "edit" || type === "image") && (
                 <>
                   <Input type="hidden" name="id" value={item.id} />
                   <Input type="hidden" name="imageUrl" value={image?.url ?? ""} />
