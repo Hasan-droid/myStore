@@ -16,6 +16,7 @@ import { CheckTokenExperimentData } from "./Header";
 import CartHeaderSmallSize from "./CartHeaderSmallSize";
 import CartHeaderMediumSize from "./CartHeaderMediumSize";
 import CartHeaderLargeSize from "./CartHeaderLargeSize";
+import CartLargeSizeView from "./CartLargeSizeView";
 
 const CartPage = ({ currentItems }) => {
   const [useBreakpointValue] = useOutletContext();
@@ -156,82 +157,27 @@ const CartPage = ({ currentItems }) => {
             </Heading>
           )}
 
-          {cartData && windowSize === "lg" && <CartHeaderLargeSize />}
+          {cartData && windowSize === "lg" && (
+            <CartLargeSizeView
+              cartData={cartData}
+              handleShowImageForPhone={handleShowImageForPhone}
+              showImage={showImage}
+              handleRemoveItem={handleRemoveItem}
+              handleQuantityIncrease={handleQuantityIncrease}
+              handleQuantityDecrease={handleQuantityDecrease}
+            />
+          )}
           {cartData && windowSize === "720" && <CartHeaderMediumSize />}
-          {cartData && windowSize === "column" && <CartHeaderSmallSize />}
+          {cartData && windowSize === "column" && (
+            <>
+              <CartHeaderSmallSize />
+            </>
+          )}
+
           {cartData &&
             cartData.map((item) => {
               const { id, title, image, category, price, quantity } = item;
 
-              if (windowSize === "lg") {
-                return (
-                  <Grid
-                    onClick={() => {
-                      handleShowImageForPhone(id);
-                      handlePreviewImage(item);
-                    }}
-                    key={id}
-                    templateColumns="repeat(11, 1fr)"
-                    gap={4}
-                    bg={showImage.render && showImage.id === id ? "gray.400" : "white"}
-                    p={2}
-                    rounded="md"
-                    shadow="md"
-                    alignItems="center"
-                    mb={4}
-                    _hover={{
-                      bg: "gray.400",
-                      transform: "scale(1.03)",
-                      transition: "all 0.4s ease-in-out",
-                    }}
-                    transition="all 0.2s ease-in-out"
-                  >
-                    <Box position="relative" cursor="pointer">
-                      <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={1} />
-                    </Box>
-
-                    <Box gridColumn="2 /4">
-                      <Text fontWeight="bold">{title}</Text>
-
-                      <Text fontSize="sm" color="gray.500" fontStyle="italic">
-                        {category}
-                      </Text>
-                    </Box>
-                    <Box gridColumn="4 / 5">
-                      <Text fontSize="sm" color="gray.500">
-                        ${price}
-                      </Text>
-                    </Box>
-                    <Box gridColumn="6/ 10">
-                      <Box
-                        border="1px"
-                        p={2}
-                        borderColor="black"
-                        borderRadius="l"
-                        display="inline-block"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Button size="xs" mr={2} onClick={() => handleQuantityDecrease(id)}>
-                          -
-                        </Button>
-                        {quantity}
-
-                        <Button size="xs" ml={2} onClick={() => handleQuantityIncrease(id)}>
-                          +
-                        </Button>
-                      </Box>
-                    </Box>
-                    <Box gridColumn="10 / 11">
-                      <IconButton
-                        icon={<FaTrash />}
-                        aria-label="Remove item"
-                        ml="auto"
-                        onClick={() => handleRemoveItem(id)}
-                      />
-                    </Box>
-                  </Grid>
-                );
-              }
               if (windowSize === "720") {
                 return (
                   <Box onClick={() => setItemId(id)} key={id}>
@@ -264,8 +210,9 @@ const CartPage = ({ currentItems }) => {
             })}
         </Box>
 
-        {windowSize === "lg" && (
+        {/* {windowSize === "lg" && (
           <Box
+            border="1px"
             display="flex"
             alignItems="center"
             justifyContent="space-between"
@@ -274,7 +221,7 @@ const CartPage = ({ currentItems }) => {
           >
             {previewImage && <Image src={previewImage} alt="Preview" boxSize={{ base: "250px", md: "400px" }} />}
           </Box>
-        )}
+        )} */}
       </Flex>
       {cartData && (windowSize === "lg" || windowSize === "720") && (
         //center the elements in the Box
