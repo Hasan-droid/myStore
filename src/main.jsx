@@ -4,7 +4,7 @@ import App from "./App.jsx";
 import Header from "../components/Header.jsx";
 import SignIn from "../components/SignIn.jsx";
 import SignupCard from "../components/signup.jsx";
-import ChartII from "../components/ChartII.jsx";
+import ChartII from "../components/CartPage.jsx";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";

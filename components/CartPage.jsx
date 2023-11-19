@@ -13,6 +13,9 @@ import {
 import CartMediumSizeView from "./cartMediumSizeView";
 import CartSmallSizeView from "./CartSmallSizeView";
 import { CheckTokenExperimentData } from "./Header";
+import CartHeaderSmallSize from "./CartHeaderSmallSize";
+import CartHeaderMediumSize from "./CartHeaderMediumSize";
+import CartHeaderLargeSize from "./CartHeaderLargeSize";
 
 const CartPage = ({ currentItems }) => {
   const [useBreakpointValue] = useOutletContext();
@@ -77,10 +80,6 @@ const CartPage = ({ currentItems }) => {
     decreaseItemQuantityByOne(dispatch, item);
     setQuantityState(quantityState - 1);
     // setTotalPrice(totalPrice - updatedCartData.find((item) => item.id === id).price);
-  };
-
-  const handlePopoverTrigger = () => {
-    console.log("popover trigger");
   };
 
   const handleShowImageForPhone = (id) => {
@@ -157,38 +156,9 @@ const CartPage = ({ currentItems }) => {
             </Heading>
           )}
 
-          {cartData && windowSize === "lg" && (
-            <Grid templateColumns="repeat(11, 1fr)" gap={4} bg="white" p={2}>
-              <Box gridColumn="1 /4" textAlign="left">
-                <Text fontWeight="bold">Product</Text>
-              </Box>
-              <Box gridColumn="4 / 5">
-                <Text fontWeight="bold">Price</Text>
-              </Box>
-              <Box gridColumn="6/10">
-                <Text fontWeight="bold">Quantity</Text>
-              </Box>
-              <Box gridColumn="10 / 11">
-                <Text fontWeight="bold">Total</Text>
-              </Box>
-            </Grid>
-          )}
-          {cartData && windowSize === "720" && (
-            <Grid templateColumns="repeat(11, 1fr)" gap={4} bg="white" p={2}>
-              <Box gridColumn="1 /5" textAlign="left">
-                <Text fontWeight="bold">Product</Text>
-              </Box>
-              <Box gridColumn="5 / 7">
-                <Text fontWeight="bold">Price</Text>
-              </Box>
-              <Box gridColumn="7/10">
-                <Text fontWeight="bold">Quantity</Text>
-              </Box>
-              <Box gridColumn="10 / 11">
-                <Text fontWeight="bold">Total</Text>
-              </Box>
-            </Grid>
-          )}
+          {cartData && windowSize === "lg" && <CartHeaderLargeSize />}
+          {cartData && windowSize === "720" && <CartHeaderMediumSize />}
+          {cartData && windowSize === "column" && <CartHeaderSmallSize />}
           {cartData &&
             cartData.map((item) => {
               const { id, title, image, category, price, quantity } = item;
