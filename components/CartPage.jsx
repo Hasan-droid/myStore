@@ -180,9 +180,14 @@ const CartPage = ({ currentItems }) => {
             />
           )}
           {cartData && windowSize === "column" && (
-            <>
-              <CartHeaderSmallSize />
-            </>
+            <CartSmallSizeView
+              cartData={cartData}
+              handleRemoveItem={handleRemoveItem}
+              showImage={showImage}
+              handleShowImageForPhone={handleShowImageForPhone}
+              images={images}
+              scaleFooter={scaleFooter}
+            />
           )}
 
           {cartData &&
@@ -193,18 +198,7 @@ const CartPage = ({ currentItems }) => {
                 return <Box onClick={() => setItemId(id)} key={id}></Box>;
               }
               if (windowSize === "column") {
-                return (
-                  <Box onClick={() => setItemId(id)} key={id}>
-                    <CartSmallSizeView
-                      item={item}
-                      handleRemoveItem={handleRemoveItem}
-                      showImage={showImage}
-                      handleShowImageForPhone={handleShowImageForPhone}
-                      images={images}
-                      scaleFooter={scaleFooter}
-                    />
-                  </Box>
-                );
+                return <Box onClick={() => setItemId(id)} key={id}></Box>;
               }
             })}
         </Box>
