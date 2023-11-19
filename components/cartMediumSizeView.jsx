@@ -4,6 +4,7 @@ import { Box, Grid, Image, Text, IconButton, Button } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import CartHeaderMediumSize from "./CartHeaderMediumSize";
+import CartFooter_Lg_Md from "./CartFooter_Lg_Md";
 export default function CartMediumSizeView({
   cartData,
   // item,
@@ -13,9 +14,11 @@ export default function CartMediumSizeView({
   showImage,
   handleShowImageForPhone,
   images,
+  totalPrice,
+  handleCheckOut,
 }) {
   // useEffect(() => {}, [item]);
-
+  const [itemId, setItemId] = useState(null);
   return (
     <>
       <CartHeaderMediumSize />
@@ -63,6 +66,7 @@ export default function CartMediumSizeView({
                   cursor="pointer"
                   onClick={() => {
                     handleShowImageForPhone(id);
+                    setItemId(id);
                   }}
                 >
                   <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
@@ -122,6 +126,13 @@ export default function CartMediumSizeView({
           </>
         );
       })}
+      <CartFooter_Lg_Md
+        itemId={itemId}
+        showImage={showImage}
+        cartData={cartData}
+        totalPrice={totalPrice}
+        handleCheckOut={handleCheckOut}
+      />
     </>
   );
 }

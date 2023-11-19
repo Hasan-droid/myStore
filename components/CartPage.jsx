@@ -177,6 +177,8 @@ const CartPage = ({ currentItems }) => {
               showImage={showImage}
               handleShowImageForPhone={handleShowImageForPhone}
               images={images}
+              totalPrice={totalPrice}
+              handleCheckOut={handleCheckOut}
             />
           )}
           {cartData && windowSize === "column" && (
@@ -216,7 +218,7 @@ const CartPage = ({ currentItems }) => {
           </Box>
         )} */}
       </Flex>
-      {cartData && (windowSize === "lg" || windowSize === "720") && (
+      {/* {cartData && (windowSize === "lg" || windowSize === "720") && (
         //center the elements in the Box
         <Flex
           w="100%"
@@ -242,7 +244,7 @@ const CartPage = ({ currentItems }) => {
             Check out
           </Button>
         </Flex>
-      )}
+      )} */}
       {cartData && windowSize === "column" && (
         //center the elements in the Box
         <Flex
