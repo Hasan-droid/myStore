@@ -21,6 +21,7 @@ export const increaseItemQuantityByOne = (dispatch, item) => {
   // console.log("ChartData", ChartData);
   // console.log("item receive item", item);
   const isItemExist = ChartData?.find((chart) => chart.id === item.id);
+  debugger;
   if (isItemExist) {
     isItemExist.quantity += 1;
     dispatch(increaseQuantity(isItemExist));
@@ -30,16 +31,19 @@ export const increaseItemQuantityByOne = (dispatch, item) => {
     //send empty state to saveState function
     //sort ChartData according to the id's
     ChartData.sort((a, b) => a.id - b.id);
-
+    console.log("ChartData after sorted", ChartData);
     saveState(null, ChartData);
     // localStorage.setItem("state", JSON.stringify({ ChartData: ChartData }));
     // saveState(isItemExist, filteredData);
     return;
   }
+
   //add quantity property to item
   const newItem = { ...item, quantity: 1 };
+  const newChartData = [...(ChartData ? ChartData : []), newItem];
+  newChartData.sort((a, b) => a.id - b.id);
   dispatch(increaseQuantity(newItem));
-  saveState(newItem, ChartData);
+  saveState(null, newChartData);
 };
 
 export const decreaseItemQuantityByOne = (dispatch, item) => {
