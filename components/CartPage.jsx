@@ -104,15 +104,15 @@ const CartPage = ({ currentItems }) => {
     }
   };
   //pull down the footer when the user click on the item to show the image
-  const scaleFooter = (itemId) => {
-    const itemIdBeforeLastItem = cartData[cartData.length - 2].id;
-    const itemIdLastItem = cartData[cartData.length - 1].id;
-    if (itemIdBeforeLastItem <= itemId && itemId <= itemIdLastItem) {
-      setScaleFooterState(true);
-      return;
-    }
-    setScaleFooterState(false);
-  };
+  // const scaleFooter = (itemId) => {
+  //   const itemIdBeforeLastItem = cartData[cartData.length - 2].id;
+  //   const itemIdLastItem = cartData[cartData.length - 1].id;
+  //   if (itemIdBeforeLastItem <= itemId && itemId <= itemIdLastItem) {
+  //     setScaleFooterState(true);
+  //     return;
+  //   }
+  //   setScaleFooterState(false);
+  // };
   //NOTE : checkout buuton had been used instaed of react router action because of the bug in the react router
   // whuch use not update the cart state when the user click on the checkout button
   const handleCheckOut = () => {
@@ -190,7 +190,9 @@ const CartPage = ({ currentItems }) => {
               showImage={showImage}
               handleShowImageForPhone={handleShowImageForPhone}
               images={images}
-              scaleFooter={scaleFooter}
+              totalPrice={totalPrice}
+              handleCheckOut={handleCheckOut}
+              // scaleFooter={scaleFooter}
             />
           )}
 
@@ -247,7 +249,7 @@ const CartPage = ({ currentItems }) => {
           </Button>
         </Flex>
       )} */}
-      {cartData && windowSize === "column" && (
+      {/* {cartData && windowSize === "column" && (
         //center the elements in the Box
         <Flex
           w="100%"
@@ -264,7 +266,7 @@ const CartPage = ({ currentItems }) => {
           pointerEvents={scaleFooterState && showImage.render ? "none" : "auto"}
           //add some animation when margin top change
           transition="margin-top 0.5s ease-in-out"
-          mt={pullDownFooter()}
+          // mt={pullDownFooter()}
           flexDirection="column"
         >
           <Text fontWeight="bold" fontSize="sm">
@@ -280,7 +282,7 @@ const CartPage = ({ currentItems }) => {
             Check out
           </Button>
         </Flex>
-      )}
+      )} */}
     </Box>
   );
 };

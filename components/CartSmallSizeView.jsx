@@ -7,6 +7,7 @@ import { Input } from "@chakra-ui/react";
 import { listenItemQuantity } from "../Redux/features/ChartSlicer";
 import { useDispatch } from "react-redux";
 import CartHeaderSmallSize from "./CartHeaderSmallSize";
+import CartFooter_sm from "./CartFooter_sm";
 
 const ChangeQunatity = ({ quntity, item }) => {
   const [quantityState, setQuantityState] = useState(quntity);
@@ -34,8 +35,19 @@ export default function CartSmallSizeView({
   showImage,
   handleShowImageForPhone,
   images,
-  scaleFooter,
+  totalPrice,
+  handleCheckOut,
 }) {
+  const [scaleFooterState, setScaleFooterState] = useState(false);
+  const scaleFooter = (itemId) => {
+    const itemIdBeforeLastItem = cartData[cartData.length - 2].id;
+    const itemIdLastItem = cartData[cartData.length - 1].id;
+    if (itemIdBeforeLastItem <= itemId && itemId <= itemIdLastItem) {
+      setScaleFooterState(true);
+      return;
+    }
+    setScaleFooterState(false);
+  };
   console.log("show Image", showImage);
   return (
     <>
@@ -136,6 +148,12 @@ export default function CartSmallSizeView({
             </>
           );
         })}
+      <CartFooter_sm
+        handleCheckOut={handleCheckOut}
+        totalPrice={totalPrice}
+        scaleFooterState={scaleFooterState}
+        showImage={showImage}
+      />
     </>
   );
 }
