@@ -34,6 +34,7 @@ export default function CartLargeSizeView({
                 onClick={() => {
                   handleShowImageForPhone(id);
                   handlePreviewImage(images[0].url);
+                  setItemId(id);
                 }}
                 key={id}
                 templateColumns="repeat(11, 1fr)"
@@ -51,7 +52,7 @@ export default function CartLargeSizeView({
                 }}
                 transition="all 0.2s ease-in-out"
               >
-                <Box position="relative" cursor="pointer" onClick={() => setItemId(id)}>
+                <Box position="relative" cursor="pointer">
                   <Image src={images[0].url} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={1} />
                 </Box>
 
