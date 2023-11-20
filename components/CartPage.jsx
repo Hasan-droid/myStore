@@ -9,10 +9,10 @@ import {
   decreaseItemQuantityByOne,
   removeItemFromCart,
 } from "../Redux/features/ChartSlicer";
-import CartMediumSizeView from "./cartMediumSizeView";
-import CartSmallSizeView from "./CartSmallSizeView";
+import CartMediumSizeView from "./CartPage_md";
+import CartSmallSizeView from "./CartPage_sm";
 import { CheckTokenExperimentData } from "./Header";
-import CartLargeSizeView from "./CartLargeSizeView";
+import CartLargeSizeView from "./CartPage_lg";
 
 const CartPage = ({ currentItems }) => {
   const [useBreakpointValue] = useOutletContext();

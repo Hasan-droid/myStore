@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Grid, Text, Image, IconButton, Button, Flex } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
-import CartHeaderLargeSize from "./CartHeaderLargeSize";
+import CartHeaderLargeSize from "./CartHeader_Lg";
 import CartFooter_Lg_Md from "./CartFooter_Lg_Md";
 
 export default function CartLargeSizeView({

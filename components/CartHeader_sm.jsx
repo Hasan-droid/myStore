@@ -18,7 +18,7 @@ const phoneHeaderFontStyle2 = {
   color: "brand.glaucous",
 };
 
-export default function CartHeaderSmallSize() {
+export default function CartHeader_sm() {
   return (
     <>
       <Heading

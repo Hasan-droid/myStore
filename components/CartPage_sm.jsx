@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Input } from "@chakra-ui/react";
 import { listenItemQuantity } from "../Redux/features/ChartSlicer";
 import { useDispatch } from "react-redux";
-import CartHeaderSmallSize from "./CartHeaderSmallSize";
+import CartHeader_sm from "./CartHeader_sm";
 import CartFooter_sm from "./CartFooter_sm";
 
 const ChangeQunatity = ({ quntity, item }) => {
@@ -51,7 +51,7 @@ export default function CartSmallSizeView({
   console.log("show Image", showImage);
   return (
     <>
-      <CartHeaderSmallSize />
+      <CartHeader_sm />
       {cartData &&
         cartData.map((item) => {
           const { id, title, price, category, image, quantity } = item;
