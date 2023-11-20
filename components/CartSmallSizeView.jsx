@@ -16,7 +16,8 @@ export default function CartSmallSizeView({
   scaleFooter,
 }) {
   //set quantityState to quantity to be able to change the quantity of the item in the cart
-  const [quantityState, setQuantityState] = useState(0);
+  debugger;
+  // const [quantityState, setQuantityState] = useState(0);
   const dispatch = useDispatch();
   // useEffect(() => {}, [item]);
   console.log("show Image", showImage);
@@ -26,6 +27,8 @@ export default function CartSmallSizeView({
       {cartData &&
         cartData.map((item) => {
           const { id, title, price, category, image, quantity } = item;
+          const [quantityState, setQuantityState] = useState(quantity);
+
           return (
             <>
               <motion.div
@@ -91,8 +94,7 @@ export default function CartSmallSizeView({
                       onChange={(e) => {
                         setQuantityState(e.target.value);
                       }}
-                      onBlur={(e) => {
-                        console.log("blur", e.target.value);
+                      onBlur={() => {
                         listenItemQuantity(dispatch, { clickedItem: item, quantity: quantityState });
                       }}
                     />
