@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Text, Button } from "@chakra-ui/react";
 
-export default function CartFooter_Lg_Md({ itemId, showImage, cartData, totalPrice, handleCheckOut }) {
+export default function CartFooter_lg_md({ itemId, showImage, cartData, totalPrice, handleCheckOut }) {
   const pullDownFooter = () => {
     console.log("pullDownFooter", itemId);
     if (!itemId || !showImage.render) return 0;
