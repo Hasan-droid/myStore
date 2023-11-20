@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Grid, Image, Text, IconButton, Button } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
@@ -7,13 +7,11 @@ import CartHeaderMediumSize from "./CartHeader_md";
 import CartFooter_Lg_Md from "./CartFooter_Lg_Md";
 export default function CartMediumSizeView({
   cartData,
-  // item,
   handleQuantityDecrease,
   handleQuantityIncrease,
   handleRemoveItem,
   showImage,
   handleShowImageForPhone,
-  images,
   totalPrice,
   handleCheckOut,
 }) {
@@ -23,7 +21,7 @@ export default function CartMediumSizeView({
     <>
       <CartHeaderMediumSize />
       {cartData.map((item) => {
-        const { id, title, price, category, image, quantity } = item;
+        const { id, title, price, category, images, quantity } = item;
         {
           console.log("looping through cartData in CartMediumSizeView", item);
         }
@@ -69,7 +67,7 @@ export default function CartMediumSizeView({
                     setItemId(id);
                   }}
                 >
-                  <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
+                  <Image src={images[0].url} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
                 </Box>
                 <Box gridColumn="2 /5">
                   <Text fontWeight="bold">{title}</Text>
@@ -113,7 +111,7 @@ export default function CartMediumSizeView({
                   transition={{ duration: 0.5 }}
                 >
                   <Image
-                    src={images[Math.floor(Math.random() * images.length)]}
+                    src={images[0].url}
                     alt={title}
                     boxSize={{ base: "250px", md: "400px" }}
                     //i want the position of the image to not affect the other items

@@ -17,12 +17,6 @@ import CartLargeSizeView from "./CartPage_lg";
 const CartPage = ({ currentItems }) => {
   const [useBreakpointValue] = useOutletContext();
   //turn the useBreakpointValue into a function
-  const images = [
-    "https://m.media-amazon.com/images/I/81c6H2eE+kL._AC_UF1000,1000_QL80_.jpg",
-    "https://www.dexerto.com/cdn-cgi/image/width=3840,quality=75,format=auto/https://editors.dexerto.com/wp-content/uploads/2022/12/15/Man-of-Steel.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMzM0MDUwMDU1MV5BMl5BanBnXkFtZTcwOTUyMjU1OQ@@._V1_.jpg",
-  ];
-
   const cartData = JSON.parse(localStorage.getItem("state"))?.ChartData ?? [];
 
   const windowSize = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
@@ -138,7 +132,6 @@ const CartPage = ({ currentItems }) => {
               handleRemoveItem={handleRemoveItem}
               showImage={showImage}
               handleShowImageForPhone={handleShowImageForPhone}
-              images={images}
               totalPrice={totalPrice}
               handleCheckOut={handleCheckOut}
             />
@@ -149,7 +142,6 @@ const CartPage = ({ currentItems }) => {
               handleRemoveItem={handleRemoveItem}
               showImage={showImage}
               handleShowImageForPhone={handleShowImageForPhone}
-              images={images}
               totalPrice={totalPrice}
               handleCheckOut={handleCheckOut}
               // scaleFooter={scaleFooter}

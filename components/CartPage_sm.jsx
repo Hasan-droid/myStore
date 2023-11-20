@@ -34,7 +34,6 @@ export default function CartSmallSizeView({
   handleRemoveItem,
   showImage,
   handleShowImageForPhone,
-  images,
   totalPrice,
   handleCheckOut,
 }) {
@@ -54,7 +53,7 @@ export default function CartSmallSizeView({
       <CartHeader_sm />
       {cartData &&
         cartData.map((item) => {
-          const { id, title, price, category, image, quantity } = item;
+          const { id, title, price, category, images, quantity } = item;
 
           // const [quantityState, setQuantityState] = useState(quantity);
           return (
@@ -98,7 +97,7 @@ export default function CartSmallSizeView({
                       scaleFooter(id);
                     }}
                   >
-                    <Image src={image} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
+                    <Image src={images[0].url} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
                   </Box>
                   <Box gridColumn="2 /6" ml={2}>
                     <Text fontWeight="400" fontSize="sm" mb={0}>
@@ -135,7 +134,7 @@ export default function CartSmallSizeView({
                     transition={{ duration: 0.3 }}
                   >
                     <Image
-                      src={images[Math.floor(Math.random() * images.length)]}
+                      src={images[0].url}
                       alt={title}
                       boxSize={{ base: "200px" }}
                       //i want the position of the image to not affect the other items
