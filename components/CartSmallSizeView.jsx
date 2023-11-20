@@ -7,6 +7,27 @@ import { Input } from "@chakra-ui/react";
 import { listenItemQuantity } from "../Redux/features/ChartSlicer";
 import { useDispatch } from "react-redux";
 import CartHeaderSmallSize from "./CartHeaderSmallSize";
+
+const ChangeQunatity = ({ quntity, item }) => {
+  const [quantityState, setQuantityState] = useState(quntity);
+  const dispatch = useDispatch();
+  return (
+    <Input
+      padding="10px"
+      value={quantityState}
+      w="50px"
+      textAlign="center"
+      type="number"
+      onChange={(e) => {
+        setQuantityState(e.target.value);
+      }}
+      onBlur={() => {
+        listenItemQuantity(dispatch, { clickedItem: item, quantity: quantityState });
+      }}
+    />
+  );
+};
+
 export default function CartSmallSizeView({
   cartData,
   handleRemoveItem,
@@ -15,11 +36,6 @@ export default function CartSmallSizeView({
   images,
   scaleFooter,
 }) {
-  //set quantityState to quantity to be able to change the quantity of the item in the cart
-  debugger;
-  // const [quantityState, setQuantityState] = useState(0);
-  const dispatch = useDispatch();
-  // useEffect(() => {}, [item]);
   console.log("show Image", showImage);
   return (
     <>
@@ -27,8 +43,8 @@ export default function CartSmallSizeView({
       {cartData &&
         cartData.map((item) => {
           const { id, title, price, category, image, quantity } = item;
-          const [quantityState, setQuantityState] = useState(quantity);
 
+          // const [quantityState, setQuantityState] = useState(quantity);
           return (
             <>
               <motion.div
@@ -86,18 +102,7 @@ export default function CartSmallSizeView({
                     </Text>
                   </Box>
                   <Box gridColumn="8/ 11">
-                    <Input
-                      value={quantityState}
-                      w="50px"
-                      textAlign="center"
-                      type="number"
-                      onChange={(e) => {
-                        setQuantityState(e.target.value);
-                      }}
-                      onBlur={() => {
-                        listenItemQuantity(dispatch, { clickedItem: item, quantity: quantityState });
-                      }}
-                    />
+                    <ChangeQunatity quntity={quantity} item={item} />
                   </Box>
                   <IconButton
                     icon={<FaTrash />}
