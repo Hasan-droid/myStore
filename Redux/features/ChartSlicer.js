@@ -21,20 +21,13 @@ export const increaseItemQuantityByOne = (dispatch, item) => {
   // console.log("ChartData", ChartData);
   // console.log("item receive item", item);
   const isItemExist = ChartData?.find((chart) => chart.id === item.id);
-  debugger;
   if (isItemExist) {
     isItemExist.quantity += 1;
     dispatch(increaseQuantity(isItemExist));
     const filteredData = ChartData.filter((chart) => chart.id !== isItemExist.id);
-    const itemIndex = filteredData.findIndex((chart) => chart.id === isItemExist.id);
-    ChartData[itemIndex] = isItemExist;
-    //send empty state to saveState function
-    //sort ChartData according to the id's
-    ChartData.sort((a, b) => a.id - b.id);
-    console.log("ChartData after sorted", ChartData);
+    const newChartData = [...filteredData, isItemExist];
+    newChartData.sort((a, b) => a.id - b.id);
     saveState(null, ChartData);
-    // localStorage.setItem("state", JSON.stringify({ ChartData: ChartData }));
-    // saveState(isItemExist, filteredData);
     return;
   }
 
