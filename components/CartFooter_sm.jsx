@@ -25,6 +25,7 @@ export default function CartFooter_sm({ handleCheckOut, totalPrice, scaleFooterS
       </Text>
       <Button
         colorScheme="teal"
+        // color="brand.ashGray"
         size="sm"
         onClick={() => {
           handleCheckOut();

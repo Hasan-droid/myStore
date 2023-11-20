@@ -1,8 +1,7 @@
-import { Box, Flex, Heading, IconButton, Image, Text, Button, Grid } from "@chakra-ui/react";
-import { FaTrash } from "react-icons/fa";
-import { useState, useEffect, useRef } from "react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
 import { emptyChart } from "../Redux/features/ChartSlicer";
-import { useNavigate, useOutletContext, useActionData } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import {
@@ -13,9 +12,6 @@ import {
 import CartMediumSizeView from "./cartMediumSizeView";
 import CartSmallSizeView from "./CartSmallSizeView";
 import { CheckTokenExperimentData } from "./Header";
-import CartHeaderSmallSize from "./CartHeaderSmallSize";
-import CartHeaderMediumSize from "./CartHeaderMediumSize";
-import CartHeaderLargeSize from "./CartHeaderLargeSize";
 import CartLargeSizeView from "./CartLargeSizeView";
 
 const CartPage = ({ currentItems }) => {
@@ -31,13 +27,10 @@ const CartPage = ({ currentItems }) => {
 
   const windowSize = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
   console.log("ml ////////!!!!!!!!", windowSize);
-  const [previewImage, setPreviewImage] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantityState, setQuantityState] = useState(0);
   const [showImage, setShowImage] = useState({ render: false, id: null });
   //this state is to take the clicked item out of the cart.map
-  const [itemId, setItemId] = useState(null);
-  const [scaleFooterState, setScaleFooterState] = useState(false);
   let temproryTotalPrice = 0;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -62,11 +55,6 @@ const CartPage = ({ currentItems }) => {
     const item = cartData.find((item) => item.id === id);
     removeItemFromCart(dispatch, item);
     setQuantityState(quantityState - 1);
-  };
-
-  const handlePreviewImage = (item) => {
-    const randomImage = images[Math.floor(Math.random() * images.length)];
-    setPreviewImage(randomImage);
   };
 
   const handleQuantityIncrease = (id) => {
@@ -94,35 +82,13 @@ const CartPage = ({ currentItems }) => {
     });
   };
 
-  const pullDownFooter = () => {
-    console.log("pullDownFooter", itemId);
-    if (!itemId || !showImage.render) return 0;
-    //find how many items remain in the cart that higher id than the current item
-    if (windowSize === "720") {
-      const remainItems = cartData.filter((item) => item.id > itemId);
-      return remainItems.length * 20 + 400;
-    }
-  };
-  //pull down the footer when the user click on the item to show the image
-  // const scaleFooter = (itemId) => {
-  //   const itemIdBeforeLastItem = cartData[cartData.length - 2].id;
-  //   const itemIdLastItem = cartData[cartData.length - 1].id;
-  //   if (itemIdBeforeLastItem <= itemId && itemId <= itemIdLastItem) {
-  //     setScaleFooterState(true);
-  //     return;
-  //   }
-  //   setScaleFooterState(false);
-  // };
-  //NOTE : checkout buuton had been used instaed of react router action because of the bug in the react router
-  // whuch use not update the cart state when the user click on the checkout button
   const handleCheckOut = () => {
-    debugger;
     const userToken = localStorage.getItem("token");
+    //check if the token expired
     if (CheckTokenExperimentData(userToken)) return navigate("/signin");
     const decodedToken = jwtDecode(userToken);
     if (!decodedToken.role) return navigate("/signin");
     const role = decodedToken.role;
-    //check if the token expired
     if (role !== "user") return navigate("/signin");
     //run emptyLocalStorage action
     emptyChart(dispatch);
@@ -151,12 +117,6 @@ const CartPage = ({ currentItems }) => {
       )}
       <Flex direction={{ base: "column", md: "row" }}>
         <Box flex="2">
-          {cartData && (
-            <Heading as="h2" size="lg" mb={5}>
-              Your Chart
-            </Heading>
-          )}
-
           {cartData && windowSize === "lg" && (
             <CartLargeSizeView
               cartData={cartData}
@@ -195,94 +155,8 @@ const CartPage = ({ currentItems }) => {
               // scaleFooter={scaleFooter}
             />
           )}
-
-          {cartData &&
-            cartData.map((item) => {
-              const { id, title, image, category, price, quantity } = item;
-
-              if (windowSize === "720") {
-                return <Box onClick={() => setItemId(id)} key={id}></Box>;
-              }
-              if (windowSize === "column") {
-                return <Box onClick={() => setItemId(id)} key={id}></Box>;
-              }
-            })}
         </Box>
-
-        {/* {windowSize === "lg" && (
-          <Box
-            border="1px"
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            flex="1"
-            ml={{ base: "0", md: "100px" }}
-          >
-            {previewImage && <Image src={previewImage} alt="Preview" boxSize={{ base: "250px", md: "400px" }} />}
-          </Box>
-        )} */}
       </Flex>
-      {/* {cartData && (windowSize === "lg" || windowSize === "720") && (
-        //center the elements in the Box
-        <Flex
-          w="100%"
-          h="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          //add some animation when margin top change
-          transition="margin-top 0.5s ease-in-out"
-          mt={pullDownFooter()}
-          flexDirection="column"
-        >
-          <Text fontWeight="bold" fontSize="lg">
-            Total: ${totalPrice}
-          </Text>
-          <Button
-            colorScheme="teal"
-            size="lg"
-            onClick={() => {
-              handleCheckOut();
-            }}
-          >
-            Check out
-          </Button>
-        </Flex>
-      )} */}
-      {/* {cartData && windowSize === "column" && (
-        //center the elements in the Box
-        <Flex
-          w="100%"
-          h="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          style={
-            scaleFooterState && showImage.render
-              ? { transform: "scale(0.9)", transition: "all 0.5s ease-in-out", opacity: "0.5" }
-              : { transform: "scale(1)", transition: "all 0.5s ease-in-out" }
-          }
-          //prevent click on the Flex when the scaleFooter is true
-          pointerEvents={scaleFooterState && showImage.render ? "none" : "auto"}
-          //add some animation when margin top change
-          transition="margin-top 0.5s ease-in-out"
-          // mt={pullDownFooter()}
-          flexDirection="column"
-        >
-          <Text fontWeight="bold" fontSize="sm">
-            Total: ${totalPrice}
-          </Text>
-          <Button
-            colorScheme="teal"
-            size="sm"
-            onClick={() => {
-              handleCheckOut();
-            }}
-          >
-            Check out
-          </Button>
-        </Flex>
-      )} */}
     </Box>
   );
 };

@@ -14,6 +14,7 @@ import SignUpAction from "../routers.Actions/SignUp.action.js";
 import CategoryLoader from "../routers.loaders/category.loader.js";
 import store from "../Redux/store/store.js";
 import CategoryAction from "../routers.Actions/Category.action.js";
+import theme from "../chakra.styles/theme.js";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -53,7 +54,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <RouterProvider router={router} />
       </ChakraProvider>
     </Provider>

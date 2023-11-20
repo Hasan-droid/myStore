@@ -103,6 +103,7 @@ export default function CartLargeSizeView({
           })}
         </Box>
         <Box
+          height="400px"
           display="flex"
           flex="1"
           alignItems="center"
