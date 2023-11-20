@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Grid, Text, Image, IconButton, Button, Flex } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
-import CartHeaderLargeSize from "./CartHeader_Lg";
+import CartHeaderLargeSize from "./CartHeader_lg";
 import CartFooter_Lg_Md from "./CartFooter_Lg_Md";
 
 export default function CartLargeSizeView({
