@@ -165,6 +165,8 @@ const CartPage = ({ currentItems }) => {
               handleRemoveItem={handleRemoveItem}
               handleQuantityIncrease={handleQuantityIncrease}
               handleQuantityDecrease={handleQuantityDecrease}
+              totalPrice={totalPrice}
+              handleCheckOut={handleCheckOut}
             />
           )}
           {cartData && windowSize === "720" && (

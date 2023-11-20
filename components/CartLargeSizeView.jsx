@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Grid, Text, Image, IconButton, Button, Flex } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import CartHeaderLargeSize from "./CartHeaderLargeSize";
+import CartFooter_Lg_Md from "./CartFooter_Lg_Md";
 
 export default function CartLargeSizeView({
   cartData,
@@ -10,6 +11,8 @@ export default function CartLargeSizeView({
   handleRemoveItem,
   handleQuantityDecrease,
   handleQuantityIncrease,
+  totalPrice,
+  handleCheckOut,
 }) {
   const [previewImage, setPreviewImage] = useState("");
   const handlePreviewImage = (item) => {
@@ -109,6 +112,13 @@ export default function CartLargeSizeView({
           {previewImage && <Image src={previewImage} alt="Preview" boxSize={{ base: "250px", md: "400px" }} />}
         </Box>
       </Flex>
+      <CartFooter_Lg_Md
+        itemId={null}
+        showImage={showImage}
+        cartData={cartData}
+        totalPrice={totalPrice}
+        handleCheckOut={handleCheckOut}
+      />
     </Box>
   );
 }
