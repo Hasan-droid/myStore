@@ -22,7 +22,6 @@ const CartPage = ({ currentItems }) => {
   const windowSize = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
   console.log("ml ////////!!!!!!!!", windowSize);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [quantityState, setQuantityState] = useState(0);
   const [showImage, setShowImage] = useState({ render: false, id: null });
   //this state is to take the clicked item out of the cart.map
   let temproryTotalPrice = 0;
@@ -48,21 +47,16 @@ const CartPage = ({ currentItems }) => {
     // remove item from cart
     const item = cartData.find((item) => item.id === id);
     removeItemFromCart(dispatch, item);
-    setQuantityState(quantityState - 1);
   };
 
   const handleQuantityIncrease = (id) => {
     const item = cartData.find((item) => item.id === id);
     increaseItemQuantityByOne(dispatch, item);
-    setQuantityState(quantityState + 1);
-    // setTotalPrice(totalPrice + updatedCartData.find((item) => item.id === id).price);
   };
 
   const handleQuantityDecrease = (id) => {
     const item = cartData.find((item) => item.id === id);
     decreaseItemQuantityByOne(dispatch, item);
-    setQuantityState(quantityState - 1);
-    // setTotalPrice(totalPrice - updatedCartData.find((item) => item.id === id).price);
   };
 
   const handleShowImageForPhone = (id) => {
@@ -92,7 +86,7 @@ const CartPage = ({ currentItems }) => {
 
   return (
     <Box maxW="100%" mt={8} px={4}>
-      {!cartData && (
+      {!cartData.length ? (
         //center the text in the middle of the Box
 
         <Box
@@ -102,53 +96,54 @@ const CartPage = ({ currentItems }) => {
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
-          mt="3%"
+          mt="20%"
         >
           <Text fontSize="4xl" color={"gray.500"}>
             Your chart is empty
           </Text>
         </Box>
+      ) : (
+        <Flex direction={{ base: "column", md: "row" }}>
+          <Box flex="2">
+            {cartData && windowSize === "lg" && (
+              <CartLargeSizeView
+                cartData={cartData}
+                handleShowImageForPhone={handleShowImageForPhone}
+                showImage={showImage}
+                handleRemoveItem={handleRemoveItem}
+                handleQuantityIncrease={handleQuantityIncrease}
+                handleQuantityDecrease={handleQuantityDecrease}
+                totalPrice={totalPrice}
+                handleCheckOut={handleCheckOut}
+              />
+            )}
+            {cartData && windowSize === "720" && (
+              <CartMediumSizeView
+                cartData={cartData}
+                // item={item}
+                handleQuantityDecrease={handleQuantityDecrease}
+                handleQuantityIncrease={handleQuantityIncrease}
+                handleRemoveItem={handleRemoveItem}
+                showImage={showImage}
+                handleShowImageForPhone={handleShowImageForPhone}
+                totalPrice={totalPrice}
+                handleCheckOut={handleCheckOut}
+              />
+            )}
+            {cartData && windowSize === "column" && (
+              <CartSmallSizeView
+                cartData={cartData}
+                handleRemoveItem={handleRemoveItem}
+                showImage={showImage}
+                handleShowImageForPhone={handleShowImageForPhone}
+                totalPrice={totalPrice}
+                handleCheckOut={handleCheckOut}
+                // scaleFooter={scaleFooter}
+              />
+            )}
+          </Box>
+        </Flex>
       )}
-      <Flex direction={{ base: "column", md: "row" }}>
-        <Box flex="2">
-          {cartData && windowSize === "lg" && (
-            <CartLargeSizeView
-              cartData={cartData}
-              handleShowImageForPhone={handleShowImageForPhone}
-              showImage={showImage}
-              handleRemoveItem={handleRemoveItem}
-              handleQuantityIncrease={handleQuantityIncrease}
-              handleQuantityDecrease={handleQuantityDecrease}
-              totalPrice={totalPrice}
-              handleCheckOut={handleCheckOut}
-            />
-          )}
-          {cartData && windowSize === "720" && (
-            <CartMediumSizeView
-              cartData={cartData}
-              // item={item}
-              handleQuantityDecrease={handleQuantityDecrease}
-              handleQuantityIncrease={handleQuantityIncrease}
-              handleRemoveItem={handleRemoveItem}
-              showImage={showImage}
-              handleShowImageForPhone={handleShowImageForPhone}
-              totalPrice={totalPrice}
-              handleCheckOut={handleCheckOut}
-            />
-          )}
-          {cartData && windowSize === "column" && (
-            <CartSmallSizeView
-              cartData={cartData}
-              handleRemoveItem={handleRemoveItem}
-              showImage={showImage}
-              handleShowImageForPhone={handleShowImageForPhone}
-              totalPrice={totalPrice}
-              handleCheckOut={handleCheckOut}
-              // scaleFooter={scaleFooter}
-            />
-          )}
-        </Box>
-      </Flex>
     </Box>
   );
 };

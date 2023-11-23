@@ -88,6 +88,9 @@ export default function CartLargeSizeView({
                   </Box>
                 </Box>
                 <Box gridColumn="10 / 11">
+                  <Text fontSize="sm" color="gray.500">
+                    ${price * quantity}
+                  </Text>
                   <IconButton
                     icon={<FaTrash />}
                     aria-label="Remove item"

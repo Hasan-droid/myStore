@@ -23,6 +23,7 @@ export const increaseItemQuantityByOne = (dispatch, item) => {
   const isItemExist = ChartData?.find((chart) => chart.id === item.id);
   if (isItemExist) {
     isItemExist.quantity += 1;
+    isItemExist.total = isItemExist.totalPrice * isItemExist.quantity;
     dispatch(increaseQuantity(isItemExist));
     const filteredData = ChartData.filter((chart) => chart.id !== isItemExist.id);
     const newChartData = [...filteredData, isItemExist];
@@ -32,7 +33,7 @@ export const increaseItemQuantityByOne = (dispatch, item) => {
   }
 
   //add quantity property to item
-  const newItem = { ...item, quantity: 1 };
+  const newItem = { ...item, quantity: 1, totalPrice: item.price };
   const newChartData = [...(ChartData ? ChartData : []), newItem];
   newChartData.sort((a, b) => a.id - b.id);
   dispatch(increaseQuantity(newItem));

@@ -15,37 +15,40 @@ import { Form, useActionData, Link } from "react-router-dom";
 import { useState } from "react";
 
 const ContactModal: React.FC = () => {
-  interface errorTypes {
-    error: {
+  interface ITypes {
+    ActionData: {
       state: boolean;
       type: string;
       message: string;
       //make this optional
-      filed: {
-        personName: {
+      filed?: {
+        personName?: {
           required: boolean;
         };
-        phoneNumber: {
+        phoneNumber?: {
           required: boolean;
         };
-        address: {
+        address?: {
           required: boolean;
         };
       };
     };
   }
+  interface actionDataType {
+    data: ITypes["ActionData"];
+  }
   const { isOpen, onOpen, onClose } = useDisclosure();
   //declare this seperately to avoid rerendering
-  const [error, setError] = useState<errorTypes["error"]>({
+  const [error, setError] = useState<ITypes["ActionData"]>({
     state: false,
     type: "",
     message: "",
     filed: { personName: { required: false }, phoneNumber: { required: false }, address: { required: false } },
   });
-  const dataFromAction = useActionData(); // Update the type of dataFromAction
+  const dataFromAction = useActionData() as actionDataType; // Update the type of dataFromAction
 
   useEffect(() => {
-    if (dataFromAction) {
+    if (dataFromAction?.data.state === true && dataFromAction?.data.type === "Filed Required") {
       debugger;
       const data = dataFromAction.data;
       setError({ state: data.state, type: data.type, message: data.message, filed: data.filed });
@@ -72,24 +75,47 @@ const ContactModal: React.FC = () => {
                     type="text"
                     name="personName"
                     onChange={() => {
-                      setError(false);
+                      if (error.filed?.personName?.required === true) {
+                        error.filed.personName.required = false;
+                        setError({ ...error });
+                      }
                     }}
                   />
                   <FormErrorMessage>
-                    {error.filed.personName.required === true ? error.message : ""}
+                    {error.filed?.personName?.required === true ? error.message : ""}
                   </FormErrorMessage>
                 </FormControl>
                 <FormControl m={2} id="phoneNumber" isInvalid={error.filed?.phoneNumber?.required === true}>
                   <FormLabel>phoneNumber</FormLabel>
-                  <Input type="number" name="phoneNumber" onChange={() => setError(false)} />
+                  <Input
+                    type="number"
+                    name="phoneNumber"
+                    onChange={() => {
+                      if (error.filed?.phoneNumber?.required === true) {
+                        error.filed.phoneNumber.required = false;
+                        setError({ ...error });
+                      }
+                    }}
+                  />
                   <FormErrorMessage>
-                    {error.filed.phoneNumber.required === true ? error.message : ""}
+                    {error.filed?.phoneNumber?.required === true ? error.message : ""}
                   </FormErrorMessage>
                 </FormControl>
                 <FormControl m={2} id="phoneNumber" isInvalid={error.filed?.address?.required === true}>
                   <FormLabel>Address</FormLabel>
-                  <Input type="text" name="address" onChange={() => setError(false)} />
-                  <FormErrorMessage>{error.filed.address.required === true ? error.message : ""}</FormErrorMessage>
+                  <Input
+                    type="text"
+                    name="address"
+                    onChange={() => {
+                      if (error.filed?.address?.required === true) {
+                        error.filed.address.required = false;
+                        setError({ ...error });
+                      }
+                    }}
+                  />
+                  <FormErrorMessage>
+                    {error.filed?.address?.required === true ? error.message : ""}
+                  </FormErrorMessage>
                 </FormControl>
               </Box>
             </ModalBody>
