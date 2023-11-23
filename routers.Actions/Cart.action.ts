@@ -1,6 +1,7 @@
 import axios from "axios";
 import { redirect } from "../node_modules/react-router-dom/dist/index";
 import { CheckTokenExperimentData } from "../components/Header";
+import jwtDecode from "jwt-decode";
 
 export default async function ({ request, params }) {
   const backEndURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/cart/";
@@ -49,11 +50,14 @@ export default async function ({ request, params }) {
     const cartData = await localStorage.getItem("state");
     if (cartData !== null) {
       const items = await JSON.parse(cartData).ChartData;
+      const decodedToken: any = jwtDecode(userToken);
+      const { email } = decodedToken;
       const bodyRequest = {
         customer: {
           name: personName,
           phone: phoneNumber,
           address: address,
+          email: email,
         },
         items: items,
       };

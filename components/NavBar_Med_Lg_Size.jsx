@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { BsFillCartFill, BsFillInboxFill } from "react-icons/bs";
 import { Button, Flex } from "@chakra-ui/react";
 import { BiLogOut } from "react-icons/bi";
+import UserMenu from "./UserMenu";
 
 export default function NavBar_Med_Lg_Size({ cartItemsNumber, userToken, handleLogOut, verifyAdmin }) {
   return (
@@ -32,16 +33,21 @@ export default function NavBar_Med_Lg_Size({ cartItemsNumber, userToken, handleL
             </Nav.Link>
           </Nav>
           {!verifyAdmin() ? (
-            <Nav.Link>
-              <Link className="h" to="/chart" id="chart">
-                {" "}
-                <div className="chartIcon">
-                  <BsFillCartFill size={40} />
+            <>
+              <Nav.Link>
+                <Link className="h" to="/chart" id="chart">
+                  {" "}
+                  <div className="chartIcon">
+                    <BsFillCartFill size={40} />
 
-                  <p className="counter">{cartItemsNumber}</p>
-                </div>
-              </Link>
-            </Nav.Link>
+                    <p className="counter">{cartItemsNumber}</p>
+                  </div>
+                </Link>
+              </Nav.Link>
+              <Nav.Link>
+                <UserMenu />
+              </Nav.Link>
+            </>
           ) : (
             <Nav.Link>
               <Link className="h" id="chart">

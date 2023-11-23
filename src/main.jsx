@@ -16,6 +16,7 @@ import store from "../Redux/store/store.js";
 import CategoryAction from "../routers.Actions/Category.action.js";
 import theme from "../chakra.styles/theme.js";
 import CartAction from "../routers.Actions/Cart.action.ts";
+import Orders from "../components/orders.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
         path: "/chart",
         element: <ChartII />,
         action: CartAction,
+      },
+      {
+        path: "/orders",
+        element: <Orders />,
       },
     ],
   },

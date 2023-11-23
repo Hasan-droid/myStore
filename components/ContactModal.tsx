@@ -13,6 +13,7 @@ import {
 import { Box, FormControl, FormLabel, FormErrorMessage, Input } from "@chakra-ui/react";
 import { Form, useActionData, Link } from "react-router-dom";
 import { useState } from "react";
+import jwtDecode from "jwt-decode";
 
 const ContactModal: React.FC = () => {
   interface ITypes {
@@ -33,10 +34,23 @@ const ContactModal: React.FC = () => {
         };
       };
     };
+    tokenData: {
+      name: string;
+      email: string;
+    };
   }
   interface actionDataType {
     data: ITypes["ActionData"];
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user: ITypes["tokenData"] = jwtDecode(token);
+      setName(user.name);
+    }
+  }, []);
+  const [name, setName] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   //declare this seperately to avoid rerendering
   const [error, setError] = useState<ITypes["ActionData"]>({
@@ -74,12 +88,15 @@ const ContactModal: React.FC = () => {
                   <Input
                     type="text"
                     name="personName"
+                    value={name}
                     onChange={() => {
                       if (error.filed?.personName?.required === true) {
                         error.filed.personName.required = false;
                         setError({ ...error });
                       }
                     }}
+                    // disabled={true}
+                    readOnly={true}
                   />
                   <FormErrorMessage>
                     {error.filed?.personName?.required === true ? error.message : ""}

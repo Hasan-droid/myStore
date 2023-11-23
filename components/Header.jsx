@@ -46,7 +46,6 @@ export default function Header() {
   }, [itemsData]);
 
   useEffect(() => {
-    debugger;
     if (!dataFromActions) return;
     if (dataFromActions?.data?.state === 200) {
       setShowToast(true);
