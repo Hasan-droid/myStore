@@ -4,7 +4,7 @@ import axios from "axios";
 import { Grid, Progress, Box } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../styles/CardsList.css";
-import { useLoaderData, useActionData, useOutletContext } from "react-router-dom";
+import { useLoaderData, useActionData, useOutletContext, useNavigationType } from "react-router-dom";
 import { motion } from "framer-motion";
 import jwtDecode from "jwt-decode";
 import AdminCardModal from "./AdminCardModal";
@@ -20,6 +20,7 @@ export default function CardsList() {
   const { data } = useLoaderData();
   //only take the verifyAdmin function from the outlet context array
   const [, verifyAdmin] = useOutletContext();
+  const navigationType = useNavigationType();
 
   let NumberOfCardsOffset = useRef(0);
   let NumberOfCardsLimit = useRef(4);
@@ -69,6 +70,10 @@ export default function CardsList() {
         .concat(EditedItem)
         .concat(items.slice(indexOfEditedItem + 1, items.length));
       setItems(newArray);
+      return;
+    }
+    console.log("//navigationType", navigationType);
+    if (navigationType === "POP") {
       return;
     }
     console.log("[[[[[data]]]", data);
