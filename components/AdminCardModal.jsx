@@ -32,7 +32,7 @@ import { useEffect, useState } from "react";
 import ProductImage from "./ProductImage";
 import addIcon from "../assets/images/pngtransparentaddimageiconthumbnail.png";
 import LoadingScreen from "./LoadingScreen";
-export default function CardModal({ item, image, type }) {
+export default function AdminCardModal({ item, image, type }) {
   //destructuring the item object
   const { title, description, price } = item || {};
 

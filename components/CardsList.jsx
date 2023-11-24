@@ -7,7 +7,7 @@ import "../styles/CardsList.css";
 import { useLoaderData, useActionData, useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
 import jwtDecode from "jwt-decode";
-import CardModal from "./CardModal";
+import AdminCardModal from "./AdminCardModal";
 
 export default function CardsList() {
   const [TempItemsNumber, setTempItemsNumber] = useState(0); // this is the number of items that will be fetched from the backend// this is the number of items that will be fetched from the backend
@@ -155,7 +155,7 @@ export default function CardsList() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <CardModal type={"add"} />
+                <AdminCardModal type={"add"} />
               </Box>
             )}
 

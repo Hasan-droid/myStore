@@ -18,7 +18,8 @@ import { useDispatch } from "react-redux";
 import { increaseItemQuantityByOne } from "../Redux/features/ChartSlicer";
 import { Form } from "react-router-dom";
 import { useEffect, useState } from "react";
-import CardModal from "./CardModal";
+import AdminCardModal from "./AdminCardModal";
+import UserCardModal from "./UserCardModal";
 
 export default function Cards({ cardsType, item, verifyAdmin }) {
   console.log("[[[[item]]]]]", item);
@@ -57,7 +58,9 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
         //add some transition to the card when the card is deleted
       >
         <CardBody>
-          <CardModal image={itemImages} item={item} type={"image"} />
+          {verifyAdmin() && <AdminCardModal image={itemImages} item={item} type={"image"} />}
+          {!verifyAdmin() && <UserCardModal image={itemImages} item={item} type={"image"} />}
+
           <Stack mt="3" spacing="2px">
             <Heading size="md">{item.title}</Heading>
             <Text>{item.description}</Text>
@@ -81,7 +84,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
             <Form method="post">
               <Input type="hidden" name="id" value={item.id} />
               <ButtonGroup spacing="2">
-                <CardModal item={item} image={itemImages} type={"edit"} />
+                <AdminCardModal item={item} image={itemImages} type={"edit"} />
                 <Button
                   variant="ghost"
                   colorScheme="red"
