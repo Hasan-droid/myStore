@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Box, Image } from "@chakra-ui/react";
-import imageModal from "react-modal-image";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
-import "lightbox.js-react/dist/index.css";
-import { SlideshowLightbox } from "lightbox.js-react";
 import Viewer from "react-viewer";
 
 interface Types {
