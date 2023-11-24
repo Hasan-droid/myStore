@@ -6,10 +6,13 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
 
 - technologies used so far:
   - React
+  * React -TypeScript
   * Vite Framework
   * JWT
   - Redux-toolkit
   - React Router v6
+  * yet-another-react-lightbox
+  * yet-another-react-lightbox/pluggins
   - Axios
   - Framer-motion
   - chakra-ui

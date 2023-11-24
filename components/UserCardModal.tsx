@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Box, Image } from "@chakra-ui/react";
 import Viewer from "react-viewer";
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import { useNavigate } from "react-router-dom";
+import { NavigationType, useNavigationType } from "react-router-dom";
+import "yet-another-react-lightbox/styles.css";
 
 interface Types {
   props: {
     image: {
       url: "";
+      length: number;
     };
     item: {
       title: "";
@@ -14,35 +20,44 @@ interface Types {
 }
 
 const UserCardModal: React.FC<Types["props"]> = ({ image, item }) => {
-  const [visible, setVisible] = useState(false);
-  const closeViewer = () => {
-    setVisible(false);
-  };
-  console.log("image.url", image.url);
-  const url = image.url;
+  console.log("image.url", image);
+  const [open, setOpen] = React.useState(false);
+
   return (
     <>
-      <div>
-        <Box
-          cursor="pointer"
-          onClick={() => {
-            setVisible(true);
-          }}
-        >
-          <Image src={image?.url} alt={item?.title} borderRadius="lg" />
-        </Box>
-        <Viewer
-          visible={visible}
-          onClose={() => {
-            setVisible(false);
-          }}
-          images={[{ src: image.url, alt: "" }]}
-          // customToolbar={(toolbars) => {}}
-          noToolbar={true}
-          noFooter={true}
-          onMaskClick={closeViewer}
-        />
-      </div>
+      <Box
+        cursor="pointer"
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        <Image src={image[0]?.url} alt={item?.title} borderRadius="lg" />
+      </Box>
+      <Lightbox
+        open={open}
+        close={() => {
+          setOpen(false);
+        }}
+        slides={[
+          {
+            src: image[0]?.url,
+          },
+        ]}
+        plugins={[Zoom]}
+        zoom={{
+          scrollToZoom: true,
+          maxZoomPixelRatio: 2,
+          wheelZoomDistanceFactor: 200,
+          doubleClickDelay: 300,
+        }}
+        animation={{ zoom: 500 }}
+        carousel={{ finite: image.length <= 1 }}
+        render={{
+          buttonPrev: image.length <= 1 ? () => null : undefined,
+          buttonNext: image.length <= 1 ? () => null : undefined,
+        }}
+        controller={{ closeOnBackdropClick: true, closeOnPullDown: true }}
+      />
     </>
   );
 };

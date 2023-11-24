@@ -28,7 +28,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
   const [itemImages, setItemImages] = useState([[]]);
 
   useEffect(() => {
-    setItemImages((item?.images || [])[0]);
+    setItemImages(item?.images || []);
   }, [item]);
 
   const handleChangeStyle = (item) => {
@@ -58,7 +58,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
         //add some transition to the card when the card is deleted
       >
         <CardBody>
-          {verifyAdmin() && <AdminCardModal image={itemImages} item={item} type={"image"} />}
+          {verifyAdmin() && <AdminCardModal image={itemImages[0]} item={item} type={"image"} />}
           {!verifyAdmin() && <UserCardModal image={itemImages} item={item} type={"image"} />}
 
           <Stack mt="3" spacing="2px">
