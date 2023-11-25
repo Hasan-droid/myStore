@@ -22,7 +22,7 @@ export default function CartLargeSizeView({
   };
 
   return (
-    <Box maxW="100%" mt={8} px={4}>
+    <Box maxW="100%" maxH={"100vh"} mt={8} px={4}>
       <Flex>
         <Box flex="2">
           <CartHeaderLargeSize />

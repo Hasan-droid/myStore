@@ -1,0 +1,21 @@
+.active > .page-link,
+.page-link.active {
+  background-color: #c6ebbe;
+}
+
+.pagination {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  /* position this pagination to right */
+  margin-right: auto;
+  margin-left: auto;
+  --bs-pagination-active-border-color: none;
+  --bs-pagination-color: #739edd;
+  --bs-pagination-border-color: none;
+  --bs-pagination-disabled-bg: none;
+  --bs-pagination-focus-bg: #c6ebbe;
+  --bs-pagination-focus-box-shadow: none;
+  padding-right: 100px;
+  justify-content: right;
+  /* align-items: right; */
+}

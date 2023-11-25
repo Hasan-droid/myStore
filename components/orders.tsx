@@ -1,18 +1,25 @@
 import React from "react";
-import { Box, Text, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
+import { Box, Text, Table, Thead, Tbody, Tr, Th, Td, Badge } from "@chakra-ui/react";
 
-const orders = [
-  { id: 1, purchaseData: "25/12/2022", orderDeliveryDate: "27/12/2022", total: 250, status: "delivered" },
-  //create 3 new orders with different data
-  { id: 2, purchaseData: "25/12/2022", orderDeliveryDate: "27/12/2022", total: 250, status: "pending" },
-  { id: 3, purchaseData: "25/12/2022", orderDeliveryDate: "27/12/2022", total: 250, status: "on deliver" },
-];
+interface ITypes {
+  props: {
+    currentItems?: //array of objects
+    {
+      id: number;
+      purchaseData: string;
+      orderDeliveryDate: string;
+      total: number;
+      status: string;
+    }[];
+  };
+}
 
-const Orders: React.FC = () => {
+const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
+  console.log("currentItems//////", currentItems);
   return (
-    <Box p={4}>
+    <Box p={4} minH={"80vh"}>
       <Text fontSize="xl" fontWeight="bold" mb={4}>
-        Orders
+        Orders!
       </Text>
       <Table variant="striped" colorScheme="teal">
         <Thead>
@@ -25,13 +32,34 @@ const Orders: React.FC = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {orders.map((order) => (
+          {currentItems?.map((order) => (
             <Tr key={order.id}>
               <Td>{order.id}</Td>
               <Td>{order.purchaseData}</Td>
               <Td>{order.orderDeliveryDate}</Td>
               <Td>{order.total}</Td>
-              <Td>{order.status}</Td>
+              <Td>
+                {order.status === "delivered" && (
+                  <Badge colorScheme="green" borderRadius={"xl"} size={"2xl"}>
+                    delivered
+                  </Badge>
+                )}
+                {order.status === "on deliver" && (
+                  <Badge colorScheme="blue" borderRadius={"xl"} size={"2xl"}>
+                    on deliver
+                  </Badge>
+                )}
+                {order.status === "rejected" && (
+                  <Badge colorScheme="red" borderRadius={"xl"} size={"2xl"}>
+                    rejected
+                  </Badge>
+                )}
+                {order.status === "pending" && (
+                  <Badge colorScheme={"orange"} borderRadius={"xl"} size={"2xl"}>
+                    pending
+                  </Badge>
+                )}
+              </Td>
             </Tr>
           ))}
         </Tbody>
