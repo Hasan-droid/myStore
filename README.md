@@ -14,6 +14,7 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
   * yet-another-react-lightbox
   * yet-another-react-lightbox/pluggins
   * React-Paginate
+  * React-spinners
   - Axios
   - Framer-motion
   - chakra-ui
