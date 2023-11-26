@@ -1,18 +1,30 @@
 import ReactPaginate from "react-paginate";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Orders from "./Orders.tsx";
 import "../styles/Pagination.css";
 import { useLoaderData } from "react-router-dom";
 
+interface ITypes {
+  loaderData: {
+    data: {
+      phone: string;
+      id: number;
+      createdAt: string;
+      totalPrice: number;
+      orderStatus: string;
+    }[];
+  };
+}
+
 function OrdersPaginator({ itemsPerPage }) {
   // We start with an empty list of items.
-  const [currentItems, setCurrentItems] = useState(null);
+  const [currentItems, setCurrentItems] = useState<ITypes["loaderData"]["data"]>(null);
   const [pageCount, setPageCount] = useState(0);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<ITypes["loaderData"]["data"]>([]);
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
-  const { data } = useLoaderData();
+  const { data } = useLoaderData() as ITypes["loaderData"];
   useEffect(() => {
     console.log("orders data", data);
     setItems(data);
@@ -62,5 +74,4 @@ function OrdersPaginator({ itemsPerPage }) {
   );
 }
 
-// Add a <div id="container"> to your HTML to see the componend rendered.
 export default OrdersPaginator;
