@@ -13,6 +13,7 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
   - React Router v6
   * yet-another-react-lightbox
   * yet-another-react-lightbox/pluggins
+  * React-Paginate
   - Axios
   - Framer-motion
   - chakra-ui
