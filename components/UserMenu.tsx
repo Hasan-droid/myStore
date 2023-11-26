@@ -17,7 +17,7 @@ interface ITypes {
   };
 }
 
-const UserMenu: React.FC<ITypes["props"]> = ({ handleLogOut, userToken }) => {
+const UserMenu: React.FC<ITypes["props"]> = ({ handleLogOut, userToken, verifyAdmin }) => {
   const navigate = useNavigate();
   return (
     <Box ml="7" mr={"4"}>
@@ -46,17 +46,19 @@ const UserMenu: React.FC<ITypes["props"]> = ({ handleLogOut, userToken }) => {
               Login
             </MenuItem>
           )}
-          <MenuItem
-            bg={"white"}
-            color={"black"}
-            _hover={hoverStyle}
-            icon={<BiSolidArchiveOut size={30} />}
-            onClick={() => {
-              navigate("/orders");
-            }}
-          >
-            orders
-          </MenuItem>
+          {!verifyAdmin() && (
+            <MenuItem
+              bg={"white"}
+              color={"black"}
+              _hover={hoverStyle}
+              icon={<BiSolidArchiveOut size={30} />}
+              onClick={() => {
+                navigate("/orders");
+              }}
+            >
+              orders
+            </MenuItem>
+          )}
         </MenuList>
       </Menu>
     </Box>

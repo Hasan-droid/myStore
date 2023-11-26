@@ -56,7 +56,7 @@ export default function NavBar_Med_Lg_Size({ cartItemsNumber, userToken, handleL
             </Nav.Link>
           )}
           <Nav.Link>
-            <UserMenu handleLogOut={handleLogOut} userToken={userToken} />
+            <UserMenu handleLogOut={handleLogOut} userToken={userToken} verifyAdmin={verifyAdmin} />
           </Nav.Link>
         </Container>
       </Navbar>
