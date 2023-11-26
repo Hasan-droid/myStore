@@ -17,6 +17,7 @@ import CategoryAction from "../routers.Actions/Category.action.js";
 import theme from "../chakra.styles/theme.js";
 import CartAction from "../routers.Actions/Cart.action.ts";
 import OrdersPaginator from "../components/OrdersPaginator.jsx";
+import OrdersLoader from "../routers.loaders/orders.loader.js";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
       {
         path: "/orders",
         element: <OrdersPaginator itemsPerPage={8} />,
+        loader: OrdersLoader,
       },
     ],
   },
