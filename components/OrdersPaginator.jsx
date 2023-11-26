@@ -4,36 +4,6 @@ import Orders from "./Orders.tsx";
 import "../styles/Pagination.css";
 import { useLoaderData } from "react-router-dom";
 
-// const items = JSON.parse(localStorage.getItem("state"))?.ChartData ?? [];
-// console.log("ssssssssssssssssssssssssssssssssssss", items);
-
-// const itemsTest = [
-//   { id: 1, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   //create 3 new orders with different data
-//   { id: 2, purchaseData: "25/12/2022", assignedPhone: "0788784817", total: 250, status: "rejected" },
-//   { id: 3, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "pending" },
-//   { id: 4, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   { id: 5, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "pending" },
-//   //create 30 new orders with different data
-//   { id: 6, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   { id: 7, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "rejected" },
-//   { id: 8, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "pending" },
-//   { id: 9, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   { id: 10, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "pending" },
-//   { id: 11, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   { id: 12, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "rejected" },
-//   { id: 13, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "pending" },
-//   { id: 14, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   { id: 15, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "pending" },
-//   { id: 16, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   { id: 17, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "rejected" },
-//   { id: 18, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "pending" },
-//   { id: 19, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   { id: 20, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "pending" },
-//   { id: 21, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "delivered" },
-//   { id: 22, purchaseData: "25/12/2022", assignedPhone: "0787898006", total: 250, status: "rejected" },
-// ];
-
 function OrdersPaginator({ itemsPerPage }) {
   // We start with an empty list of items.
   const [currentItems, setCurrentItems] = useState(null);
