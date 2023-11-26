@@ -16,7 +16,7 @@ import store from "../Redux/store/store.js";
 import CategoryAction from "../routers.Actions/Category.action.js";
 import theme from "../chakra.styles/theme.js";
 import CartAction from "../routers.Actions/Cart.action.ts";
-import OrdersPaginator from "../components/OrdersPaginator.jsx";
+import OrdersPaginator from "../components/OrdersPaginator.tsx";
 import OrdersLoader from "../routers.loaders/orders.loader.js";
 const router = createBrowserRouter([
   {
