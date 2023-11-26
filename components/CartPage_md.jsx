@@ -117,6 +117,7 @@ export default function CartMediumSizeView({
                     //i want the position of the image to not affect the other items
                     position="absolute"
                     zIndex="100"
+                    fit={"contain"}
                   />
                 </motion.Box>
               </AnimatePresence>

@@ -39,13 +39,9 @@ export default function NavBar_Med_Lg_Size({ cartItemsNumber, userToken, handleL
                   {" "}
                   <div className="chartIcon">
                     <BsFillCartFill size={40} />
-
                     <p className="counter">{cartItemsNumber}</p>
                   </div>
                 </Link>
-              </Nav.Link>
-              <Nav.Link>
-                <UserMenu />
               </Nav.Link>
             </>
           ) : (
@@ -59,24 +55,11 @@ export default function NavBar_Med_Lg_Size({ cartItemsNumber, userToken, handleL
               </Link>
             </Nav.Link>
           )}
+          <Nav.Link>
+            <UserMenu handleLogOut={handleLogOut} userToken={userToken} />
+          </Nav.Link>
         </Container>
       </Navbar>
-      {userToken && (
-        //make the button fixed and on the right side but not fixed
-        <Button
-          id="logOutBtn"
-          onClick={handleLogOut}
-          bg="transparent"
-          border="1px"
-          borderColor="black"
-          color="black"
-          //put the button on the right side
-          _hover={{ bg: "black", color: "white" }}
-        >
-          <BiLogOut size={30} />
-          Log Out
-        </Button>
-      )}
     </Flex>
   );
 }
