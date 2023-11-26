@@ -11,37 +11,39 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Box, FormControl, FormLabel, FormErrorMessage, Input } from "@chakra-ui/react";
-import { Form, useActionData, Link } from "react-router-dom";
+import { Form, useActionData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import jwtDecode from "jwt-decode";
-
-const ContactModal: React.FC = () => {
-  interface ITypes {
-    ActionData: {
-      state: boolean;
-      type: string;
-      message: string;
-      //make this optional
-      filed?: {
-        personName?: {
-          required: boolean;
-        };
-        phoneNumber?: {
-          required: boolean;
-        };
-        address?: {
-          required: boolean;
-        };
+import LoadingScreen from "./LoadingScreen";
+interface ITypes {
+  ActionData: {
+    state: boolean | number;
+    type: string;
+    message: string;
+    //make this optional
+    filed?: {
+      personName?: {
+        required: boolean;
+      };
+      phoneNumber?: {
+        required: boolean;
+      };
+      address?: {
+        required: boolean;
       };
     };
-    tokenData: {
-      name: string;
-      email: string;
-    };
-  }
-  interface actionDataType {
-    data: ITypes["ActionData"];
-  }
+  };
+  tokenData: {
+    name: string;
+    email: string;
+  };
+}
+interface actionDataType {
+  data: ITypes["ActionData"];
+}
+
+const ContactModal: React.FC = () => {
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -52,6 +54,7 @@ const ContactModal: React.FC = () => {
   }, []);
   const [name, setName] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState<boolean>(false);
   //declare this seperately to avoid rerendering
   const [error, setError] = useState<ITypes["ActionData"]>({
     state: false,
@@ -66,6 +69,12 @@ const ContactModal: React.FC = () => {
       debugger;
       const data = dataFromAction.data;
       setError({ state: data.state, type: data.type, message: data.message, filed: data.filed });
+      setLoading(false);
+    }
+    if (dataFromAction?.data.type === "order" && dataFromAction?.data.state === 200) {
+      // onClose();
+      navigate("/orders");
+      // setLoading(false);
     }
   }, [dataFromAction]);
 
@@ -80,6 +89,7 @@ const ContactModal: React.FC = () => {
         <ModalContent>
           <ModalHeader>Contact Info</ModalHeader>
           <ModalCloseButton />
+          {loading && <LoadingScreen isLoading={loading} />}
           <Form method="post">
             <ModalBody>
               <Box p={4}>
@@ -137,7 +147,14 @@ const ContactModal: React.FC = () => {
               </Box>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="teal" m={2} type="submit" value="create" name="intent">
+              <Button
+                colorScheme="teal"
+                m={2}
+                type="submit"
+                value="create"
+                name="intent"
+                onClick={() => setLoading(true)}
+              >
                 Make order
               </Button>
               <Button variant="ghost" colorScheme="blue" mr={3} onClick={onClose}>

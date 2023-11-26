@@ -69,7 +69,7 @@ export default async function ({ request, params }) {
         await axios.post(backEndURL, bodyRequest, { headers }).then((res) => {
           if (res.status === 200) {
             // localStorage.removeItem("state");
-            returnedResponse = { data: { state: 200, type: "success", message: "success" } };
+            returnedResponse = { data: { state: 200, type: "order", message: "success" } };
           }
         });
       } catch (err) {
