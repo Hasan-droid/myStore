@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Orders from "./Orders.tsx";
 import "../styles/Pagination.css";
 import { useLoaderData } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface ITypes {
   loaderData: {
@@ -49,7 +50,14 @@ function OrdersPaginator({ itemsPerPage }) {
 
   return (
     <>
-      <Orders currentItems={currentItems} />
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 50 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Orders currentItems={currentItems} />
+      </motion.div>
       <ReactPaginate
         nextLabel="next >"
         onPageChange={handlePageClick}
