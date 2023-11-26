@@ -122,6 +122,7 @@ export default function CartLargeSizeView({
                   src={previewImage}
                   alt="Preview"
                   boxSize={{ base: "250px", md: "400px" }}
+                  fit={"contain"}
                   //add some animation to image when show
                 />
               </motion.Box>
