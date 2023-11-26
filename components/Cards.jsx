@@ -12,6 +12,7 @@ import {
   Button,
   Box,
   Input,
+  Tooltip,
 } from "@chakra-ui/react";
 import "../styles/Cards.css";
 import { useDispatch } from "react-redux";
@@ -20,6 +21,7 @@ import { Form } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AdminCardModal from "./AdminCardModal";
 import UserCardModal from "./UserCardModal";
+import { BeatLoader } from "react-spinners";
 
 export default function Cards({ cardsType, item, verifyAdmin }) {
   console.log("[[[[item]]]]]", item);
@@ -73,9 +75,16 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
         <CardFooter>
           {!verifyAdmin() ? (
             <ButtonGroup spacing="2">
-              <Button variant="solid" colorScheme="blue">
-                Buy now
-              </Button>
+              <Tooltip hasArrow label="Coming soon" bg="blue.300" color="black">
+                <Button
+                  variant="solid"
+                  colorScheme="blue"
+                  isLoading
+                  spinner={<BeatLoader size={9} color="white" />}
+                >
+                  Buy now
+                </Button>
+              </Tooltip>
               <Button variant="ghost" colorScheme="blue" onClick={() => increaseItemQuantityByOne(dispatch, item)}>
                 Add to cart
               </Button>

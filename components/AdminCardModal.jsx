@@ -100,12 +100,18 @@ export default function AdminCardModal({ item, image, type }) {
     <>
       {type === "image" &&
         (image?.url ? (
-          <Box cursor="pointer" onClick={onOpen}>
-            <Image src={image?.url} alt={item?.title} borderRadius="lg" />
+          <Box cursor="pointer" onClick={onOpen} w={300} h={300}>
+            <Image
+              src={image?.url}
+              alt={item?.title}
+              boxSize={300}
+              objectFit={"contain"}
+              //circle the image radius
+            />
           </Box>
         ) : (
           <Box cursor="pointer" onClick={onOpen}>
-            <Image src={addIcon} alt={item?.title} borderRadius="lg" />
+            <Image src={addIcon} alt={item?.title} />
           </Box>
         ))}
 

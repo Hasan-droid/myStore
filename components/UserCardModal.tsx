@@ -54,8 +54,10 @@ const UserCardModal: React.FC<Types["props"]> = ({ image, item }) => {
           setOpen(true);
           window.history.pushState(null, "", window.location.href + `/image/${image[0]?.url}`);
         }}
+        w={300}
+        h={300}
       >
-        <Image src={image[0]?.url} alt={item?.title} borderRadius="lg" />
+        <Image src={image[0]?.url} alt={item?.title} borderRadius="lg" boxSize={300} objectFit={"contain"} />
       </Box>
       <Lightbox
         open={open}
