@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import ChartSlicer from "../features/ChartSlicer";
+import CartSlicer from "../features/CartSlicer";
 
 const rootReducer = combineReducers({
-  ChartSlicer: ChartSlicer,
+  CartSlicer: CartSlicer,
 });
 
 const store = configureStore({

@@ -1,6 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { emptyChart } from "../Redux/features/ChartSlicer";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
@@ -8,7 +7,7 @@ import {
   increaseItemQuantityByOne,
   decreaseItemQuantityByOne,
   removeItemFromCart,
-} from "../Redux/features/ChartSlicer";
+} from "../Redux/features/CartSlicer";
 import CartMediumSizeView from "./CartPage_md";
 import CartSmallSizeView from "./CartPage_sm";
 import { CheckTokenExperimentData } from "./Header";
@@ -78,10 +77,6 @@ const CartPage = ({ currentItems }) => {
     if (!decodedToken.role) return navigate("/signin");
     const role = decodedToken.role;
     if (role !== "user") return navigate("/signin");
-    //run emptyLocalStorage action
-    emptyChart(dispatch);
-    //return data and invoke redirect function
-    return navigate("/waterSpaces", { replace: true });
   };
 
   return (

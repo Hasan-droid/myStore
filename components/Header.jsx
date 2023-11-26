@@ -33,7 +33,7 @@ export default function Header() {
   const windowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
   console.log("windowSize", windowSize);
   const itemsData = useSelector((state) => {
-    return state.ChartSlicer;
+    return state.CartSlicer;
   });
 
   useEffect(() => {

@@ -58,7 +58,7 @@ export const removeItemFromCart = (dispatch, item) => {
   const { ChartData } = loadStateFromLocalStorage;
   const updatedLocalStorage = ChartData.filter((chart) => chart.id !== item.id);
   if (updatedLocalStorage.length === 0) {
-    emptyChart(dispatch);
+    emptyCart(dispatch);
     return;
   }
   localStorage.setItem("state", JSON.stringify({ ChartData: updatedLocalStorage }));
@@ -78,15 +78,15 @@ export const listenItemQuantity = (dispatch, item) => {
   dispatch(listenQuantity(itemToUpdate));
 };
 
-export const emptyChart = (dispatch) => {
+export const emptyCart = (dispatch) => {
   dispatch(emptyLocalStorage());
   //remove all items from local storage
   localStorage.removeItem("state");
   console.log("loadStateFromLocalStorage", loadStateFromLocalStorage);
 };
 
-const ChartSlicer = createSlice({
-  name: "ChartSlicer",
+const CartSlicer = createSlice({
+  name: "CartSlicer",
   initialState,
   reducers: {
     receiveItem: (state, action) => {
@@ -126,5 +126,5 @@ const ChartSlicer = createSlice({
 });
 
 export const { receiveItem, emptyLocalStorage, removeItem, increaseQuantity, decreaseQuantity, listenQuantity } =
-  ChartSlicer.actions;
-export default ChartSlicer.reducer;
+  CartSlicer.actions;
+export default CartSlicer.reducer;

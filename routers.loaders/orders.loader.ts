@@ -1,7 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { redirect } from "react-router-dom";
-import 
 
 interface ITypes {
   token: {

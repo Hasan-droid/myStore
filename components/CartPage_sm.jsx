@@ -4,7 +4,7 @@ import { Box, Grid, Image, Text, IconButton, Button } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { Input } from "@chakra-ui/react";
-import { listenItemQuantity } from "../Redux/features/ChartSlicer";
+import { listenItemQuantity } from "../Redux/features/CartSlicer";
 import { useDispatch } from "react-redux";
 import CartHeader_sm from "./CartHeader_sm";
 import CartFooter_sm from "./CartFooter_sm";
