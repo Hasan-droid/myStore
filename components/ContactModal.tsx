@@ -15,6 +15,7 @@ import { Form, useActionData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import jwtDecode from "jwt-decode";
 import LoadingScreen from "./LoadingScreen";
+
 interface ITypes {
   ActionData: {
     state: boolean | number;
@@ -74,6 +75,7 @@ const ContactModal: React.FC = () => {
     if (dataFromAction?.data.type === "order" && dataFromAction?.data.state === 200) {
       // onClose();
       navigate("/orders");
+    
       // setLoading(false);
     }
   }, [dataFromAction]);

@@ -2,6 +2,8 @@ import axios from "axios";
 import { redirect } from "../node_modules/react-router-dom/dist/index";
 import { CheckTokenExperimentData } from "../components/Header";
 import jwtDecode from "jwt-decode";
+import { emptyCart } from "../Redux/features/CartSlicer";
+import store from "../Redux/store/store";
 
 export default async function ({ request, params }) {
   const backEndURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/cart/";
@@ -70,14 +72,15 @@ export default async function ({ request, params }) {
           if (res.status === 200) {
             // localStorage.removeItem("state");
             returnedResponse = { data: { state: 200, type: "order", message: "success" } };
+            setTimeout(() => {
+              emptyCart(store.dispatch);
+            }, 2000);
           }
         });
       } catch (err) {
         console.log("error posting card", err);
-
-        // returnedResponse = { data: { state: true, type: "error", message: "network error" } };
       }
-      // console.log("bodyRequest", bodyRequest);
+
       return returnedResponse;
     }
   }
