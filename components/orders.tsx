@@ -6,12 +6,10 @@ interface ITypes {
     currentItems?: //array of objects
     {
       phone: string;
-      orders: {
-        id: number;
-        createdAt: string;
-        totalPrice: number;
-        orderStatus: string;
-      }[];
+      id: number;
+      createdAt: string;
+      totalPrice: number;
+      orderStatus: string;
     }[];
   };
 }
@@ -34,47 +32,45 @@ const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {currentItems?.map((customer) =>
-            customer.orders.map((order) => (
-              <Tr key={order.id}>
-                <Td>{order.id}</Td>
-                <Td>
-                  {
-                    //format date
-                    new Date(order.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })
-                  }
-                </Td>
-                <Td>{customer.phone}</Td>
-                <Td>{order.totalPrice}</Td>
-                <Td>
-                  {order.orderStatus === "delivered" && (
-                    <Badge colorScheme="green" borderRadius={"xl"} size={"2xl"}>
-                      delivered
-                    </Badge>
-                  )}
-                  {order.orderStatus === "on deliver" && (
-                    <Badge colorScheme="blue" borderRadius={"xl"} size={"2xl"}>
-                      on deliver
-                    </Badge>
-                  )}
-                  {order.orderStatus === "rejected" && (
-                    <Badge colorScheme="red" borderRadius={"xl"} size={"2xl"}>
-                      rejected
-                    </Badge>
-                  )}
-                  {order.orderStatus === "pending" && (
-                    <Badge colorScheme={"orange"} borderRadius={"xl"} size={"2xl"}>
-                      pending
-                    </Badge>
-                  )}
-                </Td>
-              </Tr>
-            ))
-          )}
+          {currentItems?.map((order) => (
+            <Tr key={order.id}>
+              <Td>{order.id}</Td>
+              <Td>
+                {
+                  //format date
+                  new Date(order.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                }
+              </Td>
+              <Td>{order.phone}</Td>
+              <Td>{order.totalPrice}</Td>
+              <Td>
+                {order.orderStatus === "delivered" && (
+                  <Badge colorScheme="green" borderRadius={"xl"} size={"2xl"}>
+                    delivered
+                  </Badge>
+                )}
+                {order.orderStatus === "on deliver" && (
+                  <Badge colorScheme="blue" borderRadius={"xl"} size={"2xl"}>
+                    on deliver
+                  </Badge>
+                )}
+                {order.orderStatus === "rejected" && (
+                  <Badge colorScheme="red" borderRadius={"xl"} size={"2xl"}>
+                    rejected
+                  </Badge>
+                )}
+                {order.orderStatus === "pending" && (
+                  <Badge colorScheme={"orange"} borderRadius={"xl"} size={"2xl"}>
+                    pending
+                  </Badge>
+                )}
+              </Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </Box>
