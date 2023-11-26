@@ -74,8 +74,10 @@ const ContactModal: React.FC = () => {
     }
     if (dataFromAction?.data.type === "order" && dataFromAction?.data.state === 200) {
       // onClose();
-      navigate("/orders");
-    
+      setTimeout(() => {
+        navigate("/orders");
+      }, 1000);
+
       // setLoading(false);
     }
   }, [dataFromAction]);
