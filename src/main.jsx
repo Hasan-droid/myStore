@@ -17,7 +17,7 @@ import CategoryAction from "../routers.Actions/Category.action.js";
 import theme from "../chakra.styles/theme.js";
 import CartAction from "../routers.Actions/Cart.action.ts";
 import OrdersPaginator from "../components/OrdersPaginator.tsx";
-import OrdersLoader from "../routers.loaders/orders.loader.js";
+import OrdersLoader from "../routers.loaders/orders.loader.ts";
 const router = createBrowserRouter([
   {
     path: "/",
