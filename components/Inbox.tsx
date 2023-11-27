@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Box, Text, Table, Thead, Tbody, Tr, Th, Td, Badge } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import PurchaseOrderModal from "./PurshaseOrderModal";
 
 interface ITypes {
   props: {
@@ -44,43 +45,7 @@ const Inbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
           </Thead>
           <Tbody>
             {currentItems?.map((order) => (
-              <Tr key={order.id}>
-                <Td>{order.id}</Td>
-                <Td>{order.customerName}</Td>
-                <Td>
-                  {
-                    //format date
-                    new Date(order.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })
-                  }
-                </Td>
-                <Td>{order.totalPrice}</Td>
-                <Td>
-                  {order.orderStatus === "delivered" && (
-                    <Badge colorScheme="green" borderRadius={"xl"} size={"2xl"}>
-                      delivered
-                    </Badge>
-                  )}
-                  {order.orderStatus === "on deliver" && (
-                    <Badge colorScheme="blue" borderRadius={"xl"} size={"2xl"}>
-                      on deliver
-                    </Badge>
-                  )}
-                  {order.orderStatus === "rejected" && (
-                    <Badge colorScheme="red" borderRadius={"xl"} size={"2xl"}>
-                      rejected
-                    </Badge>
-                  )}
-                  {order.orderStatus === "pending" && (
-                    <Badge colorScheme={"orange"} borderRadius={"xl"} size={"2xl"}>
-                      pending
-                    </Badge>
-                  )}
-                </Td>
-              </Tr>
+              <PurchaseOrderModal order={order} key={order.id} />
             ))}
           </Tbody>
         </Table>
