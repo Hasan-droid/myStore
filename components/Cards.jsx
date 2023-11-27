@@ -93,7 +93,7 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
             <Form method="post">
               <Input type="hidden" name="id" value={item.id} />
               <ButtonGroup spacing="2">
-                <AdminCardModal item={item} image={itemImages} type={"edit"} />
+                <AdminCardModal item={item} image={itemImages[0]} type={"edit"} />
                 <Button
                   variant="ghost"
                   colorScheme="red"
