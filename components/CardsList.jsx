@@ -73,7 +73,8 @@ export default function CardsList() {
       return;
     }
     console.log("//navigationType", navigationType);
-    if (navigationType === "POP") {
+    const url = document.location.pathname.split("/");
+    if (navigationType === "POP" && url.includes("image")) {
       return;
     }
     console.log("[[[[[data]]]", data);
