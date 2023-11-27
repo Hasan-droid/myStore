@@ -261,7 +261,6 @@ export default function AdminCardModal({ item, image, type }) {
                 colorScheme="red"
                 mr={3}
                 onClick={onClose}
-                type="submit"
                 name="intent"
                 value="clear errors"
                 variant="ghost"
