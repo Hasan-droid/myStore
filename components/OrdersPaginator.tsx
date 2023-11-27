@@ -3,22 +3,24 @@ import React, { useEffect, useState } from "react";
 import Orders from "./Orders.tsx";
 import "../styles/Pagination.css";
 import { useLoaderData } from "react-router-dom";
-
+import { verifyAdmin } from "./Header.jsx";
+import Inbox from "./Inbox.tsx";
 interface ITypes {
   loaderData: {
     data: {
-      phone: string;
+      phone?: string;
       id: number;
       createdAt: string;
       totalPrice: number;
       orderStatus: string;
+      customerName?: string;
     }[];
   };
 }
 
 function OrdersPaginator({ itemsPerPage }) {
   // We start with an empty list of items.
-  const [currentItems, setCurrentItems] = useState<ITypes["loaderData"]["data"]>(null);
+  const [currentItems, setCurrentItems] = useState<ITypes["loaderData"]["data"]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [items, setItems] = useState<ITypes["loaderData"]["data"]>([]);
   // Here we use item offsets; we could also use page offsets
@@ -49,7 +51,8 @@ function OrdersPaginator({ itemsPerPage }) {
 
   return (
     <>
-      <Orders currentItems={currentItems} />
+      {!verifyAdmin() && <Orders currentItems={currentItems} />}
+      {verifyAdmin() && <Inbox currentItems={currentItems} />}
       <ReactPaginate
         nextLabel="next >"
         onPageChange={handlePageClick}

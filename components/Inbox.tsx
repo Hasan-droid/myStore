@@ -6,7 +6,7 @@ interface ITypes {
   props: {
     currentItems?: //array of objects
     {
-      phone?: string;
+      customerName?: string;
       id: number;
       createdAt: string;
       totalPrice: number;
@@ -15,7 +15,7 @@ interface ITypes {
   };
 }
 
-const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
+const Inbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
   console.log("currentItems//////", currentItems);
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
           <Thead>
             <Tr>
               <Th>Order ID</Th>
-              <Th>Order purchase Date</Th>
-              <Th>ِAssigned Phone Number</Th>
+              <Th>Customer Name</Th>
+              <Th>Purchase Date</Th>
               <Th>Total</Th>
               <Th>Status</Th>
             </Tr>
@@ -46,6 +46,7 @@ const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
             {currentItems?.map((order) => (
               <Tr key={order.id}>
                 <Td>{order.id}</Td>
+                <Td>{order.customerName}</Td>
                 <Td>
                   {
                     //format date
@@ -56,7 +57,6 @@ const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
                     })
                   }
                 </Td>
-                <Td>{order.phone}</Td>
                 <Td>{order.totalPrice}</Td>
                 <Td>
                   {order.orderStatus === "delivered" && (
@@ -89,4 +89,4 @@ const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
   );
 };
 
-export default Orders;
+export default Inbox;

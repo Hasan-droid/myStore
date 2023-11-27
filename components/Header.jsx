@@ -12,7 +12,7 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import NavBar_Med_Lg_Size from "./NavBar_Med_Lg_Size";
 import NavBar_sm_Size from "./NavBar_sm_Size";
 import jwtDecode from "jwt-decode";
-import { useActionData } from "react-router-dom";
+import { useActionData, useLoaderData } from "react-router-dom";
 import CustomToast from "./Toast";
 
 export const CheckTokenExperimentData = (token) => {
@@ -21,7 +21,14 @@ export const CheckTokenExperimentData = (token) => {
   const decodeToken = jwtDecode(token);
   return decodeToken.exp < currentTime ? true : false;
 };
-
+// eslint-disable-next-line react-refresh/only-export-components
+export const verifyAdmin = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+  const decodeToken = jwtDecode(token);
+  if (decodeToken.role === "admin") return true;
+  return false;
+};
 export default function Header() {
   const dataFromActions = useActionData();
   console.log("[[[[[[datafromAction]]]]", dataFromActions);
@@ -31,6 +38,8 @@ export default function Header() {
   const [showToast, setShowToast] = useState(false);
   const [toastReceivedStatus, setToastReceivedStatus] = useState("");
   const windowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
+  const [totalOrderInbox, setTotalOrderInbox] = useState(0);
+  const { data } = useLoaderData();
   console.log("windowSize", windowSize);
   const itemsData = useSelector((state) => {
     return state.CartSlicer;
@@ -44,6 +53,12 @@ export default function Header() {
     });
     setCartItemNumber(count);
   }, [itemsData]);
+
+  useEffect(() => {
+    const totalPendingOrders = data.filter((order) => order.orderStatus === "pending").length;
+    setTotalOrderInbox(totalPendingOrders);
+    //get phone property from data
+  }, [data]);
 
   useEffect(() => {
     if (!dataFromActions) return;
@@ -67,14 +82,6 @@ export default function Header() {
     navigate("/waterSpaces");
   };
 
-  const verifyAdmin = () => {
-    const token = localStorage.getItem("token");
-    if (!token) return false;
-    const decodeToken = jwtDecode(token);
-    if (decodeToken.role === "admin") return true;
-    return false;
-  };
-
   return (
     <>
       {showToast && (
@@ -91,6 +98,7 @@ export default function Header() {
             userToken={userToken}
             handleLogOut={handleLogOut}
             verifyAdmin={verifyAdmin}
+            totalOrderInbox={totalOrderInbox}
           />
         )}
         {windowSize === "base" && (

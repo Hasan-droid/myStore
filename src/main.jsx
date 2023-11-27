@@ -22,6 +22,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Header />,
+    loader: OrdersLoader,
 
     children: [
       {
