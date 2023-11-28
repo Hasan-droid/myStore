@@ -16,6 +16,7 @@ import {
   Thead,
   Tr,
   Badge,
+  Grid,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
@@ -51,8 +52,8 @@ interface ITypes {
 
 const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const total = productData.reduce((acc, product) => acc + product.price, 0);
   const dataFromActions = useActionData();
+  const total = dataFromActions?.data.data.reduce((acc, product) => acc + product.totalPrice, 0);
   console.log("dataFromActions/orders", dataFromActions);
   const submit = useSubmit();
 
@@ -60,12 +61,13 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
     if (dataFromActions?.data.state === 200) {
       setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      }, 1000);
     }
   }, [dataFromActions]);
 
   return (
     <>
+      {console.log("order!!!!!", order)}
       <Tr
         key={order.id}
         cursor={"pointer"}
@@ -130,15 +132,25 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
                 <Text fontWeight="bold" fontSize="lg" mb={2}>
                   Customer Information:
                 </Text>
-                <Text>
-                  <Text fontWeight="bold">Name:</Text> {customerData.name}
-                </Text>
-                <Text>
-                  <Text fontWeight="bold">Email:</Text> {customerData.email}
-                </Text>
-                <Text>
-                  <Text fontWeight="bold">Address:</Text> {customerData.address}
-                </Text>
+                <Grid //tow rows tow cloumns
+                  templateRows="repeat(2, 1fr)"
+                  templateColumns="repeat(2, 1fr)"
+                  gap={4}
+                >
+                  <Text>
+                    <Text fontWeight="bold">Name:</Text> {order.customerName}
+                  </Text>
+                  <Text>
+                    <Text fontWeight="bold">Phone:</Text> {order.phoneNumber}
+                  </Text>
+
+                  <Text>
+                    <Text fontWeight="bold">Address:</Text> {order.address}
+                  </Text>
+                  <Text>
+                    <Text fontWeight="bold">Email:</Text> {order.email}
+                  </Text>
+                </Grid>
               </Box>
 
               <Table variant="striped" colorScheme="gray">
@@ -146,7 +158,9 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
                   <Tr>
                     <Th>Product ID</Th>
                     <Th>Product Name</Th>
+                    <Th>Quantity</Th>
                     <Th>Price</Th>
+                    <Th>Total Price</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -154,7 +168,9 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
                     <Tr key={product.id}>
                       <Td>{product.id}</Td>
                       <Td>{product.itemName}</Td>
+                      <Td>{product.quantity}</Td>
                       <Td>${product.price}</Td>
+                      <Td>${product.totalPrice}</Td>
                     </Tr>
                   ))}
                 </Tbody>
