@@ -11,7 +11,7 @@ interface ITypes {
 export default async function OrdersLoader({ params }) {
   let data = {};
   const CARDS_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/cart/orders";
-  const INBOX_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/cart/inbox";
+  const INBOX_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
   const token = localStorage.getItem("token");
   let email: string = "";
   if (token !== null) {
