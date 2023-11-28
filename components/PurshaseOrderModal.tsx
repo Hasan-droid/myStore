@@ -17,8 +17,10 @@ import {
   Tr,
   Badge,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
+import { useActionData, Form, useSubmit } from "react-router-dom";
+import { on } from "events";
 
 const customerData = {
   name: "John Doe",
@@ -47,9 +49,20 @@ interface ITypes {
   };
 }
 
-const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order }) => {
+const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const total = productData.reduce((acc, product) => acc + product.price, 0);
+  const dataFromActions = useActionData();
+  console.log("dataFromActions/orders", dataFromActions);
+  const submit = useSubmit();
+
+  useEffect(() => {
+    if (dataFromActions?.data.state === 200) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+    }
+  }, [dataFromActions]);
 
   return (
     <>
@@ -62,7 +75,13 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order }) => {
           boxShadow: "xl",
           bg: "gray.100",
         }}
-        onClick={onOpen}
+        onClick={() => {
+          submit({ id: order.id }, { method: "post" });
+          setLoading(true);
+          setTimeout(() => {
+            onOpen();
+          }, 1000);
+        }}
       >
         <Td>{order.id}</Td>
         <Td>{order.customerName}</Td>
@@ -102,56 +121,60 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order }) => {
       </Tr>
       <Modal isOpen={isOpen} onClose={onClose} size={"3xl"}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Purchase Order</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box borderWidth="1px" borderRadius="md" p={4} mb={4}>
-              <Text fontWeight="bold" fontSize="lg" mb={2}>
-                Customer Information:
-              </Text>
-              <Text>
-                <Text fontWeight="bold">Name:</Text> {customerData.name}
-              </Text>
-              <Text>
-                <Text fontWeight="bold">Email:</Text> {customerData.email}
-              </Text>
-              <Text>
-                <Text fontWeight="bold">Address:</Text> {customerData.address}
-              </Text>
-            </Box>
+        <Form method="post">
+          <ModalContent>
+            <ModalHeader>Purchase Order</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Box borderWidth="1px" borderRadius="md" p={4} mb={4}>
+                <Text fontWeight="bold" fontSize="lg" mb={2}>
+                  Customer Information:
+                </Text>
+                <Text>
+                  <Text fontWeight="bold">Name:</Text> {customerData.name}
+                </Text>
+                <Text>
+                  <Text fontWeight="bold">Email:</Text> {customerData.email}
+                </Text>
+                <Text>
+                  <Text fontWeight="bold">Address:</Text> {customerData.address}
+                </Text>
+              </Box>
 
-            <Table variant="striped" colorScheme="gray">
-              <Thead>
-                <Tr>
-                  <Th>Product ID</Th>
-                  <Th>Product Name</Th>
-                  <Th>Price</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {productData.map((product) => (
-                  <Tr key={product.id}>
-                    <Td>{product.id}</Td>
-                    <Td>{product.name}</Td>
-                    <Td>${product.price}</Td>
+              <Table variant="striped" colorScheme="gray">
+                <Thead>
+                  <Tr>
+                    <Th>Product ID</Th>
+                    <Th>Product Name</Th>
+                    <Th>Price</Th>
                   </Tr>
-                ))}
-              </Tbody>
-            </Table>
+                </Thead>
+                <Tbody>
+                  {dataFromActions?.data.data.map((product) => (
+                    <Tr key={product.id}>
+                      <Td>{product.id}</Td>
+                      <Td>{product.itemName}</Td>
+                      <Td>${product.price}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
 
-            <Text fontWeight="bold" mt={4} fontSize="lg">
-              Total: ${total}
-            </Text>
-          </ModalBody>
+              <Text fontWeight="bold" mt={4} fontSize="lg">
+                Total: ${total}
+              </Text>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Print</Button>
-          </ModalFooter>
-        </ModalContent>
+            <ModalFooter>
+              <Button colorScheme="red" variant={"ghost"} mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button colorScheme="green" type="submit">
+                Deliver
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Form>
       </Modal>
     </>
   );
