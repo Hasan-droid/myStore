@@ -107,6 +107,7 @@ export default function Header() {
             userToken={userToken}
             handleLogOut={handleLogOut}
             verifyAdmin={verifyAdmin}
+            totalOrderInbox={totalOrderInbox}
           />
         )}
         <Spacer />
