@@ -16,7 +16,7 @@ export default function LoadingScreen({ isLoading }) {
             top: "0%",
             left: "0%",
             width: "100%",
-            height: "100%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
+            height: "80%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
           }}
         >
           <Spinner

@@ -115,7 +115,9 @@ export default function Header() {
         {/* send useBreakpointValue as function to outlet context */}
         <Outlet context={[useBreakpointValue, verifyAdmin]} />
       </Box>
-      <Footer />
+      <Box zIndex={20} position="relative" bottom="0" width="100%">
+        <Footer />
+      </Box>
     </>
   );
 }
