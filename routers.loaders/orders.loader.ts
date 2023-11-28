@@ -18,12 +18,6 @@ export default async function OrdersLoader({ params }) {
     email = jwtDecode<ITypes["token"]>(token).email;
   }
 
-  console.log("loader params", params.waterSpaces);
-  // if (params.token === undefined) {
-  //   console.log("redirect to signin");
-  //   return redirect("/signin");
-  // }
-
   {
     !verifyAdmin() &&
       (await axios

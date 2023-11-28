@@ -52,7 +52,10 @@ export default async function ({ request, params }) {
     const cartData = await localStorage.getItem("state");
     if (cartData !== null) {
       const items = await JSON.parse(cartData).ChartData;
-      const decodedToken: any = jwtDecode(userToken);
+      let decodedToken: any = {};
+      if (userToken !== null) {
+        decodedToken = jwtDecode(userToken);
+      }
       const { email } = decodedToken;
       const bodyRequest = {
         customer: {

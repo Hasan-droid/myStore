@@ -39,6 +39,18 @@ const productData = [
 ];
 
 interface ITypes {
+  dataFromActions?: {
+    data: {
+      state: number;
+      data: {
+        itemName: string;
+        id: number;
+        quantity: number;
+        price: number;
+        totalPrice: number;
+      }[];
+    };
+  };
   props: {
     order: {
       customerName?: string;
@@ -46,13 +58,17 @@ interface ITypes {
       createdAt: string;
       totalPrice: number;
       orderStatus: string;
+      email: string;
+      address: string;
+      phoneNumber: string;
     };
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   };
 }
 
 const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const dataFromActions = useActionData();
+  const dataFromActions = useActionData() as ITypes["dataFromActions"];
   const total = dataFromActions?.data.data.reduce((acc, product) => acc + product.totalPrice, 0);
   console.log("dataFromActions/orders", dataFromActions);
   const submit = useSubmit();

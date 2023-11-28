@@ -50,7 +50,6 @@ const DrawerMenu: React.FC<Types["props"]> = ({ userToken, handleLogOut }) => {
   return (
     <>
       <Button
-        ref={btnRef}
         bg="#c6ebbe"
         onClick={onOpen}
         className="hamburger"
@@ -58,7 +57,7 @@ const DrawerMenu: React.FC<Types["props"]> = ({ userToken, handleLogOut }) => {
       >
         <HamburgerIcon />
       </Button>
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose} finalFocusRef={btnRef}>
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
