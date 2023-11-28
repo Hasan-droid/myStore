@@ -14,6 +14,7 @@ export default function CardsList() {
   //use node linked list to store the data in the items state
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [clickOnImage, setClickOnImage] = useState(false);
   const CARDS_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery";
   const pageDocument = document.location.pathname.split("/")[1];
   const dataFromActions = useActionData();
@@ -52,7 +53,6 @@ export default function CardsList() {
 
     // if (!dataFromActions?.state === 200 && !dataFromActions?.type === "delete")
     if (dataFromActions?.data?.state === 200 && dataFromActions?.data?.type === "edit") {
-      debugger;
       console.log("dataFromActions", dataFromActions);
       const indexOfEditedItem = items.findIndex((item) => item.id === parseInt(dataFromActions?.data.item.id));
       const item = dataFromActions?.data?.item;
@@ -72,9 +72,9 @@ export default function CardsList() {
       setItems(newArray);
       return;
     }
-    console.log("//navigationType", navigationType);
-    const url = document.location.pathname.split("/");
-    if (navigationType === "POP" && url.includes("image")) {
+
+    if (clickOnImage) {
+      setClickOnImage(false);
       return;
     }
     console.log("[[[[[data]]]", data);
@@ -94,7 +94,7 @@ export default function CardsList() {
       return;
     }
     setTempItemsNumber(items.length);
-    NumberOfCardsOffset.current += 4;
+    NumberOfCardsOffset.current += items.length - TempItemsNumber;
     axios
       .get(CARDS_URL, {
         params: { limit: NumberOfCardsLimit.current, offset: NumberOfCardsOffset.current, page: pageDocument },
@@ -112,7 +112,13 @@ export default function CardsList() {
 
   // get the url params
   const CardsMaps = items.map((i, index) => (
-    <Card key={index} cardsType={pageDocument} item={i} verifyAdmin={verifyAdmin} />
+    <Card
+      key={index}
+      cardsType={pageDocument}
+      item={i}
+      verifyAdmin={verifyAdmin}
+      setClickOnImage={setClickOnImage}
+    />
   ));
 
   return (
@@ -148,6 +154,7 @@ export default function CardsList() {
             gap={6}
             align="center"
             justify="center"
+            mt={10}
           >
             {verifyAdmin() && (
               <Box
