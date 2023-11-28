@@ -21,7 +21,6 @@ import {
 import React, { useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useActionData, Form, useSubmit } from "react-router-dom";
-import { on } from "events";
 
 const customerData = {
   name: "John Doe",
@@ -40,16 +39,14 @@ const productData = [
 
 interface ITypes {
   dataFromActions?: {
+    state: number;
     data: {
-      state: number;
-      data: {
-        itemName: string;
-        id: number;
-        quantity: number;
-        price: number;
-        totalPrice: number;
-      }[];
-    };
+      itemName: string;
+      id: number;
+      quantity: number;
+      price: number;
+      totalPrice: number;
+    }[];
   };
   props: {
     order: {
@@ -69,17 +66,25 @@ interface ITypes {
 const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dataFromActions = useActionData() as ITypes["dataFromActions"];
-  const total = dataFromActions?.data.data.reduce((acc, product) => acc + product.totalPrice, 0);
+  const total = dataFromActions?.data.reduce((acc, product) => acc + product.totalPrice, 0);
   console.log("dataFromActions/orders", dataFromActions);
   const submit = useSubmit();
 
   useEffect(() => {
-    if (dataFromActions?.data.state === 200) {
+    if (dataFromActions?.state === 200) {
       setTimeout(() => {
         setLoading(false);
       }, 1000);
     }
   }, [dataFromActions]);
+
+  const handleClick = () => {
+    submit({ id: order.id, intent: "items" }, { method: "post" });
+    setLoading(true);
+    setTimeout(() => {
+      onOpen();
+    }, 1000);
+  };
 
   return (
     <>
@@ -93,13 +98,7 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
           boxShadow: "xl",
           bg: "gray.100",
         }}
-        onClick={() => {
-          submit({ id: order.id }, { method: "post" });
-          setLoading(true);
-          setTimeout(() => {
-            onOpen();
-          }, 1000);
-        }}
+        onClick={() => handleClick()}
       >
         <Td>{order.id}</Td>
         <Td>{order.customerName}</Td>
@@ -180,7 +179,7 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {dataFromActions?.data.data.map((product) => (
+                  {dataFromActions?.data.map((product) => (
                     <Tr key={product.id}>
                       <Td>{product.id}</Td>
                       <Td>{product.itemName}</Td>
