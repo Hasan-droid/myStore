@@ -19,7 +19,7 @@ interface Types {
   };
 }
 
-const UserCardModal: React.FC<Types["props"]> = ({ image, item }) => {
+const UserCardModal: React.FC<Types["props"]> = ({ image, item, setClickOnImage }) => {
   console.log("image.url", image);
   const [open, setOpen] = React.useState(false);
   const navigationType = useNavigationType();
@@ -64,6 +64,7 @@ const UserCardModal: React.FC<Types["props"]> = ({ image, item }) => {
         close={() => {
           setOpen(false);
           navigate(-1);
+          setClickOnImage(true);
           // window.history.back();
           // //find div with id root and remove insert attribute
           // document.getElementById("root")?.removeAttribute("insert");

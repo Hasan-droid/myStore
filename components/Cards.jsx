@@ -23,7 +23,7 @@ import AdminCardModal from "./AdminCardModal";
 import UserCardModal from "./UserCardModal";
 import { BeatLoader } from "react-spinners";
 
-export default function Cards({ cardsType, item, verifyAdmin }) {
+export default function Cards({ cardsType, item, verifyAdmin, setClickOnImage }) {
   console.log("[[[[item]]]]]", item);
   const dispatch = useDispatch();
   const [changeStyle, setChangeStyle] = useState({ changeStyle: false, id: null });
@@ -61,7 +61,9 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
       >
         <CardBody>
           {verifyAdmin() && <AdminCardModal image={itemImages[0]} item={item} type={"image"} />}
-          {!verifyAdmin() && <UserCardModal image={itemImages} item={item} type={"image"} />}
+          {!verifyAdmin() && (
+            <UserCardModal image={itemImages} item={item} type={"image"} setClickOnImage={setClickOnImage} />
+          )}
 
           <Stack mt="3" spacing="2px">
             <Heading size="md">{item.title}</Heading>
