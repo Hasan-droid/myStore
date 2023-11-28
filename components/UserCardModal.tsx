@@ -16,6 +16,7 @@ interface Types {
     item: {
       title: "";
     };
+    setClickOnImage: React.Dispatch<React.SetStateAction<boolean>>;
   };
 }
 
@@ -52,6 +53,7 @@ const UserCardModal: React.FC<Types["props"]> = ({ image, item, setClickOnImage 
         cursor="pointer"
         onClick={() => {
           setOpen(true);
+          setClickOnImage(true);
           window.history.pushState(null, "", window.location.href + `/image/${image[0]?.url}`);
         }}
         w={300}
@@ -64,7 +66,7 @@ const UserCardModal: React.FC<Types["props"]> = ({ image, item, setClickOnImage 
         close={() => {
           setOpen(false);
           navigate(-1);
-          setClickOnImage(true);
+          // setClickOnImage(true);
           // window.history.back();
           // //find div with id root and remove insert attribute
           // document.getElementById("root")?.removeAttribute("insert");
