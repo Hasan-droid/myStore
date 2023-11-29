@@ -75,8 +75,16 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading, isLo
     }, 1000);
   };
 
-  const handleDelivery = () => {
+  const handleStartDelivery = () => {
     submit({ id: order.id, intent: "deliver" }, { method: "post" });
+    setLoading(true);
+    setTimeout(() => {
+      onClose();
+    }, 1000);
+  };
+
+  const handleDelivery = () => {
+    submit({ id: order.id, intent: "delivered" }, { method: "post" });
     setLoading(true);
     setTimeout(() => {
       onClose();
@@ -199,14 +207,28 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading, isLo
                   Close
                 </Button>
               )}
-              <Button
-                colorScheme="green"
-                onClick={() => handleDelivery()}
-                isLoading={isLoading}
-                spinner={<BeatLoader size={9} color="white" />}
-              >
-                Deliver
-              </Button>
+              {order.orderStatus === "pending" && (
+                <Button
+                  colorScheme="blue"
+                  variant={"ghost"}
+                  onClick={() => handleStartDelivery()}
+                  isLoading={isLoading}
+                  spinner={<BeatLoader size={9} color="white" />}
+                >
+                  Start Delivering
+                </Button>
+              )}
+              {order.orderStatus === "on deliver" && (
+                <Button
+                  colorScheme="green"
+                  variant={"ghost"}
+                  onClick={() => handleDelivery()}
+                  isLoading={isLoading}
+                  spinner={<BeatLoader size={9} color="white" />}
+                >
+                  Delivered
+                </Button>
+              )}
             </ModalFooter>
           </ModalContent>
         </Form>

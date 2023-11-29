@@ -35,5 +35,17 @@ export default async function ({ request, params }) {
       }
     });
   }
+
+  if (intent === "delivered") {
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
+    const bodyRequest = {
+      orderStatus: "delivered",
+    };
+    await axios.put(`${BACKEND_URL}/${id}`, bodyRequest).then((response) => {
+      if (response.status == 200) {
+        data = { state: 200, type: "deliver", message: "items fetched successfully" };
+      }
+    });
+  }
   return data;
 }

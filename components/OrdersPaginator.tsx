@@ -9,12 +9,14 @@ import LoadingScreen from "./LoadingScreen";
 interface ITypes {
   loaderData: {
     data: {
-      phone?: string;
+      customerName?: string;
       id: number;
       createdAt: string;
       totalPrice: number;
       orderStatus: string;
-      customerName?: string;
+      email?: string;
+      address?: string;
+      phoneNumber?: string;
     }[];
   };
 }

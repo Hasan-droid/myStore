@@ -13,9 +13,9 @@ interface ITypes {
       createdAt: string;
       totalPrice: number;
       orderStatus: string;
-      email: string;
-      address: string;
-      phoneNumber: string;
+      email?: string;
+      address?: string;
+      phoneNumber?: string;
     }[];
   };
 }
