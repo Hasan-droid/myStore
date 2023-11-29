@@ -50,7 +50,7 @@ export default function Cards({ cardsType, item, verifyAdmin, setClickOnImage })
     >
       <Card
         maxW="sm"
-        m={4}
+        m={2}
         boxShadow="2xl"
         bg={changeStyle.changeStyle && changeStyle.id === item.id ? "red.100" : "white"}
         //transform translateX all the items.id that are less than the item.id
