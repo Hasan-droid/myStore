@@ -13,6 +13,9 @@ interface ITypes {
       createdAt: string;
       totalPrice: number;
       orderStatus: string;
+      email: string;
+      address: string;
+      phoneNumber: string;
     }[];
   };
 }
@@ -50,7 +53,7 @@ const Inbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
               <Tbody>
                 <LoadingScreen isLoading={loading} />
                 {currentItems?.map((order) => (
-                  <PurchaseOrderModal order={order} key={order.id} setLoading={setLoading} />
+                  <PurchaseOrderModal order={order} key={order.id} setLoading={setLoading} isLoading={loading} />
                 ))}
               </Tbody>
             </Table>

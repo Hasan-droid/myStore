@@ -21,25 +21,11 @@ import {
 import React, { useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useActionData, Form, useSubmit } from "react-router-dom";
-
-const customerData = {
-  name: "John Doe",
-  email: "johndoe@example.com",
-  address: "123 Main St, City, State",
-};
-
-const productData = [
-  { id: 1, name: "Product 1", price: 10 },
-  { id: 2, name: "Product 2", price: 20 },
-  { id: 3, name: "Product 3", price: 30 },
-  { id: 4, name: "Product 4", price: 40 },
-  { id: 5, name: "Product 5", price: 50 },
-  { id: 6, name: "Product 6", price: 60 },
-];
-
+import { BeatLoader } from "react-spinners";
 interface ITypes {
   dataFromActions?: {
     state: number;
+    type: string;
     data: {
       itemName: string;
       id: number;
@@ -60,22 +46,25 @@ interface ITypes {
       phoneNumber: string;
     };
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    isLoading: boolean;
   };
 }
 
-const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) => {
+const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading, isLoading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [items, setItems] = React.useState<ITypes["dataFromActions"]>();
   const dataFromActions = useActionData() as ITypes["dataFromActions"];
-  const total = dataFromActions?.data.reduce((acc, product) => acc + product.totalPrice, 0);
+  const total = items?.data.reduce((acc, product) => acc + product.totalPrice, 0);
   console.log("dataFromActions/orders", dataFromActions);
   const submit = useSubmit();
 
   useEffect(() => {
-    if (dataFromActions?.state === 200) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+    if (dataFromActions?.state === 200 && dataFromActions.type === "items") {
+      setItems(dataFromActions);
     }
+    setTimeout(() => {
+      setLoading(false);
+    }, 750);
   }, [dataFromActions]);
 
   const handleClick = () => {
@@ -83,6 +72,14 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
     setLoading(true);
     setTimeout(() => {
       onOpen();
+    }, 1000);
+  };
+
+  const handleDelivery = () => {
+    submit({ id: order.id, intent: "deliver" }, { method: "post" });
+    setLoading(true);
+    setTimeout(() => {
+      onClose();
     }, 1000);
   };
 
@@ -136,7 +133,7 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
           )}
         </Td>
       </Tr>
-      <Modal isOpen={isOpen} onClose={onClose} size={"3xl"}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"3xl"} closeOnOverlayClick={false}>
         <ModalOverlay />
         <Form method="post">
           <ModalContent>
@@ -179,7 +176,7 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {dataFromActions?.data.map((product) => (
+                  {items?.data?.map((product) => (
                     <Tr key={product.id}>
                       <Td>{product.id}</Td>
                       <Td>{product.itemName}</Td>
@@ -197,10 +194,17 @@ const PurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading }) =>
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="red" variant={"ghost"} mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button colorScheme="green" type="submit">
+              {!isLoading && (
+                <Button colorScheme="red" variant={"ghost"} mr={3} onClick={onClose}>
+                  Close
+                </Button>
+              )}
+              <Button
+                colorScheme="green"
+                onClick={() => handleDelivery()}
+                isLoading={isLoading}
+                spinner={<BeatLoader size={9} color="white" />}
+              >
                 Deliver
               </Button>
             </ModalFooter>
