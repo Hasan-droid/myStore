@@ -58,7 +58,7 @@ export default async function SignInaction({ request, params }) {
       //save token in local storage
       localStorage.setItem("token", status.data.token);
 
-      if (status.data.role === "user") return redirect("/chart");
+      if (status.data.role === "user") return redirect("/cart");
       return redirect("/waterSpaces");
     }
   }
