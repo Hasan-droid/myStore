@@ -41,7 +41,7 @@ export default function NavBar_Med_Lg_Size({
           {!verifyAdmin() ? (
             <>
               <Nav.Link>
-                <Link className="h" to="/chart" id="chart">
+                <Link className="h" to="/cart" id="cart">
                   {" "}
                   <div className="chartIcon">
                     <BsFillCartFill size={40} />

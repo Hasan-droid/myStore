@@ -24,7 +24,13 @@ import "../styles/Header.css";
 import { useEffect } from "react";
 import DrawerMenu from "./DrawerMenu";
 
-export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOut, verifyAdmin,totalOrderInbox }) {
+export default function NavBar_sm_Size({
+  cartItemsNumber,
+  userToken,
+  handleLogOut,
+  verifyAdmin,
+  totalOrderInbox,
+}) {
   //handle the navigation to the clicked element from the drawer
   //this functionality runs from here not from the action router
 
@@ -55,7 +61,7 @@ export default function NavBar_sm_Size({ cartItemsNumber, userToken, handleLogOu
         >
           {!verifyAdmin() ? (
             <Nav.Link>
-              <Link className="h" to="/chart" id="chart">
+              <Link className="h" to="/cart" id="cart">
                 {" "}
                 <div className="chartIcon">
                   <BsFillCartFill size={40} color={"#c6ebbe"} />
