@@ -43,7 +43,7 @@ export default function NavBar_Med_Lg_Size({
               <Nav.Link>
                 <Link className="h" to="/cart" id="cart">
                   {" "}
-                  <div className="chartIcon">
+                  <div className="cartIcon">
                     <BsFillCartFill size={40} />
                     <p className="counter">{cartItemsNumber}</p>
                   </div>
@@ -54,7 +54,7 @@ export default function NavBar_Med_Lg_Size({
             <Nav.Link>
               <Link className="h" id="inbox" to="/inbox">
                 {" "}
-                <div className="chartIcon">
+                <div className="cartIcon">
                   <BsFillInboxFill size={45} />
                   {totalOrderInbox > 0 && <p className="inbox">{totalOrderInbox}</p>}
                 </div>

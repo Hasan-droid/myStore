@@ -63,7 +63,7 @@ export default function NavBar_sm_Size({
             <Nav.Link>
               <Link className="h" to="/cart" id="cart">
                 {" "}
-                <div className="chartIcon">
+                <div className="cartIcon">
                   <BsFillCartFill size={40} color={"#c6ebbe"} />
 
                   <p className="counter">{cartItemsNumber}</p>
@@ -74,7 +74,7 @@ export default function NavBar_sm_Size({
             <Nav.Link>
               <Link className="h" to="/orders" id="inbox">
                 {" "}
-                <div className="chartIcon">
+                <div className="cartIcon">
                   <BsFillInboxFill size={40} />
                   <p className="inbox">{totalOrderInbox}</p>
                 </div>
