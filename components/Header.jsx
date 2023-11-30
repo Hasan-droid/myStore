@@ -14,7 +14,7 @@ import NavBar_sm_Size from "./NavBar_sm_Size";
 import jwtDecode from "jwt-decode";
 import { useActionData, useLoaderData } from "react-router-dom";
 import CustomToast from "./Toast";
-// import "../styles/scrollBar.css";
+import "../styles/scrollBar.css";
 export const CheckTokenExperimentData = (token) => {
   if (!token) return true;
   const currentTime = new Date().getTime() / 1000;

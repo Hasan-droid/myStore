@@ -49,7 +49,7 @@ export default function Cards({ cardsType, item, verifyAdmin, setClickOnImage })
       transition="all 0.2s ease-in-out"
     >
       <Card
-        maxW="sm"
+        maxW={"-moz-fit-content"}
         m={2}
         boxShadow="2xl"
         bg={changeStyle.changeStyle && changeStyle.id === item.id ? "red.100" : "white"}
@@ -94,6 +94,7 @@ export default function Cards({ cardsType, item, verifyAdmin, setClickOnImage })
           ) : (
             <Form method="post">
               <Input type="hidden" name="id" value={item.id} />
+
               <ButtonGroup spacing="2">
                 <AdminCardModal item={item} image={itemImages[0]} type={"edit"} />
                 <Button

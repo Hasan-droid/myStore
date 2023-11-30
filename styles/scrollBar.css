@@ -1,5 +1,5 @@
 /* FILEPATH: /C:/Users/admin/myStore/styles/scrollBarCart.css */
-/* body {
+body {
   overflow-y: scroll;
   height: 100%;
   width: 100%;
@@ -7,6 +7,9 @@
   padding-left: 10px;
 }
 /* hide the scroll bar */
+/* ::-webkit-scrollbar {
+  display: none;
+} */
 
 /* BEGIN: Customize scroll bar */
 ::-webkit-scrollbar {

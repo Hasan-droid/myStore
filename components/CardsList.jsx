@@ -151,7 +151,7 @@ export default function CardsList() {
           <Grid
             templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
             transition="all 0.5s ease-in-out"
-            gap={6}
+            gap={8}
             align="center"
             justify="center"
             mt={10}
