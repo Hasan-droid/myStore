@@ -42,8 +42,9 @@ const CartPage = ({ currentItems }) => {
     window.scrollTo(0, -200);
   }, []);
 
-  const handleRemoveItem = (id) => {
+  const handleRemoveItem = (e, id) => {
     // remove item from cart
+    e.stopPropagation();
     const item = cartData.find((item) => item.id === id);
     removeItemFromCart(dispatch, item);
   };

@@ -32,8 +32,8 @@ export default function CartLargeSizeView({
     }
   }, [showImage]);
   return (
-    <Box minW="100%" minH={"100vh"} mt={8} px={4} ml={"-10"}>
-      <Flex>
+    <Box minW="100%" mt={8} px={4} ml={"-10"}>
+      <Flex minH={"90vh"}>
         <Box flex="2" minW="950px">
           <Box mr={"6%"} ml={"6%"}></Box>
 
@@ -123,7 +123,7 @@ export default function CartLargeSizeView({
                       icon={<FaTrash />}
                       aria-label="Remove item"
                       ml="auto"
-                      onClick={() => handleRemoveItem(id)}
+                      onClick={(e) => handleRemoveItem(e, id)}
                     />
                   </Box>
                 </Grid>
