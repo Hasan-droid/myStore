@@ -47,7 +47,7 @@ export default function Header() {
 
   useEffect(() => {
     let count = 0;
-    itemsData.chartData.forEach((item) => {
+    itemsData.cartData.forEach((item) => {
       console.log("item ]]]]]]]]]", item);
       count += item?.quantity;
     });

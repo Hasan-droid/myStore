@@ -3,8 +3,8 @@ import { loadState, saveState } from "../features/localStorage";
 import axios from "axios";
 const CARDS_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/charts";
 
-export const getItemsDataInChart = axios.get(`${CARDS_URL}`).then((res) => {
-  console.log("res.data in getItemsDataInChart", res.data);
+export const getItemsDataInCart = axios.get(`${CARDS_URL}`).then((res) => {
+  console.log("res.data in getItemsDataInCart", res.data);
   return res.data;
 });
 
@@ -12,69 +12,67 @@ let loadStateFromLocalStorage = loadState();
 console.log("loadState", loadStateFromLocalStorage);
 console.log("hello");
 const initialState = {
-  chartData: loadStateFromLocalStorage?.ChartData ?? [],
+  cartData: loadStateFromLocalStorage?.CartData ?? [],
 };
 
 export const increaseItemQuantityByOne = (dispatch, item) => {
   loadStateFromLocalStorage = loadState();
-  const { ChartData } = loadStateFromLocalStorage;
-  // console.log("ChartData", ChartData);
-  // console.log("item receive item", item);
-  const isItemExist = ChartData?.find((chart) => chart.id === item.id);
+  const { CartData } = loadStateFromLocalStorage;
+  const isItemExist = CartData?.find((cart) => cart.id === item.id);
   if (isItemExist) {
     isItemExist.quantity += 1;
     isItemExist.totalPrice = isItemExist.price * isItemExist.quantity;
     dispatch(increaseQuantity(isItemExist));
-    const filteredData = ChartData.filter((chart) => chart.id !== isItemExist.id);
-    const newChartData = [...filteredData, isItemExist];
-    newChartData.sort((a, b) => a.id - b.id);
-    saveState(null, ChartData);
+    const filteredData = CartData.filter((cart) => cart.id !== isItemExist.id);
+    const newCartData = [...filteredData, isItemExist];
+    newCartData.sort((a, b) => a.id - b.id);
+    saveState(null, CartData);
     return;
   }
 
   //add quantity property to item
   const newItem = { ...item, quantity: 1, totalPrice: item.price };
-  const newChartData = [...(ChartData ? ChartData : []), newItem];
-  newChartData.sort((a, b) => a.id - b.id);
+  const newCartData = [...(CartData ? CartData : []), newItem];
+  newCartData.sort((a, b) => a.id - b.id);
   dispatch(increaseQuantity(newItem));
-  saveState(null, newChartData);
+  saveState(null, newCartData);
 };
 
 export const decreaseItemQuantityByOne = (dispatch, item) => {
   loadStateFromLocalStorage = loadState();
-  const { ChartData } = loadStateFromLocalStorage;
-  const itemToDelete = loadStateFromLocalStorage.ChartData?.find((chart) => chart.id === item.id);
+  const { CartData } = loadStateFromLocalStorage;
+  const itemToDelete = loadStateFromLocalStorage.CartData?.find((cart) => cart.id === item.id);
   if (itemToDelete.quantity === 1) return;
   itemToDelete.quantity -= 1;
-  const itemIndex = ChartData.findIndex((chart) => chart.id === itemToDelete.id);
-  ChartData[itemIndex] = itemToDelete;
-  ChartData.sort((a, b) => a.id - b.id);
-  saveState(null, ChartData);
+  const itemIndex = CartData.findIndex((cart) => cart.id === itemToDelete.id);
+  CartData[itemIndex] = itemToDelete;
+  CartData.sort((a, b) => a.id - b.id);
+  saveState(null, CartData);
   dispatch(decreaseQuantity(itemToDelete));
 };
 
 export const removeItemFromCart = (dispatch, item) => {
   loadStateFromLocalStorage = loadState();
-  const { ChartData } = loadStateFromLocalStorage;
-  const updatedLocalStorage = ChartData.filter((chart) => chart.id !== item.id);
+  const { CartData } = loadStateFromLocalStorage;
+  const updatedLocalStorage = CartData.filter((cart) => cart.id !== item.id);
   if (updatedLocalStorage.length === 0) {
     emptyCart(dispatch);
     return;
   }
-  localStorage.setItem("state", JSON.stringify({ ChartData: updatedLocalStorage }));
+  localStorage.setItem("state", JSON.stringify({ CartData: updatedLocalStorage }));
   dispatch(removeItem(item));
 };
 
 export const listenItemQuantity = (dispatch, item) => {
   const { clickedItem, quantity } = item;
   loadStateFromLocalStorage = loadState();
-  const { ChartData } = loadStateFromLocalStorage;
-  const itemToUpdate = ChartData.find((chart) => chart.id === clickedItem.id);
+  const { CartData } = loadStateFromLocalStorage;
+  const itemToUpdate = CartData.find((cart) => cart.id === clickedItem.id);
   itemToUpdate.quantity = parseInt(quantity);
-  const itemIndex = ChartData.findIndex((chart) => chart.id === itemToUpdate.id);
-  ChartData[itemIndex] = itemToUpdate;
-  ChartData.sort((a, b) => a.id - b.id);
-  saveState(null, ChartData);
+  const itemIndex = CartData.findIndex((cart) => cart.id === itemToUpdate.id);
+  CartData[itemIndex] = itemToUpdate;
+  CartData.sort((a, b) => a.id - b.id);
+  saveState(null, CartData);
   dispatch(listenQuantity(itemToUpdate));
 };
 
@@ -90,37 +88,36 @@ const CartSlicer = createSlice({
   initialState,
   reducers: {
     receiveItem: (state, action) => {
-      state.chartData.push(action.payload);
-      // localStorage.setItem("state", JSON.stringify({ ChartData: state.ChartData }));
+      state.cartData.push(action.payload);
     },
     increaseQuantity: (state, action) => {
-      const itemIndex = state.chartData.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.cartData.findIndex((item) => item.id === action.payload.id);
       if (itemIndex !== -1) {
-        state.chartData[itemIndex].quantity += 1;
+        state.cartData[itemIndex].quantity += 1;
         return;
       }
-      state.chartData.push({ ...action.payload, quantity: 1 });
+      state.cartData.push({ ...action.payload, quantity: 1 });
     },
     decreaseQuantity: (state, action) => {
-      const itemIndex = state.chartData.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.cartData.findIndex((item) => item.id === action.payload.id);
       if (itemIndex !== -1) {
-        state.chartData[itemIndex].quantity -= 1;
+        state.cartData[itemIndex].quantity -= 1;
       }
     },
     listenQuantity: (state, action) => {
-      const itemIndex = state.chartData.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.cartData.findIndex((item) => item.id === action.payload.id);
       if (itemIndex !== -1) {
-        state.chartData[itemIndex].quantity = action.payload.quantity;
+        state.cartData[itemIndex].quantity = action.payload.quantity;
       }
     },
     removeItem: (state, action) => {
-      const itemIndex = state.chartData.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.cartData.findIndex((item) => item.id === action.payload.id);
       if (itemIndex !== -1) {
-        state.chartData.splice(itemIndex, 1);
+        state.cartData.splice(itemIndex, 1);
       }
     },
     emptyLocalStorage: (state) => {
-      state.chartData = [];
+      state.cartData = [];
     },
   },
 });

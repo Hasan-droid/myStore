@@ -16,7 +16,7 @@ import CartLargeSizeView from "./CartPage_lg";
 const CartPage = ({ currentItems }) => {
   const [useBreakpointValue] = useOutletContext();
   //turn the useBreakpointValue into a function
-  const cartData = JSON.parse(localStorage.getItem("state"))?.ChartData ?? [];
+  const cartData = JSON.parse(localStorage.getItem("state"))?.CartData ?? [];
 
   const windowSize = useBreakpointValue({ base: "column", md: "720", lg: "lg" });
   console.log("ml ////////!!!!!!!!", windowSize);
