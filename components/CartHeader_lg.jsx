@@ -5,7 +5,7 @@ export default function CartHeaderLargeSize() {
   return (
     <>
       <Heading as="h2" size="lg" mb={5} color={"brand.glaucous"}>
-        Your Chart
+        Your Cart
       </Heading>
       <Grid templateColumns="repeat(11, 1fr)" gap={4} bg="white" p={2}>
         <Box gridColumn="1 /4" textAlign="left">

@@ -28,7 +28,7 @@ export default function CartHeader_sm() {
         color={phoneHeaderFontStyle2.color}
         style={phoneHeaderFontStyle2}
       >
-        Your Chart
+        Your Cart
       </Heading>
 
       <Grid templateColumns="repeat(13, 1fr)" gap={4} bg="white" p={2}>

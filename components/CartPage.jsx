@@ -94,7 +94,7 @@ const CartPage = ({ currentItems }) => {
           mt="20%"
         >
           <Text fontSize="4xl" color={"gray.500"}>
-            Your chart is empty
+            Your cart is empty
           </Text>
         </Box>
       ) : (
