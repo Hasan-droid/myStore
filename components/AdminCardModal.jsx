@@ -29,7 +29,7 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ProductImage from "./ProductImage";
+import AdminProductImage from "./AdminProductImage";
 import addIcon from "../assets/images/pngtransparentaddimageiconthumbnail.png";
 import LoadingScreen from "./LoadingScreen";
 export default function AdminCardModal({ item, image, type }) {
@@ -162,7 +162,7 @@ export default function AdminCardModal({ item, image, type }) {
                     alignItems="center"
                     flexDirection="column"
                   >
-                    <ProductImage image={image} error={error} />
+                    <AdminProductImage image={image} error={error} />
                   </GridItem>
 
                   <GridItem
