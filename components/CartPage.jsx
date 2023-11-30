@@ -45,6 +45,9 @@ const CartPage = ({ currentItems }) => {
   const handleRemoveItem = (e, id) => {
     // remove item from cart
     e.stopPropagation();
+    if (id === showImage.id) {
+      setShowImage({ render: false, id: null });
+    }
     const item = cartData.find((item) => item.id === id);
     removeItemFromCart(dispatch, item);
   };

@@ -119,7 +119,7 @@ export default function CartSmallSizeView({
                     icon={<FaTrash />}
                     aria-label="Remove item"
                     ml="auto"
-                    onClick={() => handleRemoveItem(id)}
+                    onClick={(e) => handleRemoveItem(e, id)}
                   />
                 </Grid>
               </motion.div>
