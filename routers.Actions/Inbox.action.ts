@@ -1,5 +1,4 @@
 import axios from "axios";
-import { redirect } from "../node_modules/react-router-dom/dist/index";
 
 interface ITypes {
   response: {

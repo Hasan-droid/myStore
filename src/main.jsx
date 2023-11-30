@@ -18,12 +18,13 @@ import theme from "../chakra.styles/theme.js";
 import CartAction from "../routers.Actions/Cart.action.ts";
 import OrdersPaginator from "../components/OrdersPaginator.tsx";
 import OrdersLoader from "../routers.loaders/orders.loader.ts";
-import OrdersAction from "../routers.Actions/Orders.action.ts";
+import InboxLoader from "../routers.loaders/Inbox.loader.ts";
+import InboxAction from "../routers.Actions/Inbox.action.ts";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Header />,
-    loader: OrdersLoader,
+    loader: InboxLoader,
 
     children: [
       {
@@ -47,7 +48,12 @@ const router = createBrowserRouter([
         path: "/orders",
         element: <OrdersPaginator itemsPerPage={8} />,
         loader: OrdersLoader,
-        action: OrdersAction,
+      },
+      {
+        path: "/inbox",
+        element: <OrdersPaginator itemsPerPage={8} />,
+        loader: InboxLoader,
+        action: InboxAction,
       },
     ],
   },

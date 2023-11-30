@@ -52,7 +52,7 @@ export default function NavBar_Med_Lg_Size({
             </>
           ) : (
             <Nav.Link>
-              <Link className="h" id="inbox" to="/orders">
+              <Link className="h" id="inbox" to="/inbox">
                 {" "}
                 <div className="chartIcon">
                   <BsFillInboxFill size={45} />
