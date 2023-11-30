@@ -23,8 +23,8 @@ const ImageCartPreview: React.FC<Product> = ({ image, name, description, price }
     fontweight: "bold",
   };
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-      <Image src={image} alt={name} />
+    <Box maxW="sm" borderWidth="1px" borderRadius="lg" shadow={"xl"}>
+      <Image src={image} alt={name} boxSize={"sm"} fit={"contain"} />
 
       <Grid
         //3 rows and 2 columns
