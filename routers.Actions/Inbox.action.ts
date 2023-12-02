@@ -10,11 +10,19 @@ interface ITypes {
 }
 
 export default async function ({ request, params }) {
-  debugger;
   const formData = await request.formData();
   const { id } = Object.fromEntries(formData);
   const intent = formData.get("intent");
   let data: ITypes["response"] = { state: 400, type: "error", message: "network error" };
+  if (intent === "paginator") {
+    const { itemsLength } = Object.fromEntries(formData);
+    const INBOX_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
+    await axios.get(INBOX_URL, { params: { limit: 12, offset: itemsLength } }).then((res) => {
+      console.log("res of more data", res);
+      const newItems = res.data;
+      data = { state: 200, type: "paginator", message: "items fetched successfully", data: newItems };
+    });
+  }
   if (intent === "items") {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
     await axios.get(`${BACKEND_URL}/${id}`).then((response) => {

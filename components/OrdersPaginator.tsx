@@ -2,7 +2,7 @@ import ReactPaginate from "react-paginate";
 import React, { useEffect, useState } from "react";
 import Orders from "./Orders.tsx";
 import "../styles/Pagination.css";
-import { useLoaderData, useSubmit } from "react-router-dom";
+import { useLoaderData, useSubmit, useActionData } from "react-router-dom";
 import { verifyAdmin } from "./Header.jsx";
 import Inbox from "./Inbox.tsx";
 import LoadingScreen from "./LoadingScreen";
@@ -31,11 +31,13 @@ function OrdersPaginator({ itemsPerPage }) {
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
   const { data } = useLoaderData() as ITypes["loaderData"];
+  const submit = useSubmit();
+  const dataFromActions = useActionData();
   useEffect(() => {
     console.log("orders data", data);
     setItems(data);
     //get phone property from data
-  }, [data]);
+  }, []);
 
   useEffect(() => {
     // debugger;
@@ -56,16 +58,17 @@ function OrdersPaginator({ itemsPerPage }) {
   useEffect(() => {
     debugger;
     const endOffset = itemOffset + itemsPerPage;
-    if (endOffset >= items.length) {
-      debugger;
-      const INBOX_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
-      axios.get(INBOX_URL, { params: { limit: 12, offset: items.length } }).then((res) => {
-        console.log("res of more data", res);
-        const newItems = res.data;
-        setItems([...items, ...newItems]);
-      });
+    if (endOffset >= items.length && items.length > 0) {
+      submit({ itemsLength: items.length, intent: "paginator" }, { method: "post" });
     }
   }, [itemOffset]);
+
+  useEffect(() => {
+    if (dataFromActions?.state === 200 && dataFromActions.type === "paginator") {
+      const newData = dataFromActions.data;
+      setItems([...items, ...newData]);
+    }
+  }, [dataFromActions]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
