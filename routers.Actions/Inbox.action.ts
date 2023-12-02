@@ -15,6 +15,7 @@ export default async function ({ request, params }) {
   const intent = formData.get("intent");
   let data: ITypes["response"] = { state: 400, type: "error", message: "network error" };
   if (intent === "paginator") {
+    debugger;
     const { itemsLength } = Object.fromEntries(formData);
     const INBOX_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
     await axios.get(INBOX_URL, { params: { limit: 12, offset: itemsLength } }).then((res) => {
@@ -38,7 +39,13 @@ export default async function ({ request, params }) {
     };
     await axios.put(`${BACKEND_URL}/${id}`, bodyRequest).then((response) => {
       if (response.status == 200) {
-        data = { state: 200, type: "deliver", message: "items fetched successfully" };
+        debugger;
+        data = {
+          state: 200,
+          type: "deliver",
+          message: "items fetched successfully",
+          data: response.data.updatedOrder,
+        };
       }
     });
   }
@@ -50,7 +57,13 @@ export default async function ({ request, params }) {
     };
     await axios.put(`${BACKEND_URL}/${id}`, bodyRequest).then((response) => {
       if (response.status == 200) {
-        data = { state: 200, type: "deliver", message: "items fetched successfully" };
+        debugger;
+        data = {
+          state: 200,
+          type: "deliver",
+          message: "items fetched successfully",
+          data: response.data.updatedOrder,
+        };
       }
     });
   }

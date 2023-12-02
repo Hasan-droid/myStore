@@ -55,8 +55,14 @@ function OrdersPaginator({ itemsPerPage }) {
     setPageCount(Math.ceil(items.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, items]);
 
+  const updateItemsArray = (order) => {
+    const itemsCopy = [...items];
+    const index = itemsCopy.findIndex((item) => item.id === order.id);
+    itemsCopy[index] = order;
+    setItems(itemsCopy);
+  };
+
   useEffect(() => {
-    debugger;
     const endOffset = itemOffset + itemsPerPage;
     if (endOffset >= items.length && items.length > 0) {
       submit({ itemsLength: items.length, intent: "paginator" }, { method: "post" });
@@ -64,6 +70,10 @@ function OrdersPaginator({ itemsPerPage }) {
   }, [itemOffset]);
 
   useEffect(() => {
+    if (dataFromActions?.state === 200 && dataFromActions.type === "deliver") {
+      debugger;
+      updateItemsArray(dataFromActions.data);
+    }
     if (dataFromActions?.state === 200 && dataFromActions.type === "paginator") {
       const newData = dataFromActions.data;
       setItems([...items, ...newData]);
