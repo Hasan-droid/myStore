@@ -2,10 +2,11 @@ import ReactPaginate from "react-paginate";
 import React, { useEffect, useState } from "react";
 import Orders from "./Orders.tsx";
 import "../styles/Pagination.css";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import { verifyAdmin } from "./Header.jsx";
 import Inbox from "./Inbox.tsx";
 import LoadingScreen from "./LoadingScreen";
+import axios from "axios";
 interface ITypes {
   loaderData: {
     data: {
@@ -37,13 +38,34 @@ function OrdersPaginator({ itemsPerPage }) {
   }, [data]);
 
   useEffect(() => {
+    // debugger;
     // Fetch items from another resources.
     const endOffset = itemOffset + itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     console.log(`Total items:`, items);
+
+    //do api call when reach the end of items array
+    const itemsLength = items.length;
+    const itemOffsets = itemOffset;
+    const itemPerPage = itemsPerPage;
+    const itemsSlice = items.slice(itemOffset, endOffset);
     setCurrentItems(items.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(items.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, items]);
+
+  useEffect(() => {
+    debugger;
+    const endOffset = itemOffset + itemsPerPage;
+    if (endOffset >= items.length) {
+      debugger;
+      const INBOX_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
+      axios.get(INBOX_URL, { params: { limit: 12, offset: items.length } }).then((res) => {
+        console.log("res of more data", res);
+        const newItems = res.data;
+        setItems([...items, ...newItems]);
+      });
+    }
+  }, [itemOffset]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
