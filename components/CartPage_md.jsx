@@ -96,7 +96,7 @@ export default function CartMediumSizeView({
                   icon={<FaTrash />}
                   aria-label="Remove item"
                   ml="auto"
-                  onClick={() => handleRemoveItem(id)}
+                  onClick={(e) => handleRemoveItem(e, id)}
                 />
               </Grid>
             </motion.div>
@@ -117,6 +117,7 @@ export default function CartMediumSizeView({
                     //i want the position of the image to not affect the other items
                     position="absolute"
                     zIndex="100"
+                    fit={"contain"}
                   />
                 </motion.Box>
               </AnimatePresence>

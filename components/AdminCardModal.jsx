@@ -29,10 +29,10 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ProductImage from "./ProductImage";
+import AdminProductImage from "./AdminProductImage";
 import addIcon from "../assets/images/pngtransparentaddimageiconthumbnail.png";
 import LoadingScreen from "./LoadingScreen";
-export default function CardModal({ item, image, type }) {
+export default function AdminCardModal({ item, image, type }) {
   //destructuring the item object
   const { title, description, price } = item || {};
 
@@ -44,7 +44,7 @@ export default function CardModal({ item, image, type }) {
   const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
   const [isLoading, setIsLoading] = useState(false);
   const dataFromActions = useActionData();
-  const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
+  const windowSize = useBreakpointValue({ base: "xs", md: "md", lg: "lg" });
   //count how many times this component is rendered
   const clearDataInputs = () => {
     setItemPrice(0);
@@ -100,12 +100,18 @@ export default function CardModal({ item, image, type }) {
     <>
       {type === "image" &&
         (image?.url ? (
-          <Box cursor="pointer" onClick={onOpen}>
-            <Image src={image?.url} alt={item?.title} borderRadius="lg" />
+          <Box cursor="pointer" onClick={onOpen} w={300} h={300}>
+            <Image
+              src={image?.url}
+              alt={item?.title}
+              boxSize={300}
+              objectFit={"contain"}
+              //circle the image radius
+            />
           </Box>
         ) : (
           <Box cursor="pointer" onClick={onOpen}>
-            <Image src={addIcon} alt={item?.title} borderRadius="lg" />
+            <Image src={addIcon} alt={item?.title} />
           </Box>
         ))}
 
@@ -144,19 +150,20 @@ export default function CardModal({ item, image, type }) {
               <Box>
                 {isLoading && <LoadingScreen isLoading={isLoading} />}
                 <Grid
-                  templateRows={{ base: "repeat(3, 1fr)", md: "repeat(1, 1fr)", lg: "repeat(1, 1fr)" }}
+                  templateRows={{ base: "repeat(0, 1fr)", md: "repeat(1, 1fr)", lg: "repeat(1, 1fr)" }}
                   templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)", lg: "repeat(5, 1fr)" }}
-                  gap={2}
+                  gap={1}
                 >
                   <GridItem
                     rowSpan={1}
-                    colSpan={{ base: 5, md: 5, lg: 3 }}
+                    colSpan={{ base: 5, md: 5, lg: 4 }}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
                     flexDirection="column"
+                    h="90%"
                   >
-                    <ProductImage image={image} error={error} />
+                    <AdminProductImage image={image} error={error} />
                   </GridItem>
 
                   <GridItem
@@ -230,7 +237,7 @@ export default function CardModal({ item, image, type }) {
                     placeholder="Description"
                     type="text"
                     size="sm"
-                    height="3xs"
+                    height={{ base: "2xs", md: "150px", lg: "xs" }}
                     name="item_description"
                     value={itemDescription}
                     onChange={(e) => {
@@ -255,7 +262,6 @@ export default function CardModal({ item, image, type }) {
                 colorScheme="red"
                 mr={3}
                 onClick={onClose}
-                type="submit"
                 name="intent"
                 value="clear errors"
                 variant="ghost"

@@ -1,7 +1,9 @@
 import React from "react";
 import { Flex, Text, Button } from "@chakra-ui/react";
-
+import ContactModal from "./ContactModal";
+import { CheckTokenExperimentData } from "./Header";
 export default function CartFooter_lg_md({ itemId, showImage, cartData, totalPrice, handleCheckOut }) {
+  const userToken = localStorage.getItem("token");
   const pullDownFooter = () => {
     console.log("pullDownFooter", itemId);
     if (!itemId || !showImage.render) return 0;
@@ -25,15 +27,18 @@ export default function CartFooter_lg_md({ itemId, showImage, cartData, totalPri
       <Text fontWeight="bold" fontSize="lg">
         Total: ${totalPrice}
       </Text>
-      <Button
-        colorScheme="teal"
-        size="lg"
-        onClick={() => {
-          handleCheckOut();
-        }}
-      >
-        Check out
-      </Button>
+      {CheckTokenExperimentData(userToken) && (
+        <Button
+          colorScheme="teal"
+          size="lg"
+          onClick={() => {
+            handleCheckOut();
+          }}
+        >
+          Check out
+        </Button>
+      )}
+      {!CheckTokenExperimentData(userToken) && <ContactModal />}
     </Flex>
   );
 }

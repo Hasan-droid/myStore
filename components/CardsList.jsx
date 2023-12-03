@@ -4,22 +4,24 @@ import axios from "axios";
 import { Grid, Progress, Box } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../styles/CardsList.css";
-import { useLoaderData, useActionData, useOutletContext } from "react-router-dom";
+import { useLoaderData, useActionData, useOutletContext, useNavigationType } from "react-router-dom";
 import { motion } from "framer-motion";
 import jwtDecode from "jwt-decode";
-import CardModal from "./CardModal";
+import AdminCardModal from "./AdminCardModal";
 
 export default function CardsList() {
   const [TempItemsNumber, setTempItemsNumber] = useState(0); // this is the number of items that will be fetched from the backend// this is the number of items that will be fetched from the backend
   //use node linked list to store the data in the items state
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [clickOnImage, setClickOnImage] = useState(false);
   const CARDS_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/gallery";
   const pageDocument = document.location.pathname.split("/")[1];
   const dataFromActions = useActionData();
   const { data } = useLoaderData();
   //only take the verifyAdmin function from the outlet context array
   const [, verifyAdmin] = useOutletContext();
+  const navigationType = useNavigationType();
 
   let NumberOfCardsOffset = useRef(0);
   let NumberOfCardsLimit = useRef(4);
@@ -51,7 +53,6 @@ export default function CardsList() {
 
     // if (!dataFromActions?.state === 200 && !dataFromActions?.type === "delete")
     if (dataFromActions?.data?.state === 200 && dataFromActions?.data?.type === "edit") {
-      debugger;
       console.log("dataFromActions", dataFromActions);
       const indexOfEditedItem = items.findIndex((item) => item.id === parseInt(dataFromActions?.data.item.id));
       const item = dataFromActions?.data?.item;
@@ -71,6 +72,11 @@ export default function CardsList() {
       setItems(newArray);
       return;
     }
+
+    if (clickOnImage) {
+      setClickOnImage(false);
+      return;
+    }
     console.log("[[[[[data]]]", data);
     setItems(data);
     resetData();
@@ -88,7 +94,7 @@ export default function CardsList() {
       return;
     }
     setTempItemsNumber(items.length);
-    NumberOfCardsOffset.current += 4;
+    NumberOfCardsOffset.current += items.length - TempItemsNumber;
     axios
       .get(CARDS_URL, {
         params: { limit: NumberOfCardsLimit.current, offset: NumberOfCardsOffset.current, page: pageDocument },
@@ -106,7 +112,13 @@ export default function CardsList() {
 
   // get the url params
   const CardsMaps = items.map((i, index) => (
-    <Card key={index} cardsType={pageDocument} item={i} verifyAdmin={verifyAdmin} />
+    <Card
+      key={index}
+      cardsType={pageDocument}
+      item={i}
+      verifyAdmin={verifyAdmin}
+      setClickOnImage={setClickOnImage}
+    />
   ));
 
   return (
@@ -139,9 +151,10 @@ export default function CardsList() {
           <Grid
             templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
             transition="all 0.5s ease-in-out"
-            gap={6}
+            gap={8}
             align="center"
             justify="center"
+            mt={10}
           >
             {verifyAdmin() && (
               <Box
@@ -155,7 +168,7 @@ export default function CardsList() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <CardModal type={"add"} />
+                <AdminCardModal type={"add"} />
               </Box>
             )}
 

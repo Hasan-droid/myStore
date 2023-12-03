@@ -47,7 +47,7 @@ const PreviewImage = forwardRef((props, ref) => {
       rounded="sm"
       borderColor="gray.400"
       as={motion.div}
-      backgroundSize="cover"
+      backgroundSize="contain"
       backgroundRepeat="no-repeat"
       backgroundPosition="center"
       // backgroundImage={`url("https://image.shutterstock.com/image-photo/paella-traditional-classic-spanish-seafood-600w-1662253543.jpg")`}
@@ -57,7 +57,7 @@ const PreviewImage = forwardRef((props, ref) => {
   );
 });
 
-export default function ProductImage({ image, error }) {
+export default function AdminProductImage({ image, error }) {
   const [imageFile, setImageFile] = useState(null);
   const [imageError, setImageError] = useState(error);
   console.log("error props form image", imageError);
@@ -120,12 +120,6 @@ export default function ProductImage({ image, error }) {
                       newprops="just checking in"
                     />
                   </Box>
-                  {/* <Stack p="8" textAlign="center" spacing="1">
-                  <Heading fontSize="sm" color="gray.700" fontWeight="bold">
-                    Drop images here
-                  </Heading>
-                  <Text fontWeight="light">or click to upload</Text>
-                </Stack> */}
                 </Stack>
               </Box>
               <Input
@@ -142,6 +136,7 @@ export default function ProductImage({ image, error }) {
                 onDragEnter={startAnimation}
                 onDragLeave={stopAnimation}
                 onChange={(e) => handleImageChange(e)}
+                cursor={"pointer"}
               />
             </Box>
           </Box>

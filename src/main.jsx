@@ -4,7 +4,7 @@ import App from "./App.jsx";
 import Header from "../components/Header.jsx";
 import SignIn from "../components/SignIn.jsx";
 import SignupCard from "../components/signup.jsx";
-import ChartII from "../components/CartPage.jsx";
+import CartPage from "../components/CartPage.jsx";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -15,10 +15,16 @@ import CategoryLoader from "../routers.loaders/category.loader.js";
 import store from "../Redux/store/store.js";
 import CategoryAction from "../routers.Actions/Category.action.js";
 import theme from "../chakra.styles/theme.js";
+import CartAction from "../routers.Actions/Cart.action.ts";
+import OrdersPaginator from "../components/OrdersPaginator.tsx";
+import OrdersLoader from "../routers.loaders/orders.loader.ts";
+import InboxLoader from "../routers.loaders/Inbox.loader.ts";
+import InboxAction from "../routers.Actions/Inbox.action.ts";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Header />,
+    loader: InboxLoader,
 
     children: [
       {
@@ -34,8 +40,20 @@ const router = createBrowserRouter([
         action: CategoryAction,
       },
       {
-        path: "/chart",
-        element: <ChartII />,
+        path: "/cart",
+        element: <CartPage />,
+        action: CartAction,
+      },
+      {
+        path: "/orders",
+        element: <OrdersPaginator itemsPerPage={8} />,
+        loader: OrdersLoader,
+      },
+      {
+        path: "/inbox",
+        element: <OrdersPaginator itemsPerPage={8} />,
+        loader: InboxLoader,
+        action: InboxAction,
       },
     ],
   },

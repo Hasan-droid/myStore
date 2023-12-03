@@ -12,22 +12,25 @@ import {
   Button,
   Box,
   Input,
+  Tooltip,
 } from "@chakra-ui/react";
 import "../styles/Cards.css";
 import { useDispatch } from "react-redux";
-import { increaseItemQuantityByOne } from "../Redux/features/ChartSlicer";
+import { increaseItemQuantityByOne } from "../Redux/features/CartSlicer";
 import { Form } from "react-router-dom";
 import { useEffect, useState } from "react";
-import CardModal from "./CardModal";
+import AdminCardModal from "./AdminCardModal";
+import UserCardModal from "./UserCardModal";
+import { BeatLoader } from "react-spinners";
 
-export default function Cards({ cardsType, item, verifyAdmin }) {
+export default function Cards({ cardsType, item, verifyAdmin, setClickOnImage }) {
   console.log("[[[[item]]]]]", item);
   const dispatch = useDispatch();
   const [changeStyle, setChangeStyle] = useState({ changeStyle: false, id: null });
   const [itemImages, setItemImages] = useState([[]]);
 
   useEffect(() => {
-    setItemImages((item?.images || [])[0]);
+    setItemImages(item?.images || []);
   }, [item]);
 
   const handleChangeStyle = (item) => {
@@ -46,8 +49,8 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
       transition="all 0.2s ease-in-out"
     >
       <Card
-        maxW="sm"
-        m={4}
+        maxW={"-moz-fit-content"}
+        m={2}
         boxShadow="2xl"
         bg={changeStyle.changeStyle && changeStyle.id === item.id ? "red.100" : "white"}
         //transform translateX all the items.id that are less than the item.id
@@ -57,7 +60,11 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
         //add some transition to the card when the card is deleted
       >
         <CardBody>
-          <CardModal image={itemImages} item={item} type={"image"} />
+          {verifyAdmin() && <AdminCardModal image={itemImages[0]} item={item} type={"image"} />}
+          {!verifyAdmin() && (
+            <UserCardModal image={itemImages} item={item} type={"image"} setClickOnImage={setClickOnImage} />
+          )}
+
           <Stack mt="3" spacing="2px">
             <Heading size="md">{item.title}</Heading>
             <Text>{item.description}</Text>
@@ -70,9 +77,16 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
         <CardFooter>
           {!verifyAdmin() ? (
             <ButtonGroup spacing="2">
-              <Button variant="solid" colorScheme="blue">
-                Buy now
-              </Button>
+              <Tooltip hasArrow label="Coming soon" bg="blue.300" color="black">
+                <Button
+                  variant="solid"
+                  colorScheme="blue"
+                  isLoading
+                  spinner={<BeatLoader size={9} color="white" />}
+                >
+                  Buy now
+                </Button>
+              </Tooltip>
               <Button variant="ghost" colorScheme="blue" onClick={() => increaseItemQuantityByOne(dispatch, item)}>
                 Add to cart
               </Button>
@@ -80,8 +94,9 @@ export default function Cards({ cardsType, item, verifyAdmin }) {
           ) : (
             <Form method="post">
               <Input type="hidden" name="id" value={item.id} />
+
               <ButtonGroup spacing="2">
-                <CardModal item={item} image={itemImages} type={"edit"} />
+                <AdminCardModal item={item} image={itemImages[0]} type={"edit"} />
                 <Button
                   variant="ghost"
                   colorScheme="red"

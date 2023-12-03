@@ -4,7 +4,7 @@ import { Box, Grid, Image, Text, IconButton, Button } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { Input } from "@chakra-ui/react";
-import { listenItemQuantity } from "../Redux/features/ChartSlicer";
+import { listenItemQuantity } from "../Redux/features/CartSlicer";
 import { useDispatch } from "react-redux";
 import CartHeader_sm from "./CartHeader_sm";
 import CartFooter_sm from "./CartFooter_sm";
@@ -119,7 +119,7 @@ export default function CartSmallSizeView({
                     icon={<FaTrash />}
                     aria-label="Remove item"
                     ml="auto"
-                    onClick={() => handleRemoveItem(id)}
+                    onClick={(e) => handleRemoveItem(e, id)}
                   />
                 </Grid>
               </motion.div>
@@ -140,6 +140,7 @@ export default function CartSmallSizeView({
                       //i want the position of the image to not affect the other items
                       position="absolute"
                       zIndex="1"
+                      fit={"contain"}
                     />
                   </motion.Box>
                 </AnimatePresence>

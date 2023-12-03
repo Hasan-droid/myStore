@@ -12,16 +12,23 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import NavBar_Med_Lg_Size from "./NavBar_Med_Lg_Size";
 import NavBar_sm_Size from "./NavBar_sm_Size";
 import jwtDecode from "jwt-decode";
-import { useActionData } from "react-router-dom";
+import { useActionData, useLoaderData } from "react-router-dom";
 import CustomToast from "./Toast";
-
+import "../styles/scrollBar.css";
 export const CheckTokenExperimentData = (token) => {
   if (!token) return true;
   const currentTime = new Date().getTime() / 1000;
   const decodeToken = jwtDecode(token);
   return decodeToken.exp < currentTime ? true : false;
 };
-
+// eslint-disable-next-line react-refresh/only-export-components
+export const verifyAdmin = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+  const decodeToken = jwtDecode(token);
+  if (decodeToken.role === "admin") return true;
+  return false;
+};
 export default function Header() {
   const dataFromActions = useActionData();
   console.log("[[[[[[datafromAction]]]]", dataFromActions);
@@ -31,19 +38,26 @@ export default function Header() {
   const [showToast, setShowToast] = useState(false);
   const [toastReceivedStatus, setToastReceivedStatus] = useState("");
   const windowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
+  const [totalOrderInbox, setTotalOrderInbox] = useState(0);
+  const { numberOfPendingOrders } = useLoaderData();
   console.log("windowSize", windowSize);
   const itemsData = useSelector((state) => {
-    return state.ChartSlicer;
+    return state.CartSlicer;
   });
 
   useEffect(() => {
     let count = 0;
-    itemsData.chartData.forEach((item) => {
+    itemsData.cartData.forEach((item) => {
       console.log("item ]]]]]]]]]", item);
       count += item?.quantity;
     });
     setCartItemNumber(count);
   }, [itemsData]);
+
+  useEffect(() => {
+    setTotalOrderInbox(numberOfPendingOrders);
+    //get phone property from data
+  }, [numberOfPendingOrders]);
 
   useEffect(() => {
     if (!dataFromActions) return;
@@ -67,14 +81,6 @@ export default function Header() {
     navigate("/waterSpaces");
   };
 
-  const verifyAdmin = () => {
-    const token = localStorage.getItem("token");
-    if (!token) return false;
-    const decodeToken = jwtDecode(token);
-    if (decodeToken.role === "admin") return true;
-    return false;
-  };
-
   return (
     <>
       {showToast && (
@@ -91,6 +97,7 @@ export default function Header() {
             userToken={userToken}
             handleLogOut={handleLogOut}
             verifyAdmin={verifyAdmin}
+            totalOrderInbox={totalOrderInbox}
           />
         )}
         {windowSize === "base" && (
@@ -99,6 +106,7 @@ export default function Header() {
             userToken={userToken}
             handleLogOut={handleLogOut}
             verifyAdmin={verifyAdmin}
+            totalOrderInbox={totalOrderInbox}
           />
         )}
         <Spacer />
@@ -107,7 +115,9 @@ export default function Header() {
         {/* send useBreakpointValue as function to outlet context */}
         <Outlet context={[useBreakpointValue, verifyAdmin]} />
       </Box>
-      <Footer />
+      <Box zIndex={20} position="relative" bottom="0" width="100%">
+        <Footer />
+      </Box>
     </>
   );
 }

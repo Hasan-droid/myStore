@@ -7,11 +7,11 @@ const initialState = {
   error: "",
 };
 
-export const fetchItemsData = createAsyncThunk("ChartItemsDataSlicer/fetchItems", () => {
+export const fetchItemsData = createAsyncThunk("CartItemsDataSlicer/fetchItems", () => {
   return axios.get(CARDS_URL).then((response) => response.data.map((item) => item.title));
 });
-const ChartItemsDataSlicer = createSlice({
-  name: "ChartItemsDataSlicer",
+const CartItemsDataSlicer = createSlice({
+  name: "CartItemsDataSlicer",
   initialState,
   extraReducers: (builder) => {
     builder.addCase(fetchItemsData.fulfilled, (state, action) => {
@@ -26,4 +26,4 @@ const ChartItemsDataSlicer = createSlice({
   },
 });
 
-export default ChartItemsDataSlicer.reducer;
+export default CartItemsDataSlicer.reducer;

@@ -1,0 +1,30 @@
+/* FILEPATH: /C:/Users/admin/myStore/styles/scrollBarCart.css */
+body {
+  overflow-y: scroll;
+  height: 100%;
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+/* hide the scroll bar */
+/* ::-webkit-scrollbar {
+  display: none;
+} */
+
+/* BEGIN: Customize scroll bar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c6ebbe;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #95b2b0;
+}
