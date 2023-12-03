@@ -47,10 +47,6 @@ function OrdersPaginator({ itemsPerPage }) {
     console.log(`Total items:`, items);
 
     //do api call when reach the end of items array
-    const itemsLength = items.length;
-    const itemOffsets = itemOffset;
-    const itemPerPage = itemsPerPage;
-    const itemsSlice = items.slice(itemOffset, endOffset);
     setCurrentItems(items.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(items.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, items]);
@@ -63,6 +59,8 @@ function OrdersPaginator({ itemsPerPage }) {
   };
 
   useEffect(() => {
+    debugger;
+    if (!verifyAdmin()) return;
     const endOffset = itemOffset + itemsPerPage;
     if (endOffset >= items.length && items.length > 0) {
       submit({ itemsLength: items.length, intent: "paginator" }, { method: "post" });
@@ -71,7 +69,6 @@ function OrdersPaginator({ itemsPerPage }) {
 
   useEffect(() => {
     if (dataFromActions?.state === 200 && dataFromActions.type === "deliver") {
-      debugger;
       updateItemsArray(dataFromActions.data);
     }
     if (dataFromActions?.state === 200 && dataFromActions.type === "paginator") {
@@ -82,6 +79,7 @@ function OrdersPaginator({ itemsPerPage }) {
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
+    debugger;
     const newOffset = (event.selected * itemsPerPage) % items.length;
     console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
     setItemOffset(newOffset);
