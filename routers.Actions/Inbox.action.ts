@@ -20,7 +20,7 @@ export default async function ({ request, params }) {
     const INBOX_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
     await axios.get(INBOX_URL, { params: { limit: 12, offset: itemsLength } }).then((res) => {
       console.log("res of more data", res);
-      const newItems = res.data;
+      const newItems = res.data.orders;
       data = { state: 200, type: "paginator", message: "items fetched successfully", data: newItems };
     });
   }

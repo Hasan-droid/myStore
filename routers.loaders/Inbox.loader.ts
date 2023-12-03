@@ -21,7 +21,7 @@ export default async function InboxLoader({ params }) {
     .get(INBOX_URL, { params: { limit: 16, offset: 0 } })
     .then((res) => {
       console.log("loaders of inbox ", res.data);
-      return (data = { data: res.data, state: true });
+      return (data = { data: res.data.orders, numberOfPendingOrders: res.data.numberOfPendingOrders });
     })
     .catch((err) => {
       console.log(err);

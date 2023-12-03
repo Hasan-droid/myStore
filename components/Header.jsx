@@ -39,7 +39,7 @@ export default function Header() {
   const [toastReceivedStatus, setToastReceivedStatus] = useState("");
   const windowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
   const [totalOrderInbox, setTotalOrderInbox] = useState(0);
-  const { data } = useLoaderData();
+  const { numberOfPendingOrders } = useLoaderData();
   console.log("windowSize", windowSize);
   const itemsData = useSelector((state) => {
     return state.CartSlicer;
@@ -55,10 +55,9 @@ export default function Header() {
   }, [itemsData]);
 
   useEffect(() => {
-    const totalPendingOrders = data.filter((order) => order.orderStatus === "pending").length;
-    setTotalOrderInbox(totalPendingOrders);
+    setTotalOrderInbox(numberOfPendingOrders);
     //get phone property from data
-  }, [data]);
+  }, [numberOfPendingOrders]);
 
   useEffect(() => {
     if (!dataFromActions) return;
