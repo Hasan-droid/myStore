@@ -44,7 +44,7 @@ export default function AdminCardModal({ item, image, type }) {
   const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
   const [isLoading, setIsLoading] = useState(false);
   const dataFromActions = useActionData();
-  const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
+  const windowSize = useBreakpointValue({ base: "xs", md: "md", lg: "lg" });
   //count how many times this component is rendered
   const clearDataInputs = () => {
     setItemPrice(0);
@@ -152,7 +152,7 @@ export default function AdminCardModal({ item, image, type }) {
                 <Grid
                   templateRows={{ base: "repeat(0, 1fr)", md: "repeat(1, 1fr)", lg: "repeat(1, 1fr)" }}
                   templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)", lg: "repeat(5, 1fr)" }}
-                  gap={2}
+                  gap={1}
                 >
                   <GridItem
                     rowSpan={1}
@@ -237,7 +237,7 @@ export default function AdminCardModal({ item, image, type }) {
                     placeholder="Description"
                     type="text"
                     size="sm"
-                    height="3xs"
+                    height={{ base: "2xs", md: "150px", lg: "xs" }}
                     name="item_description"
                     value={itemDescription}
                     onChange={(e) => {
