@@ -16,8 +16,6 @@ interface ITypes {
 }
 
 const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
-  console.log("currentItems//////", currentItems);
-
   useEffect(() => {
     window.scrollTo(0, -200);
   }, []);
