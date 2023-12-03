@@ -18,7 +18,7 @@ export default async function InboxLoader({ params }) {
   }
 
   await axios
-    .get(INBOX_URL, { params: { limit: 16, offset: 0 } })
+    .get(INBOX_URL, { params: { limit: 16, offset: 0 }, headers: { Authorization: `Bearer ${token}` } })
     .then((res) => {
       console.log("loaders of inbox ", res.data);
       return (data = { data: res.data.orders, numberOfPendingOrders: res.data.numberOfPendingOrders });
