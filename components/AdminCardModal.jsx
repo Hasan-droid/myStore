@@ -150,17 +150,18 @@ export default function AdminCardModal({ item, image, type }) {
               <Box>
                 {isLoading && <LoadingScreen isLoading={isLoading} />}
                 <Grid
-                  templateRows={{ base: "repeat(3, 1fr)", md: "repeat(1, 1fr)", lg: "repeat(1, 1fr)" }}
+                  templateRows={{ base: "repeat(0, 1fr)", md: "repeat(1, 1fr)", lg: "repeat(1, 1fr)" }}
                   templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)", lg: "repeat(5, 1fr)" }}
                   gap={2}
                 >
                   <GridItem
                     rowSpan={1}
-                    colSpan={{ base: 5, md: 5, lg: 3 }}
+                    colSpan={{ base: 5, md: 5, lg: 4 }}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
                     flexDirection="column"
+                    h="90%"
                   >
                     <AdminProductImage image={image} error={error} />
                   </GridItem>
