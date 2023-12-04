@@ -22,7 +22,6 @@ import { useEffect, useState } from "react";
 import AdminCardModal from "./AdminCardModal";
 import UserCardModal from "./UserCardModal";
 import { BeatLoader } from "react-spinners";
-import "../styles/Card.css";
 
 export default function Cards({ cardsType, item, verifyAdmin, setClickOnImage }) {
   console.log("[[[[item]]]]]", item);
