@@ -22,6 +22,8 @@ in this project I demonstrate my skills in developing **Full Stack** web applica
   - Node Express js
   - sequelize
   * sequelize-CLI
+  * pg
+  * pg-hstore
   - postgresql
 
 ## Website
