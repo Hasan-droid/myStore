@@ -24,13 +24,11 @@ const ImageCartPreview: React.FC<Product> = ({ image, name, description, price }
   };
   return (
     <Box maxW="sm" borderWidth="1px" borderRadius="lg" shadow={"xl"}>
-      <Image src={image} alt={name} boxSize={"sm"} fit={"contain"} />
+      <Image src={image} alt={name} boxSize={"xs"} m={"auto"} mt={"4"} fit={"contain"} />
 
       <Grid
         //3 rows and 2 columns
-        templateRows="repeat(3, 1fr)"
-        templateColumns="repeat(2, 1fr)"
-        gap={4}
+
         p="6"
       >
         <Text //italic text style
@@ -40,10 +38,8 @@ const ImageCartPreview: React.FC<Product> = ({ image, name, description, price }
         </Text>
         <Text style={infoStyle}>{name}</Text>
         <Text style={headStyle}>Description :</Text>
-        <Text color="gray.500" fontSize="sm" mb="4">
-          {description}
-        </Text>
-        <Text style={headStyle}>Price</Text>
+        <Text style={infoStyle}>{description}</Text>
+        <Text style={headStyle}>Price :</Text>
         <Text style={infoStyle}>${price}</Text>
       </Grid>
     </Box>
