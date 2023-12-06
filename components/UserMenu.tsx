@@ -17,7 +17,7 @@ interface ITypes {
   };
 }
 
-const UserMenu: React.FC<ITypes["props"]> = ({ handleLogOut, userToken, verifyAdmin }) => {
+const UserMenu: React.FC<ITypes["props"]> = ({ handleLogOut, userToken, isAdmin }) => {
   const navigate = useNavigate();
   return (
     <Box ml="7" mr={"4"}>
@@ -46,7 +46,7 @@ const UserMenu: React.FC<ITypes["props"]> = ({ handleLogOut, userToken, verifyAd
               Login
             </MenuItem>
           )}
-          {!verifyAdmin() && (
+          {!isAdmin && (
             <MenuItem
               bg={"white"}
               color={"black"}

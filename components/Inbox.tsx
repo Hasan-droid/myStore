@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text, Table, Thead, Tbody, Tr, Th, Td, Badge } from "@chakra-ui/react";
+import { Box, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import PurchaseOrderModal from "./PurshaseOrderModal";
-import { Form } from "react-router-dom";
+import { Form, useOutletContext, useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
 interface ITypes {
   props: {
@@ -18,11 +18,24 @@ interface ITypes {
       phoneNumber?: string;
     }[];
   };
+  outLetContext: {
+    isAdmin?: boolean;
+  }[];
 }
 
 const Inbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
   console.log("currentItems//////", currentItems);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  //define the type of useOutletContext from Itypes interface
+  const [, , isAdmin] = useOutletContext() as ITypes["outLetContext"];
+  console.log("isAdmin from inbox", isAdmin);
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate("/waterSpaces");
+    }
+  }, [isAdmin]);
 
   useEffect(() => {
     window.scrollTo(0, -200);

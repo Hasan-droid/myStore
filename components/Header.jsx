@@ -19,14 +19,23 @@ export const CheckTokenExperimentData = (token) => {
   if (!token) return true;
   const currentTime = new Date().getTime() / 1000;
   const decodeToken = jwtDecode(token);
-  return decodeToken.exp < currentTime ? true : false;
+  if (decodeToken.exp < currentTime) {
+    localStorage.removeItem("token");
+    return true;
+  }
+  //the false means that the token is not expired
+  return false;
 };
 // eslint-disable-next-line react-refresh/only-export-components
 export const verifyAdmin = () => {
+  debugger;
   const token = localStorage.getItem("token");
-  if (!token) return false;
-  const decodeToken = jwtDecode(token);
-  if (decodeToken.role === "admin") return true;
+  if (CheckTokenExperimentData(token)) return false;
+  if (!CheckTokenExperimentData(token)) {
+    const decodeToken = jwtDecode(token);
+    if (decodeToken.role === "admin") return true;
+  }
+  //the false means the user is not admin
   return false;
 };
 export default function Header() {
@@ -40,6 +49,7 @@ export default function Header() {
   const windowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
   const [totalOrderInbox, setTotalOrderInbox] = useState(0);
   const { numberOfPendingOrders } = useLoaderData();
+  const [isAdmin, setIsAdmin] = useState(verifyAdmin());
   console.log("windowSize", windowSize);
   const itemsData = useSelector((state) => {
     return state.CartSlicer;
@@ -77,9 +87,13 @@ export default function Header() {
   }, [dataFromActions]);
 
   const handleLogOut = () => {
+    debugger;
     localStorage.removeItem("token");
     navigate("/waterSpaces");
   };
+  setInterval(() => {
+    setIsAdmin(verifyAdmin());
+  }, import.meta.env.VITE_TOKEN_CHECK_TIME_EXPIRATION_INTERVAL);
 
   return (
     <>
@@ -96,7 +110,7 @@ export default function Header() {
             cartItemsNumber={cartItemsNumber}
             userToken={userToken}
             handleLogOut={handleLogOut}
-            verifyAdmin={verifyAdmin}
+            isAdmin={isAdmin}
             totalOrderInbox={totalOrderInbox}
           />
         )}
@@ -113,7 +127,7 @@ export default function Header() {
       </Flex>
       <Box minH={"75vh"} id="cardsList">
         {/* send useBreakpointValue as function to outlet context */}
-        <Outlet context={[useBreakpointValue, verifyAdmin]} />
+        <Outlet context={[useBreakpointValue, verifyAdmin, isAdmin]} />
       </Box>
       <Box zIndex={20} position="relative" bottom="0" width="100%">
         <Footer />

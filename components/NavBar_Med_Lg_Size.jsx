@@ -11,7 +11,7 @@ export default function NavBar_Med_Lg_Size({
   cartItemsNumber,
   userToken,
   handleLogOut,
-  verifyAdmin,
+  isAdmin,
   totalOrderInbox,
 }) {
   return (
@@ -38,7 +38,7 @@ export default function NavBar_Med_Lg_Size({
               </Link>
             </Nav.Link>
           </Nav>
-          {!verifyAdmin() ? (
+          {!isAdmin ? (
             <>
               <Nav.Link>
                 <Link className="h" to="/cart" id="cart">
@@ -62,7 +62,7 @@ export default function NavBar_Med_Lg_Size({
             </Nav.Link>
           )}
           <Nav.Link>
-            <UserMenu handleLogOut={handleLogOut} userToken={userToken} verifyAdmin={verifyAdmin} />
+            <UserMenu handleLogOut={handleLogOut} userToken={userToken} isAdmin={isAdmin} />
           </Nav.Link>
         </Container>
       </Navbar>
