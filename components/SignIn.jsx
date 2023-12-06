@@ -162,11 +162,8 @@ export default function SignIn() {
                   />
                   <FormErrorMessage>
                     {console.log("error.fields.username.required", error.type)}
-                    {error.fields.username.required === true && error.type.filed === true && error.message.filed}
-                    {username &&
-                      error.fields.username.required === true &&
-                      error.type.format === true &&
-                      error.message.format}
+                    {!username && error.type.filed === true && error.message.filed}
+                    {username && error.type.format === true && error.message.format}
                   </FormErrorMessage>
                 </FormControl>
                 <FormControl id="password" isInvalid={error.fields.password.required === true}>
@@ -182,9 +179,7 @@ export default function SignIn() {
                     value={password}
                   />
                   <FormErrorMessage>
-                    {error.fields.password.required === true && error.type.filed === true
-                      ? error.message.filed
-                      : ""}
+                    {!password && error.type.filed === true ? error.message.filed : ""}
                   </FormErrorMessage>
                 </FormControl>
                 <Stack spacing={10}>
