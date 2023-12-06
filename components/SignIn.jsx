@@ -63,7 +63,7 @@ export default function SignIn() {
     message: { filed: "", format: "" },
     fields,
   };
-  const [error, setError] = useState(errorContent);
+  const [error, setError] = useState({ ...errorContent });
   const handleClick = () => {
     let trackError = errorContent;
     debugger;
@@ -179,6 +179,10 @@ export default function SignIn() {
                     value={password}
                   />
                   <FormErrorMessage>
+                    {console.log(
+                      "password ////", //show the boolean value of the password
+                      Boolean(error.fields.password.required)
+                    )}
                     {!password && error.type.filed === true ? error.message.filed : ""}
                   </FormErrorMessage>
                 </FormControl>
