@@ -4,19 +4,21 @@ import jwtDecode from "jwt-decode";
 const userSignInURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/user/signin";
 let status = {};
 export default async function SignInaction({ request, params }) {
+  debugger;
   //check if the user username and password is empty
   console.log("userSignInURL ", userSignInURL);
   const formData = await request.formData();
   const user = Object.fromEntries(formData);
-  if (user.username === "" && user.password === "") {
-    return { data: { state: true, type: "username and password field", message: "this filed is required" } };
-  }
-  if (user.username === "") {
-    return { data: { state: true, type: "username field", message: "this filed is required" } };
-  }
-  if (user.password === "") {
-    return { data: { state: true, type: "password field", message: "this filed is required" } };
-  }
+  let fields = {
+    username: {
+      required: false,
+    },
+    password: {
+      required: false,
+      minLength: 8,
+      maxLength: 20,
+    },
+  };
   try {
     const response = await axios.post(userSignInURL, user).then((res) => {
       const token = res.data?.token;
@@ -47,7 +49,17 @@ export default async function SignInaction({ request, params }) {
       return { data: { state: true, type: "toast", message: "Network Error" } };
     }
     if (error.response?.status === 401 || error.response.status === 404) {
-      return { data: { state: true, type: "invalid", message: "Invalid username or password" } };
+      fields = {
+        username: {
+          required: true,
+        },
+        password: {
+          required: true,
+          minLength: 8,
+          maxLength: 20,
+        },
+      };
+      return { data: { state: true, type: "invalid", message: "Invalid username or password", fields } };
     }
     console.log(error.response);
   }

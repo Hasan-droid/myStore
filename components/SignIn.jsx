@@ -16,13 +16,17 @@ import {
   Divider,
   Spinner,
 } from "@chakra-ui/react";
-import { Form, useActionData, Link } from "react-router-dom";
+import { Form, useActionData, Link, useSubmit } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CustomToast from "./Toast";
+import { on } from "process";
 export default function SignIn() {
   const dataFromActions = useActionData();
   const [showToast, setShowToast] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const submit = useSubmit();
   useEffect(() => {
     console.log("dataFromActions?.data", dataFromActions?.data);
     if (dataFromActions?.data?.state && dataFromActions?.data?.type === "toast") {
@@ -35,13 +39,62 @@ export default function SignIn() {
     }
     if (dataFromActions?.data.state) {
       setIsLoading(false);
-      setError({ state: true, type: dataFromActions?.data.type, message: dataFromActions?.data.message });
+      setError({
+        state: true,
+        type: dataFromActions?.data.type,
+        message: dataFromActions?.data.message,
+        fields: dataFromActions?.data.fields,
+      });
     }
   }, [dataFromActions?.data]);
-
-  const [error, setError] = useState({ state: false, type: "", message: "" });
+  let fields = {
+    username: {
+      required: false,
+    },
+    password: {
+      required: false,
+      minLength: 8,
+      maxLength: 20,
+    },
+  };
+  const errorContent = {
+    state: false,
+    type: { filed: false, format: false },
+    message: { filed: "", format: "" },
+    fields,
+  };
+  const [error, setError] = useState(errorContent);
   const handleClick = () => {
-    if (error) if (error.state) return;
+    let trackError = errorContent;
+    debugger;
+    let isError = false;
+    //test if username mathch email regex
+    if (!username.match(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
+      trackError.fields.username.required = true;
+      trackError.message.format = "Email must be in format name@example.com";
+      trackError.type.format = true;
+      isError = true;
+    }
+    //test if password is empty
+
+    if (password === "") {
+      trackError.fields.password.required = true;
+      trackError.message.filed = "Filed Required";
+      trackError.type.filed = true;
+      isError = true;
+    }
+    if (username === "") {
+      trackError.fields.username.required = true;
+      trackError.message.filed = "Filed Required";
+      trackError.type.filed = true;
+      isError = true;
+    }
+    if (isError) {
+      setError(trackError);
+      return;
+    }
+
+    submit({ username: username, password: password }, { method: "post" });
     setIsLoading(true);
   };
   return (
@@ -95,35 +148,42 @@ export default function SignIn() {
                 <FormControl isInvalid={error.state}>
                   <FormErrorMessage>{error.type === "invalid" ? error.message : ""}</FormErrorMessage>
                 </FormControl>
-                <FormControl
-                  id="email"
-                  isInvalid={
-                    (error.state && error.type === "username field") ||
-                    error.type === "invalid" ||
-                    error.type === "username and password field"
-                  }
-                >
+                <FormControl id="email" isInvalid={error.fields?.username.required}>
                   <FormLabel>Email address</FormLabel>
-                  <Input type="email" name="username" onChange={() => setError({ state: false })} />
+                  <Input
+                    type="email"
+                    name="username"
+                    value={username}
+                    onChange={(e) => {
+                      error.fields.username.required = false;
+                      setError(error);
+                      setUserName(e.target.value);
+                    }}
+                  />
                   <FormErrorMessage>
-                    {error.type === "username field" || error.type === "username and password field"
-                      ? error.message
-                      : ""}
+                    {console.log("error.fields.username.required", error.type)}
+                    {error.fields.username.required === true && error.type.filed === true && error.message.filed}
+                    {username &&
+                      error.fields.username.required === true &&
+                      error.type.format === true &&
+                      error.message.format}
                   </FormErrorMessage>
                 </FormControl>
-                <FormControl
-                  id="password"
-                  isInvalid={
-                    (error.state && error.type === "password field") ||
-                    error.type === "invalid" ||
-                    error.type === "username and password field"
-                  }
-                >
+                <FormControl id="password" isInvalid={error.fields.password.required === true}>
                   <FormLabel>Password</FormLabel>
-                  <Input type="password" name="password" onChange={() => setError(false)} />
+                  <Input
+                    type="password"
+                    name="password"
+                    onChange={(e) => {
+                      error.fields.password.required = false;
+                      setError(error);
+                      setPassword(e.target.value);
+                    }}
+                    value={password}
+                  />
                   <FormErrorMessage>
-                    {error.type === "password field" || error.type === "username and password field"
-                      ? error.message
+                    {error.fields.password.required === true && error.type.filed === true
+                      ? error.message.filed
                       : ""}
                   </FormErrorMessage>
                 </FormControl>
@@ -134,7 +194,6 @@ export default function SignIn() {
                   </Stack>
 
                   <Button
-                    type="submit"
                     bg={"blue.400"}
                     color={"white"}
                     _hover={{
