@@ -69,7 +69,10 @@ export default function SignIn() {
     debugger;
     let isError = false;
     //test if username mathch email regex
-    if (!username.match(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
+    //i want to inclue all charcters in the regex
+
+    const emailRegex = new RegExp(import.meta.env.VITE_TOKEN_EMAIL_REGEX, "i");
+    if (!emailRegex.test(username)) {
       trackError.fields.username.required = true;
       trackError.message.format = "Email must be in format name@example.com";
       trackError.type.format = true;
