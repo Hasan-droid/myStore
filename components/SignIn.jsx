@@ -66,7 +66,6 @@ export default function SignIn() {
   const [error, setError] = useState({ ...errorContent });
   const handleClick = () => {
     let trackError = errorContent;
-    debugger;
     let isError = false;
     //test if username mathch email regex
     //i want to inclue all charcters in the regex

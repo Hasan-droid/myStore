@@ -4,7 +4,6 @@ import jwtDecode from "jwt-decode";
 const userSignInURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/user/signin";
 let status = {};
 export default async function SignInaction({ request, params }) {
-  debugger;
   //check if the user username and password is empty
   console.log("userSignInURL ", userSignInURL);
   const formData = await request.formData();
@@ -69,8 +68,13 @@ export default async function SignInaction({ request, params }) {
     if (status.data.role === "user" || status.data.role === "admin") {
       //save token in local storage
       localStorage.setItem("token", status.data.token);
-
-      if (status.data.role === "user") return redirect("/cart");
+      const cart = JSON.parse(localStorage.getItem("state"));
+      if (status.data.role === "user") {
+        if (cart?.CartData) {
+          return redirect("/cart");
+        }
+        return redirect("/waterSpaces");
+      }
       return redirect("/waterSpaces");
     }
   }
