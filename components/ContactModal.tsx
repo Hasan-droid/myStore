@@ -48,7 +48,7 @@ interface actionDataType {
   data: ITypes["ActionData"];
 }
 
-const ContactModal: React.FC<ITypes["props"]> = ({ size }) => {
+const CheckOutModal: React.FC<ITypes["props"]> = ({ size }) => {
   const navigate = useNavigate();
   const selector = useSelector((state: any) => state.CheckOutSlicer);
   const Dispatch = useDispatch();
@@ -200,4 +200,4 @@ const ContactModal: React.FC<ITypes["props"]> = ({ size }) => {
   );
 };
 
-export default ContactModal;
+export default CheckOutModal;

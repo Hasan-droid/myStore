@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Text, Button } from "@chakra-ui/react";
-import ContactModal from "./ContactModal";
+import CheckOutModal from "./CheckOutModal";
 import { CheckTokenExperimentData } from "./Header";
 import { useDispatch } from "react-redux";
 import { openModal } from "../Redux/features/CheckOutSlicer";
@@ -42,7 +42,7 @@ export default function CartFooter_lg_md({ itemId, showImage, cartData, totalPri
           Check out
         </Button>
       )}
-      {!CheckTokenExperimentData(userToken) && <ContactModal />}
+      {!CheckTokenExperimentData(userToken) && <CheckOutModal />}
     </Flex>
   );
 }
