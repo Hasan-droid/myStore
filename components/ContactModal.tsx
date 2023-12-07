@@ -40,12 +40,15 @@ interface ITypes {
     name: string;
     email: string;
   };
+  props: {
+    size: string;
+  };
 }
 interface actionDataType {
   data: ITypes["ActionData"];
 }
 
-const ContactModal: React.FC = () => {
+const ContactModal: React.FC<ITypes["props"]> = ({ size }) => {
   const navigate = useNavigate();
   const selector = useSelector((state: any) => state.CheckOutSlicer);
   const Dispatch = useDispatch();
@@ -100,11 +103,11 @@ const ContactModal: React.FC = () => {
 
   return (
     <>
-      <Button colorScheme="teal" size="lg" onClick={onOpen}>
+      <Button colorScheme="teal" size={size} onClick={onOpen}>
         Check out
       </Button>
 
-      <Modal isOpen={isOpen} onClose={() => handleClose} closeOnOverlayClick={false}>
+      <Modal isOpen={isOpen} onClose={() => handleClose} closeOnOverlayClick={false} size={size}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Contact Info</ModalHeader>
@@ -170,6 +173,7 @@ const ContactModal: React.FC = () => {
               <Button
                 colorScheme="teal"
                 m={2}
+                size={size}
                 type="submit"
                 value="create"
                 name="intent"
@@ -181,6 +185,7 @@ const ContactModal: React.FC = () => {
                 variant="ghost"
                 colorScheme="blue"
                 mr={3}
+                size={size}
                 onClick={() => {
                   handleClose();
                 }}
