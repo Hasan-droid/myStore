@@ -48,7 +48,7 @@ export default async function SignUpAction({ request, params }) {
   const bodyRequest = {
     firstname: user.firstname,
     lastname: user.lastname,
-    username: user.username,
+    username: user.username.toLowerCase(),
     password: user.password,
   };
   console.log("bodyRequest ", bodyRequest);

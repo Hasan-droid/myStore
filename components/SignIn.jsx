@@ -96,7 +96,7 @@ export default function SignIn() {
       return;
     }
 
-    submit({ username: username, password: password }, { method: "post" });
+    submit({ username: username.toLowerCase(), password: password }, { method: "post" });
     setIsLoading(true);
   };
   return (
