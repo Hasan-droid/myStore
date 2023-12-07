@@ -13,6 +13,8 @@ import {
 import { Box, FormControl, FormLabel, FormErrorMessage, Input } from "@chakra-ui/react";
 import { Form, useActionData, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { closeModal } from "../redux/features/CheckOutSlicer";
 import jwtDecode from "jwt-decode";
 import LoadingScreen from "./LoadingScreen";
 
@@ -45,6 +47,9 @@ interface actionDataType {
 
 const ContactModal: React.FC = () => {
   const navigate = useNavigate();
+  const selector = useSelector((state: any) => state.CheckOutSlicer);
+  const Dispatch = useDispatch();
+  console.log("selector", selector);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -82,13 +87,24 @@ const ContactModal: React.FC = () => {
     }
   }, [dataFromAction]);
 
+  useEffect(() => {
+    if (selector?.openModal === true) {
+      onOpen();
+    }
+  }, [selector]);
+
+  const handleClose = () => {
+    Dispatch(closeModal());
+    onClose();
+  };
+
   return (
     <>
       <Button colorScheme="teal" size="lg" onClick={onOpen}>
         Check out
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+      <Modal isOpen={isOpen} onClose={() => handleClose} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Contact Info</ModalHeader>
@@ -161,7 +177,14 @@ const ContactModal: React.FC = () => {
               >
                 Make order
               </Button>
-              <Button variant="ghost" colorScheme="blue" mr={3} onClick={onClose}>
+              <Button
+                variant="ghost"
+                colorScheme="blue"
+                mr={3}
+                onClick={() => {
+                  handleClose();
+                }}
+              >
                 Close
               </Button>
             </ModalFooter>

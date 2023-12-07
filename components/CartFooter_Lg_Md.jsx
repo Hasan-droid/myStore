@@ -2,7 +2,10 @@ import React from "react";
 import { Flex, Text, Button } from "@chakra-ui/react";
 import ContactModal from "./ContactModal";
 import { CheckTokenExperimentData } from "./Header";
+import { useDispatch } from "react-redux";
+import { openModal } from "../Redux/features/CheckOutSlicer";
 export default function CartFooter_lg_md({ itemId, showImage, cartData, totalPrice, handleCheckOut }) {
+  const dispatch = useDispatch();
   const userToken = localStorage.getItem("token");
   const pullDownFooter = () => {
     console.log("pullDownFooter", itemId);
@@ -32,6 +35,7 @@ export default function CartFooter_lg_md({ itemId, showImage, cartData, totalPri
           colorScheme="teal"
           size="lg"
           onClick={() => {
+            dispatch(openModal());
             handleCheckOut();
           }}
         >
