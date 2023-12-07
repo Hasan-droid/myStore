@@ -28,7 +28,6 @@ export const CheckTokenExperimentData = (token) => {
 };
 // eslint-disable-next-line react-refresh/only-export-components
 export const verifyAdmin = () => {
-  debugger;
   const token = localStorage.getItem("token");
   if (CheckTokenExperimentData(token)) return false;
   if (!CheckTokenExperimentData(token)) {
@@ -40,7 +39,6 @@ export const verifyAdmin = () => {
 };
 export default function Header() {
   const dataFromActions = useActionData();
-  console.log("[[[[[[datafromAction]]]]", dataFromActions);
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
   const [cartItemsNumber, setCartItemNumber] = React.useState([]);
@@ -50,7 +48,6 @@ export default function Header() {
   const [totalOrderInbox, setTotalOrderInbox] = useState(0);
   const { numberOfPendingOrders } = useLoaderData();
   const [isAdmin, setIsAdmin] = useState(verifyAdmin());
-  console.log("windowSize", windowSize);
   const itemsData = useSelector((state) => {
     return state.CartSlicer;
   });
@@ -58,7 +55,6 @@ export default function Header() {
   useEffect(() => {
     let count = 0;
     itemsData.cartData.forEach((item) => {
-      console.log("item ]]]]]]]]]", item);
       count += item?.quantity;
     });
     setCartItemNumber(count);
@@ -87,7 +83,6 @@ export default function Header() {
   }, [dataFromActions]);
 
   const handleLogOut = () => {
-    debugger;
     localStorage.removeItem("token");
     navigate("/waterSpaces");
   };
