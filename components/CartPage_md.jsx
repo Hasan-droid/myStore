@@ -92,12 +92,17 @@ export default function CartMediumSizeView({
                     </Button>
                   </Box>
                 </Box>
-                <IconButton
-                  icon={<FaTrash />}
-                  aria-label="Remove item"
-                  ml="auto"
-                  onClick={(e) => handleRemoveItem(e, id)}
-                />
+                <Box gridColumn="10/11">
+                  <Text fontSize="sm" color="gray.500">
+                    ${price * quantity}
+                  </Text>
+                  <IconButton
+                    icon={<FaTrash />}
+                    aria-label="Remove item"
+                    ml="auto"
+                    onClick={(e) => handleRemoveItem(e, id)}
+                  />
+                </Box>
               </Grid>
             </motion.div>
 
