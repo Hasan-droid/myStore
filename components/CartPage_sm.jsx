@@ -101,7 +101,13 @@ export default function CartSmallSizeView({
                       scaleFooter(id);
                     }}
                   >
-                    <Image src={images[0].url} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
+                    <Image
+                      src={images[0].url}
+                      alt={title}
+                      boxSize={{ base: "50px", md: "75px" }}
+                      mr={4}
+                      fit={"unset"}
+                    />
                   </Box>
                   <Box gridColumn="2 /6" ml={2}>
                     <Text fontWeight="400" fontSize="sm" mb={0}>
