@@ -73,7 +73,7 @@ export default function SignIn() {
     const emailRegex = new RegExp(import.meta.env.VITE_TOKEN_EMAIL_REGEX, "i");
     if (!emailRegex.test(username)) {
       trackError.fields.username.required = true;
-      trackError.message.format = "Email must be in format name@example.com";
+      trackError.message.format = import.meta.env.VITE_TOKEN_EMAIL_REGEX_MESSAGE;
       trackError.type.format = true;
       isError = true;
     }
