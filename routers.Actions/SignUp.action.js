@@ -3,6 +3,7 @@ import { redirect } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
 export default async function SignUpAction({ request, params }) {
+  debugger;
   const signUpURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/user/signup";
   let status = {};
   const inputFields = { firstname: "", lastname: "", username: "", password: "" };
@@ -15,7 +16,7 @@ export default async function SignUpAction({ request, params }) {
   let filedEmpty = false;
   const formData = await request.formData();
   const user = Object.fromEntries(formData);
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  const emailRegex = import.meta.env.VITE_TOKEN_EMAIL_REGEX;
 
   if (user.firstname === "") {
     filedEmpty = true;
@@ -28,11 +29,11 @@ export default async function SignUpAction({ request, params }) {
   if (user.username === "") {
     filedEmpty = true;
     errorReturn.data.filed.username = { required: true };
-  } else if (!emailRegex.test(user.username)) {
+  } else if (!user.username.match(emailRegex)) {
     filedEmpty = true;
     errorReturn.data.filed.username = {
       required: true,
-      formatMessage: "E-mail must be in format name@example.extesion",
+      formatMessage: "E-mail must be in format name@example.com",
     };
   }
   if (user.password === "") {
