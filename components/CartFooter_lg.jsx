@@ -34,7 +34,7 @@ export default function CartFooter_lg({ itemId, showImage, cartData, totalPrice,
       //add some animation when margin top change
       transition="margin-top 0.5s ease-in-out"
       // mt={pullDownFooter()}
-      mt={pullDownFooter()}
+      // mt={pullDownFooter()}
       flexDirection="column"
     >
       <Text fontWeight="bold" fontSize="lg">
