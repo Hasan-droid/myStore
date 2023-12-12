@@ -44,7 +44,8 @@ export default function CartSmallSizeView({
   const [scaleFooterState, setScaleFooterState] = useState(false);
   const [refreshComponent, setRefreshComponent] = useState(false);
   const scaleFooter = (itemId) => {
-    const itemIdBeforeLastItem = cartData[cartData.length - 2].id;
+    debugger;
+    const itemIdBeforeLastItem = cartData[cartData.length - 2]?.id;
     const itemIdLastItem = cartData[cartData.length - 1].id;
     if (itemIdBeforeLastItem <= itemId && itemId <= itemIdLastItem) {
       setScaleFooterState(true);
