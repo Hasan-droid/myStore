@@ -50,6 +50,10 @@ export default function CartSmallSizeView({
       setScaleFooterState(true);
       return;
     }
+    if (itemId === itemIdLastItem) {
+      setScaleFooterState(true);
+      return;
+    }
     setScaleFooterState(false);
   };
   console.log("show Image", showImage);
