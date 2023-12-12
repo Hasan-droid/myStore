@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import CartSlicer from "../features/CartSlicer";
-import CheckOutSlicer from "../features/CheckOutSlicer";
+import LoginInSlicer from "../features/LoginInSlicer";
 
 const rootReducer = combineReducers({
   CartSlicer: CartSlicer,
-  CheckOutSlicer: CheckOutSlicer,
+  LoginInSlicer: LoginInSlicer,
 });
 
 const store = configureStore({

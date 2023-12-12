@@ -4,7 +4,7 @@ const initialState = {
   openModal: false,
 };
 
-export const checkOutSlicer = createSlice({
+export const LoginInSlicer = createSlice({
   name: "checkOut",
   initialState,
   reducers: {
@@ -17,5 +17,5 @@ export const checkOutSlicer = createSlice({
   },
 });
 
-export const { openModal, closeModal } = checkOutSlicer.actions;
-export default checkOutSlicer.reducer;
+export const { openModal, closeModal } = LoginInSlicer.actions;
+export default LoginInSlicer.reducer;

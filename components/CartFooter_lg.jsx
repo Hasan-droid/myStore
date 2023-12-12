@@ -3,7 +3,7 @@ import { Flex, Text, Button, Box } from "@chakra-ui/react";
 import CheckOutModal from "./CheckOutModal";
 import { CheckTokenExperimentData } from "./Header";
 import { useDispatch } from "react-redux";
-import { openModal } from "../Redux/features/CheckOutSlicer";
+import { openModal } from "../Redux/features/LoginInSlicer";
 export default function CartFooter_lg({ itemId, showImage, cartData, totalPrice, handleCheckOut }) {
   const dispatch = useDispatch();
   const userToken = localStorage.getItem("token");
