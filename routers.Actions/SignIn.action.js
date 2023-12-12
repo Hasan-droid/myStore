@@ -1,11 +1,14 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import store from "../Redux/store/store";
 const userSignInURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/user/signin";
 let status = {};
 export default async function SignInaction({ request, params }) {
   //check if the user username and password is empty
-  console.log("userSignInURL ", userSignInURL);
+
+  const isUserLoginFromHomePage = store.getState().LoginInSlicer.loginFromHomePage;
+  console.log("userSignInURL ", isUserLoginFromHomePage);
   const formData = await request.formData();
   const user = Object.fromEntries(formData);
   let fields = {
@@ -70,6 +73,10 @@ export default async function SignInaction({ request, params }) {
       localStorage.setItem("token", status.data.token);
       const cart = JSON.parse(localStorage.getItem("state"));
       if (status.data.role === "user") {
+        if (isUserLoginFromHomePage) {
+          const pageLoggedInFrom = store.getState().LoginInSlicer.pageLoggedInFrom;
+          return redirect("/" + pageLoggedInFrom);
+        }
         if (cart?.CartData) {
           return redirect("/cart");
         }
