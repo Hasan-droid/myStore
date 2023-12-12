@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Grid, Text, Image, IconButton, Button, Flex, Divider } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import CartHeaderLargeSize from "./CartHeader_lg";
-import CartFooter_Lg_Md from "./CartFooter_Lg_Md";
+import CartFooter_lg from "./CartFooter_lg";
+import { useSize } from "@chakra-ui/react-use-size";
 
 import ImageCartPreview from "./ImageCartPreview";
 
@@ -20,6 +21,14 @@ export default function CartLargeSizeView({
   const [previewImage, setPreviewImage] = useState("");
   const [itemId, setItemId] = useState(null);
   const [cardData, setCardData] = useState([]);
+  // const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [refElement, setRefElement] = useState(null);
+  const boxRef = useRef(null);
+  const dimensions = useSize(boxRef);
+  useEffect(() => {
+    console.log("diminsionsII", dimensions);
+  }, [dimensions]);
+  console.log("boxRefII", dimensions);
   const handlePreviewImage = (image) => {
     setPreviewImage(image);
   };
@@ -31,9 +40,16 @@ export default function CartLargeSizeView({
       window.scrollTo(0, 100);
     }
   }, [showImage]);
+
   return (
-    <Box minW="100%" mt={8} px={4} ml={"-10"}>
-      <Flex minH={"90vh"}>
+    <Box
+      minW="100%"
+      mt={20}
+      px={4}
+      ml={"-10"}
+      // zIndex={20}
+    >
+      <Flex>
         <Box flex="2" minW="950px">
           <Box mr={"6%"} ml={"6%"}></Box>
 
@@ -57,6 +73,7 @@ export default function CartLargeSizeView({
                     handleShowImageForPhone(id);
                     handlePreviewImage(images[0].url);
                     setItemId(id);
+                    console.log("boxRef", refElement);
                   }}
                   key={id}
                   templateColumns="repeat(11, 1fr)"
@@ -132,13 +149,14 @@ export default function CartLargeSizeView({
           </Box>
         </Box>
         <Box
+          ref={boxRef}
           // height="400px"
           // display="flex"
           flex="2"
           alignItems="center"
           justifyContent="space-between"
           ml="100"
-          mt="5%"
+          mt="3%"
           minW="400px"
         >
           {showImage.render && showImage.id === itemId && (
@@ -154,26 +172,22 @@ export default function CartLargeSizeView({
                   name={cardData.title}
                   description={cardData.description}
                   price={cardData.price}
+                  setRefElement={setRefElement}
                 />
-                {/* <Image
-                  src={previewImage}
-                  alt="Preview"
-                  boxSize={{ base: "250px", md: "400px" }}
-                  fit={"contain"}
-                  //add some animation to image when show
-                /> */}
               </motion.Box>
             </AnimatePresence>
           )}
         </Box>
       </Flex>
-      <CartFooter_Lg_Md
-        itemId={null}
-        showImage={showImage}
-        cartData={cartData}
-        totalPrice={totalPrice}
-        handleCheckOut={handleCheckOut}
-      />
+      <Box>
+        <CartFooter_lg
+          itemId={dimensions?.height}
+          showImage={showImage}
+          cartData={cartData}
+          totalPrice={totalPrice}
+          handleCheckOut={handleCheckOut}
+        />
+      </Box>
     </Box>
   );
 }
