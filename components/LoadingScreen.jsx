@@ -1,7 +1,7 @@
 import React from "react";
 import { Spinner } from "@chakra-ui/react";
 
-export default function LoadingScreen({ isLoading }) {
+export default function LoadingScreen({ isLoading, height, width }) {
   return (
     <>
       {isLoading && (
@@ -15,8 +15,8 @@ export default function LoadingScreen({ isLoading }) {
             position: "absolute", // Position the spinner within the form
             top: "0%",
             left: "0%",
-            width: "100%",
-            height: "80%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
+            width: width ? width + "%" : "100%",
+            height: height ? height + "%" : "100%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
           }}
         >
           <Spinner
