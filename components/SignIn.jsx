@@ -19,7 +19,7 @@ import {
 import { Form, useActionData, Link, useSubmit } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CustomToast from "./Toast";
-import { on } from "process";
+import LoadingScreen from "./LoadingScreen";
 export default function SignIn() {
   const dataFromActions = useActionData();
   const [showToast, setShowToast] = useState(false);
@@ -104,38 +104,8 @@ export default function SignIn() {
       {showToast && (
         <CustomToast receivedPosition="top" receivedStatus="error" receivedTitle={dataFromActions.data.message} />
       )}
-      {isLoading && (
-        <div
-          className="toto"
-          style={{
-            // filter: isLoading ? "blur(4px)" : "none",
-            backgroundColor: isLoading ? "rgba(255, 255, 255, 0.5)" : null,
-            // position: "relative",
-            zIndex: 5,
-            position: "absolute", // Position the spinner within the form
-            top: "0%",
-            left: "0%",
-            width: "100%",
-            height: "100%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
-          }}
-        ></div>
-      )}
-      {isLoading && (
-        <div className="spinner" style={{ zIndex: 50 }}>
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-            position="absolute" // Position the spinner within the form
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            // Center the spinner
-          />
-        </div>
-      )}
+
+      <LoadingScreen isLoading={isLoading} height={99.9} width={90} />
       <Flex minH={"100vh"} align={"center"} justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>

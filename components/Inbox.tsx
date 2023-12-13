@@ -64,7 +64,7 @@ const Inbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
                 </Tr>
               </Thead>
               <Tbody>
-                <LoadingScreen isLoading={loading} />
+                <LoadingScreen isLoading={loading} height={50} />
                 {currentItems?.map((order) => (
                   <PurchaseOrderModal order={order} key={order.id} setLoading={setLoading} isLoading={loading} />
                 ))}
