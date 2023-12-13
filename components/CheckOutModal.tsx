@@ -14,7 +14,7 @@ import { Box, FormControl, FormLabel, FormErrorMessage, Input } from "@chakra-ui
 import { Form, useActionData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { closeModal } from "../redux/features/LoginInSlicer";
+import { closeModal } from "../Redux/features/LoginInSlicer";
 import jwtDecode from "jwt-decode";
 import LoadingScreen from "./LoadingScreen";
 

@@ -4,7 +4,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import { BiLogOut, BiLogIn, BiSolidArchiveOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginFromHomePage } from "../redux/features/LoginInSlicer";
+import { loginFromHomePage } from "../Redux/features/LoginInSlicer";
 
 const hoverStyle = {
   bg: "black",
