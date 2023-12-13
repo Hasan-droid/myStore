@@ -9,9 +9,13 @@ import { useDispatch } from "react-redux";
 import CartHeader_sm from "./CartHeader_sm";
 import CartFooter_sm from "./CartFooter_sm";
 
-const ChangeQunatity = ({ quntity, item }) => {
+const ChangeQunatity = ({ quntity, item, refreshComponent }) => {
+  console.log("item from ChangeQunatity", item);
   const [quantityState, setQuantityState] = useState(quntity);
   const dispatch = useDispatch();
+  useEffect(() => {
+    setQuantityState(quntity);
+  }, [refreshComponent]);
   return (
     <Input
       padding="10px"
@@ -38,10 +42,15 @@ export default function CartSmallSizeView({
   handleCheckOut,
 }) {
   const [scaleFooterState, setScaleFooterState] = useState(false);
+  const [refreshComponent, setRefreshComponent] = useState(false);
   const scaleFooter = (itemId) => {
-    const itemIdBeforeLastItem = cartData[cartData.length - 2].id;
+    const itemIdBeforeLastItem = cartData[cartData.length - 2]?.id;
     const itemIdLastItem = cartData[cartData.length - 1].id;
     if (itemIdBeforeLastItem <= itemId && itemId <= itemIdLastItem) {
+      setScaleFooterState(true);
+      return;
+    }
+    if (itemId === itemIdLastItem) {
       setScaleFooterState(true);
       return;
     }
@@ -55,7 +64,6 @@ export default function CartSmallSizeView({
         cartData.map((item) => {
           const { id, title, price, category, images, quantity } = item;
 
-          // const [quantityState, setQuantityState] = useState(quantity);
           return (
             <>
               <motion.div
@@ -97,7 +105,13 @@ export default function CartSmallSizeView({
                       scaleFooter(id);
                     }}
                   >
-                    <Image src={images[0].url} alt={title} boxSize={{ base: "50px", md: "75px" }} mr={4} />
+                    <Image
+                      src={images[0].url}
+                      alt={title}
+                      boxSize={{ base: "50px", md: "75px" }}
+                      mr={4}
+                      fit={"unset"}
+                    />
                   </Box>
                   <Box gridColumn="2 /6" ml={2}>
                     <Text fontWeight="400" fontSize="sm" mb={0}>
@@ -113,14 +127,31 @@ export default function CartSmallSizeView({
                     </Text>
                   </Box>
                   <Box gridColumn="8/ 11">
-                    <ChangeQunatity quntity={quantity} item={item} />
+                    <ChangeQunatity quntity={quantity} item={item} refreshComponent={refreshComponent} />
                   </Box>
-                  <IconButton
-                    icon={<FaTrash />}
-                    aria-label="Remove item"
-                    ml="auto"
-                    onClick={(e) => handleRemoveItem(e, id)}
-                  />
+                  <Box gridColumn="11/12">
+                    <Text
+                      mb={"1"}
+                      mt={"-22"}
+                      fontSize="xs"
+                      color="gray.500"
+                      display={"flex"}
+                      justifyContent={"center"}
+                      minW={"100%"}
+                    >
+                      ${price * quantity}
+                    </Text>
+
+                    <IconButton
+                      icon={<FaTrash />}
+                      aria-label="Remove item"
+                      ml="auto"
+                      onClick={(e) => {
+                        handleRemoveItem(e, id);
+                        setRefreshComponent(!refreshComponent);
+                      }}
+                    />
+                  </Box>
                 </Grid>
               </motion.div>
 

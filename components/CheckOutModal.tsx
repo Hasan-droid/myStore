@@ -13,6 +13,8 @@ import {
 import { Box, FormControl, FormLabel, FormErrorMessage, Input } from "@chakra-ui/react";
 import { Form, useActionData, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { closeModal } from "../redux/features/LoginInSlicer";
 import jwtDecode from "jwt-decode";
 import LoadingScreen from "./LoadingScreen";
 
@@ -38,13 +40,19 @@ interface ITypes {
     name: string;
     email: string;
   };
+  props: {
+    size: string;
+  };
 }
 interface actionDataType {
   data: ITypes["ActionData"];
 }
 
-const ContactModal: React.FC = () => {
+const CheckOutModal: React.FC<ITypes["props"]> = ({ size }) => {
   const navigate = useNavigate();
+  const selector = useSelector((state: any) => state.LoginInSlicer);
+  const Dispatch = useDispatch();
+  console.log("selector", selector);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -82,13 +90,24 @@ const ContactModal: React.FC = () => {
     }
   }, [dataFromAction]);
 
+  useEffect(() => {
+    if (selector?.openModal === true) {
+      onOpen();
+    }
+  }, [selector]);
+
+  const handleClose = () => {
+    Dispatch(closeModal());
+    onClose();
+  };
+
   return (
     <>
-      <Button colorScheme="teal" size="lg" onClick={onOpen}>
+      <Button colorScheme="teal" size={size} onClick={onOpen}>
         Check out
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+      <Modal isOpen={isOpen} onClose={() => handleClose} closeOnOverlayClick={false} size={size}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Contact Info</ModalHeader>
@@ -154,6 +173,7 @@ const ContactModal: React.FC = () => {
               <Button
                 colorScheme="teal"
                 m={2}
+                size={size}
                 type="submit"
                 value="create"
                 name="intent"
@@ -161,7 +181,15 @@ const ContactModal: React.FC = () => {
               >
                 Make order
               </Button>
-              <Button variant="ghost" colorScheme="blue" mr={3} onClick={onClose}>
+              <Button
+                variant="ghost"
+                colorScheme="blue"
+                mr={3}
+                size={size}
+                onClick={() => {
+                  handleClose();
+                }}
+              >
                 Close
               </Button>
             </ModalFooter>
@@ -172,4 +200,4 @@ const ContactModal: React.FC = () => {
   );
 };
 
-export default ContactModal;
+export default CheckOutModal;

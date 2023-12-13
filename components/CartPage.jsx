@@ -41,13 +41,16 @@ const CartPage = ({ currentItems }) => {
     //scroll to the top of the page
     window.scrollTo(0, -200);
   }, []);
+  const closeReviewImage = (id) => {
+    if (id === showImage.id) {
+      setShowImage({ render: false, id: null });
+    }
+  };
 
   const handleRemoveItem = (e, id) => {
     // remove item from cart
     e.stopPropagation();
-    if (id === showImage.id) {
-      setShowImage({ render: false, id: null });
-    }
+    closeReviewImage(id);
     const item = cartData.find((item) => item.id === id);
     removeItemFromCart(dispatch, item);
   };

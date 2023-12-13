@@ -31,7 +31,7 @@ export default function CartHeader_sm() {
         Your Cart
       </Heading>
 
-      <Grid templateColumns="repeat(13, 1fr)" gap={4} bg="white" p={2}>
+      <Grid templateColumns="repeat(13, 1fr)" gap={4} bg="white" p={2} mb={"2"}>
         <Box gridColumn="1 /8" textAlign="left">
           <Text style={phoneHeaderFontStyle}>Product</Text>
         </Box>

@@ -66,7 +66,6 @@ export default function SignIn() {
   const [error, setError] = useState({ ...errorContent });
   const handleClick = () => {
     let trackError = errorContent;
-    debugger;
     let isError = false;
     //test if username mathch email regex
     //i want to inclue all charcters in the regex
@@ -74,7 +73,7 @@ export default function SignIn() {
     const emailRegex = new RegExp(import.meta.env.VITE_TOKEN_EMAIL_REGEX, "i");
     if (!emailRegex.test(username)) {
       trackError.fields.username.required = true;
-      trackError.message.format = "Email must be in format name@example.com";
+      trackError.message.format = import.meta.env.VITE_TOKEN_EMAIL_REGEX_MESSAGE;
       trackError.type.format = true;
       isError = true;
     }
@@ -97,7 +96,7 @@ export default function SignIn() {
       return;
     }
 
-    submit({ username: username, password: password }, { method: "post" });
+    submit({ username: username.toLowerCase(), password: password }, { method: "post" });
     setIsLoading(true);
   };
   return (

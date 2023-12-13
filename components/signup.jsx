@@ -18,17 +18,34 @@ import {
   FormErrorMessage,
   Spinner,
 } from "@chakra-ui/react";
-import { Link, useActionData, Form } from "react-router-dom";
+import { Link, useActionData, Form, useSubmit } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import LoadingScreen from "./LoadingScreen";
 import CustomToast from "./Toast";
 
 export default function SignupCard() {
+  const fields = {
+    firstname: { required: false },
+    lastname: { required: false },
+    username: { required: false },
+    password: { required: false },
+  };
+  const initialError = {
+    state: false,
+    type: "",
+    message: "",
+    filed: fields,
+  };
   const [showPassword, setShowPassword] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
+  const [error, setError] = useState({ ...initialError });
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const submit = useSubmit();
   const dataFromActions = useActionData();
   useEffect(() => {
     console.log("dataFromActions", dataFromActions);
@@ -45,14 +62,67 @@ export default function SignupCard() {
       setError({ state: data.state, type: data?.type, message: data?.message, filed: data?.filed });
     }
     setIsLoading(false);
-    return () => {
-      setError({ state: false, type: "", message: "", filed: {} });
-    };
+    // return () => {
+    //   setError({ state: false, type: "", message: "", filed: {} });
+    // };
   }, [dataFromActions]);
 
+  const CheckFields = () => {
+    const emailRegex = import.meta.env.VITE_TOKEN_EMAIL_REGEX;
+    let errorCheck = initialError;
+    let error = false;
+    if (!firstname) {
+      error = true;
+      errorCheck = {
+        type: "Filed Required",
+        message: "Filed Required",
+        filed: { ...errorCheck.filed, firstname: { required: true } },
+      };
+    }
+    if (!lastname) {
+      error = true;
+      errorCheck = {
+        type: "Filed Required",
+        message: "Filed Required",
+        filed: { ...errorCheck.filed, lastname: { required: true } },
+      };
+    }
+    if (!username) {
+      error = true;
+      errorCheck = {
+        type: "Filed Required",
+        message: "Filed Required",
+        filed: { ...errorCheck.filed, username: { required: true } },
+      };
+    } else if (!username.match(emailRegex)) {
+      error = true;
+      errorCheck = {
+        type: "Filed Required",
+        message: "Filed Required",
+        filed: {
+          ...errorCheck.filed,
+          username: { required: true, formatMessage: import.meta.env.VITE_TOKEN_EMAIL_REGEX_MESSAGE },
+        },
+      };
+    }
+    if (!password) {
+      error = true;
+      errorCheck = {
+        type: "Filed Required",
+        message: "Filed Required",
+        filed: { ...errorCheck.filed, password: { required: true } },
+      };
+    }
+    setError(errorCheck);
+    return !error;
+  };
+
   const handleSignUp = () => {
-    if (error.state) return;
+    debugger;
+    if (!CheckFields()) return;
+    // if (error.state) return;
     setIsLoading(true);
+    submit({ username: username.toLowerCase(), password: password, firstname, lastname }, { method: "post" });
   };
 
   useEffect(() => {
@@ -85,8 +155,9 @@ export default function SignupCard() {
                       <FormLabel>First Name</FormLabel>
                       <Input
                         type="text"
+                        value={firstname}
                         name="firstname"
-                        onChange={() => {
+                        onChange={(e) => {
                           error.filed.firstname.required = false;
 
                           setError({
@@ -94,7 +165,7 @@ export default function SignupCard() {
                             message: "Filed Required",
                             filed: error.filed,
                           });
-                          // setError();
+                          setFirstname(e.target.value);
                         }}
                       />
                       <FormErrorMessage>
@@ -108,7 +179,8 @@ export default function SignupCard() {
                       <Input
                         type="text"
                         name="lastname"
-                        onChange={() => {
+                        value={lastname}
+                        onChange={(e) => {
                           error.filed.lastname.required = false;
 
                           setError({
@@ -116,7 +188,7 @@ export default function SignupCard() {
                             message: "Filed Required",
                             filed: error.filed,
                           });
-                          // setError();
+                          setLastname(e.target.value);
                         }}
                       />
                       <FormErrorMessage>
@@ -130,15 +202,16 @@ export default function SignupCard() {
                   <Input
                     type="text"
                     name="username"
-                    onChange={() => {
+                    value={username}
+                    onChange={(e) => {
+                      console.log("error.filed.username", error);
                       error.filed.username.required = false;
-
                       setError({
                         type: "Filed Required",
                         message: "Filed Required",
                         filed: error.filed,
                       });
-                      // setError();
+                      setUsername(e.target.value);
                     }}
                   />
                   <FormErrorMessage>
@@ -155,7 +228,8 @@ export default function SignupCard() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       name="password"
-                      onChange={() => {
+                      value={password}
+                      onChange={(e) => {
                         error.filed.password.required = false;
 
                         setError({
@@ -163,7 +237,7 @@ export default function SignupCard() {
                           message: "Filed Required",
                           filed: error.filed,
                         });
-                        // setError();
+                        setPassword(e.target.value);
                       }}
                     />
                     <InputRightElement h={"full"}>
@@ -185,7 +259,6 @@ export default function SignupCard() {
                     _hover={{
                       bg: "blue.500",
                     }}
-                    type="submit"
                     onClick={() => handleSignUp()}
                   >
                     Sign up

@@ -3,6 +3,8 @@ import { Menu, MenuButton, MenuList, MenuItem, IconButton, Box } from "@chakra-u
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { BiLogOut, BiLogIn, BiSolidArchiveOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginFromHomePage } from "../redux/features/LoginInSlicer";
 
 const hoverStyle = {
   bg: "black",
@@ -18,7 +20,9 @@ interface ITypes {
 }
 
 const UserMenu: React.FC<ITypes["props"]> = ({ handleLogOut, userToken, isAdmin }) => {
+  const pageDocument = document.location.pathname.split("/")[1];
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <Box ml="7" mr={"4"}>
       <Menu>
@@ -41,7 +45,10 @@ const UserMenu: React.FC<ITypes["props"]> = ({ handleLogOut, userToken, isAdmin 
               color={"black"}
               _hover={{ ...hoverStyle }}
               icon={<BiLogIn size={30} />}
-              onClick={() => navigate("/signin")}
+              onClick={() => {
+                navigate("/signin");
+                dispatch(loginFromHomePage(pageDocument));
+              }}
             >
               Login
             </MenuItem>
