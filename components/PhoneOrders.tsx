@@ -55,7 +55,7 @@ const PhoneOrders: React.FC<ITypes["props"]> = ({ currentItems }) => {
     >
       <Box minH={"65vh"}>
         <Text fontSize="lg" fontWeight="bold" mb={7} mt={12} color={"brand.glaucous"}>
-          Orders
+          Your Orders
         </Text>
         <Table variant="striped" colorScheme="teal">
           <Thead>
