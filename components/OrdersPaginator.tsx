@@ -5,8 +5,7 @@ import "../styles/Pagination.css";
 import { useLoaderData, useSubmit, useActionData } from "react-router-dom";
 import { verifyAdmin } from "./Header.jsx";
 import Inbox from "./Inbox.tsx";
-import LoadingScreen from "./LoadingScreen";
-import axios from "axios";
+import "../styles/pagination.css";
 interface ITypes {
   loaderData: {
     data: {
@@ -40,7 +39,6 @@ function OrdersPaginator({ itemsPerPage }) {
   }, []);
 
   useEffect(() => {
-    // debugger;
     // Fetch items from another resources.
     const endOffset = itemOffset + itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
@@ -59,7 +57,6 @@ function OrdersPaginator({ itemsPerPage }) {
   };
 
   useEffect(() => {
-    debugger;
     if (!verifyAdmin()) return;
     const endOffset = itemOffset + itemsPerPage;
     if (endOffset >= items.length && items.length > 0) {
@@ -79,7 +76,6 @@ function OrdersPaginator({ itemsPerPage }) {
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    debugger;
     const newOffset = (event.selected * itemsPerPage) % items.length;
     console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
     setItemOffset(newOffset);
