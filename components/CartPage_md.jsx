@@ -4,7 +4,7 @@ import { Box, Grid, Image, Text, IconButton, Button } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import CartHeaderMediumSize from "./CartHeader_md";
-import CartFooter_Md from "./CartFooter_Md";
+import CartFooter_md from "./CartFooter_md";
 export default function CartMediumSizeView({
   cartData,
   handleQuantityDecrease,
@@ -130,7 +130,7 @@ export default function CartMediumSizeView({
           </>
         );
       })}
-      <CartFooter_Md
+      <CartFooter_md
         itemId={itemId}
         showImage={showImage}
         cartData={cartData}
