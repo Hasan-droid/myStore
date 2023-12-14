@@ -10,7 +10,7 @@ import {
   ModalCloseButton,
   Button,
 } from "@chakra-ui/react";
-import { Box, FormControl, FormLabel, FormErrorMessage, Input } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, FormErrorMessage, Input, useBreakpointValue } from "@chakra-ui/react";
 import { Form, useActionData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -49,6 +49,7 @@ interface actionDataType {
 }
 
 const CheckOutModal: React.FC<ITypes["props"]> = ({ size }) => {
+  const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
   const navigate = useNavigate();
   const selector = useSelector((state: any) => state.LoginInSlicer);
   const Dispatch = useDispatch();
@@ -83,6 +84,10 @@ const CheckOutModal: React.FC<ITypes["props"]> = ({ size }) => {
     if (dataFromAction?.data.type === "order" && dataFromAction?.data.state === 200) {
       // onClose();
       setTimeout(() => {
+        if (windowSize === "sm") {
+          navigate("/ordersPhone");
+          return;
+        }
         navigate("/orders");
       }, 1000);
 
