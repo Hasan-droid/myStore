@@ -5,7 +5,6 @@ import "../styles/Pagination.css";
 import { useLoaderData, useSubmit, useActionData } from "react-router-dom";
 import { verifyAdmin } from "./Header.jsx";
 import Inbox from "./Inbox.tsx";
-import "../styles/pagination.css";
 interface ITypes {
   loaderData: {
     data: {
