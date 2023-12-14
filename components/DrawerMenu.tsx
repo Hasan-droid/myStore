@@ -13,6 +13,8 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { verifyAdmin } from "./Header";
+import { loginFromPhone } from "../redux/features/LoginInSlicer";
+import { useDispatch } from "react-redux";
 
 interface Types {
   props: {
@@ -22,8 +24,8 @@ interface Types {
 }
 
 const DrawerMenu: React.FC<Types["props"]> = ({ userToken, handleLogOut }) => {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef();
   const navigate = useNavigate();
   const [categoryClicked, setCategoryClicked] = useState({ category: "", clicked: false });
 
@@ -104,7 +106,7 @@ const DrawerMenu: React.FC<Types["props"]> = ({ userToken, handleLogOut }) => {
                 id="candles"
                 bg={categoryClicked.clicked && categoryClicked.category === "logout" ? "#647AA3" : "white"}
                 onClick={() => {
-                  handleLogOut();
+                  navigate("/inboxPhone");
                   onClose();
                 }}
               >
@@ -148,6 +150,7 @@ const DrawerMenu: React.FC<Types["props"]> = ({ userToken, handleLogOut }) => {
                 onClick={() => {
                   navigate("/signin");
                   onClose();
+                  dispatch(loginFromPhone());
                 }}
               >
                 SignIn

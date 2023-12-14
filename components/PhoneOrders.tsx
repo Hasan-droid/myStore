@@ -15,7 +15,7 @@ interface ITypes {
   };
 }
 
-const headerStyle = {
+export const headerStyle = {
   fontWeight: "bold",
   fontSize: "0.60rem",
   color: "gray",
@@ -23,7 +23,7 @@ const headerStyle = {
   "padding-bottom": "12px",
 };
 
-const dataStyle = {
+export const dataStyle = {
   fontSize: "0.77rem",
   color: "black",
   "padding-bottom": "12px",
@@ -35,7 +35,7 @@ const dataStyle = {
   //margin 10px
 };
 
-const pagingStyle = {
+export const pagingStyle = {
   fontSize: "0.6rem",
   fontWeight: "normal",
   bg: "none",

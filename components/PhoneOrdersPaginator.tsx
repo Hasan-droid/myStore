@@ -4,7 +4,7 @@ import PhoneOrders from "./PhoneOrders.tsx";
 import "../styles/Pagination.css";
 import { useLoaderData, useSubmit, useActionData } from "react-router-dom";
 import { verifyAdmin } from "./Header.jsx";
-import Inbox from "./Inbox.tsx";
+import PhoneInbox from "./phoneInbox.tsx";
 import "../styles/PhonePagination.css";
 interface ITypes {
   loaderData: {
@@ -85,7 +85,7 @@ function PhoneOrdersPaginator({ itemsPerPage }) {
   return (
     <>
       {!verifyAdmin() && <PhoneOrders currentItems={currentItems} />}
-      {verifyAdmin() && <Inbox currentItems={currentItems} />}
+      {verifyAdmin() && <PhoneInbox currentItems={currentItems} />}
       <ReactPaginate
         nextLabel=">"
         onPageChange={handlePageClick}

@@ -61,6 +61,12 @@ const router = createBrowserRouter([
         loader: InboxLoader,
         action: InboxAction,
       },
+      {
+        path: "/inboxPhone",
+        element: <PhoneOrdersPaginator itemsPerPage={10} />,
+        loader: InboxLoader,
+        action: InboxAction,
+      },
     ],
   },
   {

@@ -72,7 +72,7 @@ export default function NavBar_sm_Size({
             </Nav.Link>
           ) : (
             <Nav.Link>
-              <Link className="h" to="/inbox" id="inbox">
+              <Link className="h" to="/inboxPhone" id="inbox">
                 {" "}
                 <div className="cartIcon">
                   <BsFillInboxFill size={40} />
