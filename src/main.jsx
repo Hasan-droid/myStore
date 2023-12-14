@@ -20,6 +20,7 @@ import OrdersPaginator from "../components/OrdersPaginator.tsx";
 import OrdersLoader from "../routers.loaders/orders.loader.ts";
 import InboxLoader from "../routers.loaders/Inbox.loader.ts";
 import InboxAction from "../routers.Actions/Inbox.action.ts";
+import PhoneOrdersPaginator from "../components/PhoneOrdersPaginator.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
       {
         path: "/orders",
         element: <OrdersPaginator itemsPerPage={8} />,
+        loader: OrdersLoader,
+      },
+      {
+        path: "/ordersPhone",
+        element: <PhoneOrdersPaginator itemsPerPage={10} />,
         loader: OrdersLoader,
       },
       {
