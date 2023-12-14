@@ -4,7 +4,7 @@ import CheckOutModal from "./CheckOutModal";
 import { CheckTokenExperimentData } from "./Header";
 import { useDispatch } from "react-redux";
 import { openModal } from "../Redux/features/LoginInSlicer";
-export default function CartFooter_lg_md({ itemId, showImage, cartData, totalPrice, handleCheckOut }) {
+export default function CartFooter_md({ itemId, showImage, cartData, totalPrice, handleCheckOut }) {
   const dispatch = useDispatch();
   const userToken = localStorage.getItem("token");
   const pullDownFooter = () => {
