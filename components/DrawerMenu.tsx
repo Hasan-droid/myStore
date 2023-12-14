@@ -13,7 +13,7 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { verifyAdmin } from "./Header";
-import { loginFromPhone } from "../redux/features/LoginInSlicer";
+import { loginFromPhone } from "../Redux/features/LoginInSlicer";
 import { useDispatch } from "react-redux";
 
 interface Types {
