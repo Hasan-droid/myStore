@@ -20,6 +20,7 @@ const headerStyle = {
   fontSize: "0.60rem",
   color: "gray",
   padding: "0",
+  "padding-bottom": "12px",
 };
 
 const dataStyle = {
@@ -52,7 +53,7 @@ const PhoneOrders: React.FC<ITypes["props"]> = ({ currentItems }) => {
       exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.5 }}
     >
-      <Box minH={"70vh"}>
+      <Box minH={"65vh"}>
         <Text fontSize="lg" fontWeight="bold" mb={7} mt={12} color={"brand.glaucous"}>
           Orders
         </Text>
