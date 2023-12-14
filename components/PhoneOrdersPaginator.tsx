@@ -4,7 +4,7 @@ import PhoneOrders from "./PhoneOrders.tsx";
 import "../styles/Pagination.css";
 import { useLoaderData, useSubmit, useActionData } from "react-router-dom";
 import { verifyAdmin } from "./Header.jsx";
-import PhoneInbox from "./phoneInbox.tsx";
+import PhoneInbox from "./PhoneInbox.tsx";
 import "../styles/PhonePagination.css";
 interface ITypes {
   loaderData: {
