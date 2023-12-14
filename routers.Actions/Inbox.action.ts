@@ -16,7 +16,6 @@ export default async function ({ request, params }) {
   const token = localStorage.getItem("token");
   let data: ITypes["response"] = { state: 400, type: "error", message: "network error" };
   if (intent === "paginator") {
-    debugger;
     const { itemsLength } = Object.fromEntries(formData);
     const INBOX_URL = import.meta.env.VITE_BACKEND_URL_CARDS + "/inbox";
     await axios
