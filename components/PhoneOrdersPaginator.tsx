@@ -1,11 +1,11 @@
 import ReactPaginate from "react-paginate";
 import React, { useEffect, useState } from "react";
-import Orders from "./Orders.tsx";
+import PhoneOrders from "./PhoneOrders.tsx";
 import "../styles/Pagination.css";
 import { useLoaderData, useSubmit, useActionData } from "react-router-dom";
 import { verifyAdmin } from "./Header.jsx";
-import Inbox from "./Inbox.tsx";
-import "../styles/pagination.css";
+import PhoneInbox from "./phoneInbox.tsx";
+import "../styles/PhonePagination.css";
 interface ITypes {
   loaderData: {
     data: {
@@ -21,7 +21,7 @@ interface ITypes {
   };
 }
 
-function OrdersPaginator({ itemsPerPage }) {
+function PhoneOrdersPaginator({ itemsPerPage }) {
   // We start with an empty list of items.
   const [currentItems, setCurrentItems] = useState<ITypes["loaderData"]["data"]>([]);
   const [pageCount, setPageCount] = useState(0);
@@ -39,6 +39,7 @@ function OrdersPaginator({ itemsPerPage }) {
   }, []);
 
   useEffect(() => {
+    // debugger;
     // Fetch items from another resources.
     const endOffset = itemOffset + itemsPerPage;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
@@ -83,25 +84,25 @@ function OrdersPaginator({ itemsPerPage }) {
 
   return (
     <>
-      {!verifyAdmin() && <Orders currentItems={currentItems} />}
-      {verifyAdmin() && <Inbox currentItems={currentItems} />}
+      {!verifyAdmin() && <PhoneOrders currentItems={currentItems} />}
+      {verifyAdmin() && <PhoneInbox currentItems={currentItems} />}
       <ReactPaginate
-        nextLabel="next >"
+        nextLabel=">"
         onPageChange={handlePageClick}
         pageRangeDisplayed={3}
         marginPagesDisplayed={2}
         pageCount={pageCount}
-        previousLabel="< previous"
+        previousLabel="<"
         pageClassName="page-item"
         pageLinkClassName="page-link"
-        previousClassName="page-item"
+        previousClassName="page-item-previous"
         previousLinkClassName="page-link"
         nextClassName="page-item"
         nextLinkClassName="page-link"
         breakLabel="..."
         breakClassName="page-item"
         breakLinkClassName="page-link"
-        containerClassName="pagination"
+        containerClassName="phonePagination"
         activeClassName="active"
         renderOnZeroPageCount={null}
       />
@@ -109,4 +110,4 @@ function OrdersPaginator({ itemsPerPage }) {
   );
 }
 
-export default OrdersPaginator;
+export default PhoneOrdersPaginator;

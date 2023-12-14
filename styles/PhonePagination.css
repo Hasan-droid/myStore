@@ -1,0 +1,44 @@
+/* .phonePagination > .page-item.active > .page-link,
+.page-link.active {
+  background-color: #c6ebbe;
+  border-radius: 25px;
+} */
+
+.phonePagination > .page-item.active > .page-link {
+  background-color: #c6ebbe;
+  border-radius: 25px;
+}
+
+.phonePagination > .page-item > .page-link:focus {
+  border-top-right-radius: 25px;
+}
+
+.phonePagination > .page-item-previous > .page-link {
+  border-start-start-radius: 25px;
+}
+
+.phonePagination {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  --bs-pagination-active-border-color: none;
+  --bs-pagination-color: #739edd;
+  --bs-pagination-border-color: none;
+  --bs-pagination-disabled-bg: none;
+  --bs-pagination-focus-bg: #c6ebbe;
+  --bs-pagination-focus-box-shadow: none;
+  --bs-pagination-disabled-color: rgb(184, 178, 178);
+  padding-right: 140px;
+  justify-content: right;
+
+  --bs-pagination-padding-x: 0.7rem;
+  --bs-pagination-padding-y: 0.075rem;
+  --bs-pagination-focus-bg: #c6ebbe;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+
+  /* list-style: none;
+  /* align-items: right; */
+}

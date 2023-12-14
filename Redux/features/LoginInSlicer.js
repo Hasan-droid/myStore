@@ -4,6 +4,7 @@ const initialState = {
   openModal: false,
   loginFromHomePage: false,
   pageLoggedInFrom: "",
+  loginFromPhone: false,
 };
 
 export const LoginInSlicer = createSlice({
@@ -21,8 +22,11 @@ export const LoginInSlicer = createSlice({
       state.pageLoggedInFrom = action.payload;
       state.loginFromHomePage = true;
     },
+    loginFromPhone: (state) => {
+      state.loginFromPhone = true;
+    },
   },
 });
 
-export const { openModal, closeModal, loginFromHomePage } = LoginInSlicer.actions;
+export const { openModal, closeModal, loginFromHomePage, loginFromPhone } = LoginInSlicer.actions;
 export default LoginInSlicer.reducer;
