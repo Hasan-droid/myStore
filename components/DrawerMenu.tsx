@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { verifyAdmin } from "./Header";
 
 interface Types {
   props: {
@@ -96,6 +97,34 @@ const DrawerMenu: React.FC<Types["props"]> = ({ userToken, handleLogOut }) => {
             >
               Candles
             </Button>
+            {verifyAdmin() && (
+              <Button
+                w="90%"
+                className="drawer"
+                id="candles"
+                bg={categoryClicked.clicked && categoryClicked.category === "logout" ? "#647AA3" : "white"}
+                onClick={() => {
+                  handleLogOut();
+                  onClose();
+                }}
+              >
+                Inbox
+              </Button>
+            )}
+            {!verifyAdmin() && (
+              <Button
+                w="90%"
+                className="drawer"
+                id="candles"
+                bg={categoryClicked.clicked && categoryClicked.category === "logout" ? "#647AA3" : "white"}
+                onClick={() => {
+                  navigate("/ordersPhone");
+                  onClose();
+                }}
+              >
+                Orders
+              </Button>
+            )}
             {userToken && (
               <Button
                 w="90%"
