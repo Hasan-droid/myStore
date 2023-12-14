@@ -13,7 +13,7 @@ export default function CartFooter_lg_md({ itemId, showImage, cartData, totalPri
     //find how many items remain in the cart that higher id than the current item
 
     const remainItems = cartData.filter((item) => item.id > itemId);
-    return remainItems.length * 20 + 400;
+    return remainItems.length * 20 + 425;
   };
   return (
     <Flex
