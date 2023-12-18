@@ -117,7 +117,7 @@ const CheckOutModal: React.FC<ITypes["props"]> = ({ size }) => {
         <ModalContent>
           <ModalHeader>Contact Info</ModalHeader>
           <ModalCloseButton />
-          {loading && <LoadingScreen isLoading={loading} />}
+          {loading && <LoadingScreen isLoading={loading} height={40} width={44} />}
           <Form method="post">
             <ModalBody>
               <Box p={4}>

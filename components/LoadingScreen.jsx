@@ -15,8 +15,8 @@ export default function LoadingScreen({ isLoading, height, width }) {
             position: "absolute", // Position the spinner within the form
             top: "0%",
             left: "0%",
-            width: width ? width + "%" : "100%",
-            height: height ? height + "%" : "100%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
+            width: "100%",
+            height: "100%", // Required for overlaying the spinner // Required for overlaying the spinner// Required for overlaying the spinner
           }}
         >
           <Spinner
@@ -27,8 +27,8 @@ export default function LoadingScreen({ isLoading, height, width }) {
             emptyColor="gray.200"
             color="blue.500"
             size="xl"
-            top="50%"
-            left="50%"
+            top={height ? height : "50%"}
+            left={width ? width : "50%"}
             transform="translate(-50%, -50%)"
 
             // Center the spinner

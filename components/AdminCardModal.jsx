@@ -148,7 +148,7 @@ export default function AdminCardModal({ item, image, type }) {
             <ModalCloseButton />
             <ModalBody>
               <Box>
-                <LoadingScreen isLoading={isLoading} width={95} />
+                <LoadingScreen isLoading={isLoading} width={140} height={320} />
                 <Grid
                   templateRows={{ base: "repeat(0, 1fr)", md: "repeat(1, 1fr)", lg: "repeat(1, 1fr)" }}
                   templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)", lg: "repeat(5, 1fr)" }}

@@ -65,7 +65,7 @@ const PhoneInbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
                 </Tr>
               </Thead>
               <Tbody>
-                <LoadingScreen isLoading={loading} />
+                <LoadingScreen isLoading={loading} height={80} width={195} />
                 {currentItems?.map((order) => (
                   <PhonePurchaseOrderModal
                     order={order}
