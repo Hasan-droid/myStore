@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import { Box, Text, Table, Thead, Tbody, Tr, Th, useBreakpointValue } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { Form, useOutletContext, useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
 import { headerStyle } from "./PhoneOrders";
 import PhonePurchaseOrderModal from "./PhonePurshaseOrderModal";
+import { useSelector } from "react-redux";
+import { IState } from "./Inbox";
 interface ITypes {
   props: {
     currentItems?: //array of objects
@@ -25,7 +27,10 @@ interface ITypes {
 }
 
 const PhoneInbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
-  console.log("currentItems//////", currentItems);
+  // const windowSize = localStorage.getItem("windowSize");
+  const windowSize = useSelector((state: IState) => {
+    return state.LoginInSlicer.windowSize;
+  });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   //define the type of useOutletContext from Itypes interface
@@ -41,6 +46,15 @@ const PhoneInbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
   useEffect(() => {
     window.scrollTo(0, -200);
   }, []);
+
+  useEffect(() => {
+    console.log("it's detecting change", windowSize);
+
+    if (windowSize === "md" || windowSize === "lg") {
+      navigate("/inbox");
+    }
+  }, [windowSize]);
+
   return (
     <>
       <motion.div
