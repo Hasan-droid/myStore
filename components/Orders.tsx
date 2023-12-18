@@ -28,7 +28,7 @@ const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
     window.scrollTo(0, -200);
   }, []);
   useEffect(() => {
-    if (windowSize === "base") {
+    if (windowSize === "sm") {
       navigate("/ordersPhone");
     }
   }, [windowSize]);

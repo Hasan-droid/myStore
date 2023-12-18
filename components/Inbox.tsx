@@ -54,7 +54,7 @@ const Inbox: React.FC<ITypes["props"]> = ({ currentItems }) => {
   }, []);
   useEffect(() => {
     console.log("it's detecting change", windowSize);
-    if (windowSize === "base") {
+    if (windowSize === "sm") {
       navigate("/inboxPhone");
     }
   }, [windowSize]);

@@ -41,7 +41,7 @@ export const verifyAdmin = () => {
 };
 export default function Header() {
   const dispatch = useDispatch();
-  const currentWindowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
+  const currentWindowSize = useBreakpointValue({ base: "base", sm: "sm", md: "md", lg: "lg" });
   const dataFromActions = useActionData();
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
