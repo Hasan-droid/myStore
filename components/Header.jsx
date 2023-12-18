@@ -115,7 +115,7 @@ export default function Header() {
           />
         )}
 
-        {currentWindowSize === "base" && (
+        {currentWindowSize === "sm" && (
           <NavBar_sm_Size
             cartItemsNumber={cartItemsNumber}
             userToken={userToken}
