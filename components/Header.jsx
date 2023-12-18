@@ -41,7 +41,7 @@ export const verifyAdmin = () => {
 };
 export default function Header() {
   const dispatch = useDispatch();
-  const currentWindowSize = useBreakpointValue({ base: "base", sm: "sm", md: "md", lg: "lg" });
+  const currentWindowSize = useBreakpointValue({ base: "base", sm: "sm", md: "md", lg: "lg" }, { ssr: false });
   const dataFromActions = useActionData();
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
@@ -115,7 +115,7 @@ export default function Header() {
           />
         )}
 
-        {currentWindowSize === "sm" && (
+        {(currentWindowSize === "base" || currentWindowSize === "sm") && (
           <NavBar_sm_Size
             cartItemsNumber={cartItemsNumber}
             userToken={userToken}
