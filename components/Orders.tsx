@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { Box, Text, Table, Thead, Tbody, Tr, Th, Td, Badge } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { IState } from "./Inbox";
+import { useNavigate } from "react-router-dom";
 
 interface ITypes {
   props: {
@@ -16,9 +19,19 @@ interface ITypes {
 }
 
 const Orders: React.FC<ITypes["props"]> = ({ currentItems }) => {
+  const navigate = useNavigate();
+
+  const windowSize = useSelector((state: IState) => {
+    return state.LoginInSlicer.windowSize;
+  });
   useEffect(() => {
     window.scrollTo(0, -200);
   }, []);
+  useEffect(() => {
+    if (windowSize === "base") {
+      navigate("/ordersPhone");
+    }
+  }, [windowSize]);
   return (
     <motion.div
       initial={{ opacity: 0, y: -50 }}
