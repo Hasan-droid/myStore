@@ -13,6 +13,8 @@ import NavBar_Med_Lg_Size from "./NavBar_Med_Lg_Size";
 import NavBar_sm_Size from "./NavBar_sm_Size";
 import jwtDecode from "jwt-decode";
 import { useActionData, useLoaderData } from "react-router-dom";
+import { windowSize } from "../Redux/features/LoginInSlicer";
+import { useDispatch } from "react-redux";
 import CustomToast from "./Toast";
 import "../styles/scrollBar.css";
 export const CheckTokenExperimentData = (token) => {
@@ -38,13 +40,14 @@ export const verifyAdmin = () => {
   return false;
 };
 export default function Header() {
+  const dispatch = useDispatch();
+  const currentWindowSize = useBreakpointValue({ base: "base", sm: "sm", md: "md", lg: "lg" }, { ssr: false });
   const dataFromActions = useActionData();
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
   const [cartItemsNumber, setCartItemNumber] = React.useState([]);
   const [showToast, setShowToast] = useState(false);
   const [toastReceivedStatus, setToastReceivedStatus] = useState("");
-  const windowSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
   const [totalOrderInbox, setTotalOrderInbox] = useState(0);
   const { numberOfPendingOrders } = useLoaderData();
   const [isAdmin, setIsAdmin] = useState(verifyAdmin());
@@ -89,7 +92,9 @@ export default function Header() {
   setInterval(() => {
     setIsAdmin(verifyAdmin());
   }, import.meta.env.VITE_TOKEN_CHECK_TIME_EXPIRATION_INTERVAL);
-
+  useEffect(() => {
+    dispatch(windowSize(currentWindowSize));
+  }, [currentWindowSize]);
   return (
     <>
       {showToast && (
@@ -100,7 +105,7 @@ export default function Header() {
         />
       )}
       <Flex justifyContent="space-between" alignItems="center" p={4}>
-        {(windowSize === "lg" || windowSize === "md") && (
+        {(currentWindowSize === "lg" || currentWindowSize === "md") && (
           <NavBar_Med_Lg_Size
             cartItemsNumber={cartItemsNumber}
             userToken={userToken}
@@ -109,7 +114,8 @@ export default function Header() {
             totalOrderInbox={totalOrderInbox}
           />
         )}
-        {windowSize === "base" && (
+
+        {(currentWindowSize === "base" || currentWindowSize === "sm") && (
           <NavBar_sm_Size
             cartItemsNumber={cartItemsNumber}
             userToken={userToken}

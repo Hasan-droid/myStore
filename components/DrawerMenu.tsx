@@ -138,7 +138,7 @@ const DrawerMenu: React.FC<Types["props"]> = ({ userToken, handleLogOut }) => {
                   onClose();
                 }}
               >
-                logOut
+                log Out
               </Button>
             )}
             {!userToken && (
@@ -153,7 +153,7 @@ const DrawerMenu: React.FC<Types["props"]> = ({ userToken, handleLogOut }) => {
                   dispatch(loginFromPhone());
                 }}
               >
-                SignIn
+                Log In
               </Button>
             )}
           </DrawerBody>

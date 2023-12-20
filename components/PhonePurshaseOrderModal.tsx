@@ -22,7 +22,12 @@ import React, { useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useActionData, Form, useSubmit } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
-import { dataStyle, pagingStyle } from "./PhoneOrders";
+import { dataStyle, headerStyle, pagingStyle } from "./PhoneOrders";
+
+const customerInfoStyle = {
+  fontSize: "sm",
+  p: -60,
+};
 
 const inboxDataStyle = {
   ...dataStyle,
@@ -148,34 +153,49 @@ const PhonePurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading,
           )}
         </Td>
       </Tr>
-      <Modal isOpen={isOpen} onClose={onClose} size={"3xl"} closeOnOverlayClick={false}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"lg"} closeOnOverlayClick={false}>
         <ModalOverlay />
         <Form method="post">
           <ModalContent>
-            <ModalHeader>Purchase Order</ModalHeader>
+            <ModalHeader fontSize={"sm"}>Purchase Order</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Box borderWidth="1px" borderRadius="md" p={4} mb={4}>
-                <Text fontWeight="bold" fontSize="lg" mb={2}>
+              <Box borderWidth="1px" borderRadius="md" mb={4}>
+                <Text fontWeight="bold" fontSize="sm" mb={2}>
                   Customer Information:
                 </Text>
                 <Grid //tow rows tow cloumns
                   templateRows="repeat(2, 1fr)"
                   templateColumns="repeat(2, 1fr)"
-                  gap={4}
                 >
-                  <Text>
-                    <Text fontWeight="bold">Name:</Text> {order.customerName}
+                  <Text {...customerInfoStyle}>
+                    <Text fontWeight="bold" display={"inline-block"}>
+                      Name:
+                    </Text>{" "}
+                    {order.customerName}
                   </Text>
-                  <Text>
-                    <Text fontWeight="bold">Phone:</Text> {order.phoneNumber}
+                  <Text {...customerInfoStyle}>
+                    <Text fontWeight="bold" display={"inline-block"}>
+                      Phone:
+                    </Text>
+                    {order.phoneNumber}
                   </Text>
 
-                  <Text>
-                    <Text fontWeight="bold">Address:</Text> {order.address}
+                  <Text {...customerInfoStyle}>
+                    <Text fontWeight="bold" display={"inline-block"}>
+                      Address:{" "}
+                    </Text>{" "}
+                    {order.address}
                   </Text>
-                  <Text>
-                    <Text fontWeight="bold">Email:</Text> {order.email}
+                  <Text {...customerInfoStyle}>
+                    <Text
+                      fontWeight="bold"
+                      //dont make Text Block
+                      display="inline-block"
+                    >
+                      Email:
+                    </Text>{" "}
+                    {order.email}
                   </Text>
                 </Grid>
               </Box>
@@ -183,39 +203,40 @@ const PhonePurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading,
               <Table variant="striped" colorScheme="gray">
                 <Thead>
                   <Tr>
-                    <Th>Product ID</Th>
-                    <Th>Product Name</Th>
-                    <Th>Quantity</Th>
-                    <Th>Price</Th>
-                    <Th>Total Price</Th>
+                    <Th style={headerStyle}>Product ID</Th>
+                    <Th style={headerStyle}>Product Name</Th>
+                    <Th style={headerStyle}>Quantity</Th>
+                    <Th style={headerStyle}>Price</Th>
+                    <Th style={headerStyle}>Total Price</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {items?.data?.map((product) => (
                     <Tr key={product.id}>
-                      <Td>{product.id}</Td>
-                      <Td>{product.itemName}</Td>
-                      <Td>{product.quantity}</Td>
-                      <Td>${product.price}</Td>
-                      <Td>${product.totalPrice}</Td>
+                      <Td style={dataStyle}>{product.id}</Td>
+                      <Td style={dataStyle}>{product.itemName}</Td>
+                      <Td style={dataStyle}>{product.quantity}</Td>
+                      <Td style={dataStyle}>${product.price}</Td>
+                      <Td style={dataStyle}>${product.totalPrice}</Td>
                     </Tr>
                   ))}
                 </Tbody>
               </Table>
 
-              <Text fontWeight="bold" mt={4} fontSize="lg">
+              <Text fontWeight="bold" mt={4} fontSize="sm">
                 Total: ${total}
               </Text>
             </ModalBody>
 
             <ModalFooter>
               {!isLoading && (
-                <Button colorScheme="red" variant={"ghost"} mr={3} onClick={onClose}>
+                <Button size={"sm"} colorScheme="red" variant={"ghost"} mr={3} onClick={onClose}>
                   Close
                 </Button>
               )}
               {order.orderStatus === "pending" && (
                 <Button
+                  size={"sm"}
                   colorScheme="blue"
                   variant={"ghost"}
                   onClick={() => handleStartDelivery()}
@@ -227,6 +248,7 @@ const PhonePurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading,
               )}
               {order.orderStatus === "on deliver" && (
                 <Button
+                  size={"sm"}
                   colorScheme="green"
                   variant={"ghost"}
                   onClick={() => handleDelivery()}
