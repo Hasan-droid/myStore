@@ -153,7 +153,7 @@ const PhonePurchaseOrderModal: React.FC<ITypes["props"]> = ({ order, setLoading,
           )}
         </Td>
       </Tr>
-      <Modal isOpen={isOpen} onClose={onClose} size={"xl"} closeOnOverlayClick={false}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"lg"} closeOnOverlayClick={false}>
         <ModalOverlay />
         <Form method="post">
           <ModalContent>
