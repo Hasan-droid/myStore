@@ -27,48 +27,36 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useSubmit } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AdminProductImage from "./AdminProductImage";
 import addIcon from "../assets/images/pngtransparentaddimageiconthumbnail.png";
 import LoadingScreen from "./LoadingScreen";
 export default function AdminCardModal({ item, image, type }) {
-  //destructuring the item object
+  let inputFields = {
+    item_name: { required: false },
+    item_description: { required: false },
+    item_price: { required: false },
+    item_image: { required: false },
+  };
+  let errorReturn = {
+    data: { state: false, type: "", message: { filed: "", price: "" }, filed: inputFields },
+  };
+  const submit = useSubmit();
   const { title, description, price } = item || {};
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log("price", price);
   const [itemPrice, setItemPrice] = useState(price || 0);
   const [itemDescription, setItemDescription] = useState(description || "");
   const [itemName, setItemName] = useState(title || "");
-  const [error, setError] = useState({ state: false, type: "", message: "", filed: {} });
+  const [imageFile, setImageFile] = useState(image?.url ?? null);
+  const [error, setError] = useState({ ...errorReturn.data });
   const [isLoading, setIsLoading] = useState(false);
   const dataFromActions = useActionData();
   const windowSize = useBreakpointValue({ base: "xs", md: "md", lg: "lg" });
-  //count how many times this component is rendered
-  const clearDataInputs = () => {
-    setItemPrice(0);
-    setItemDescription("");
-    setItemName("");
-  };
-
-  const fillInitialState = () => {
-    setItemName(title);
-    setItemPrice(price);
-    setItemDescription(description);
-  };
 
   useEffect(() => {
     fillInitialState();
   }, [title]);
-
-  const closeLoadingScreen = () => {
-    setTimeout(() => {
-      setIsLoading(false);
-      //close the modal
-      onClose();
-    }, 750);
-  };
 
   useEffect(() => {
     if (dataFromActions?.data?.type === "add") {
@@ -78,22 +66,132 @@ export default function AdminCardModal({ item, image, type }) {
     if (dataFromActions?.data?.type === "edit") {
       closeLoadingScreen();
     }
-
-    if (dataFromActions?.data?.state && dataFromActions?.data?.type === "Filed Required") {
-      setIsLoading(false);
-      setError({
-        state: true,
-        type: dataFromActions?.data?.type,
-        message: dataFromActions?.data?.message,
-        filed: dataFromActions?.data?.filed,
-      });
-      console.log("data from actions", dataFromActions);
-      return;
-    }
   }, [dataFromActions?.data]);
 
-  const handleSubmit = () => {
+  const resetError = () => {
+    setError(errorReturn.data);
+    setImageFile(null);
+  };
+
+  const clearDataInputs = () => {
+    setTimeout(() => {
+      setItemPrice("0");
+      setItemDescription("");
+      setItemName("");
+      setImageFile(null);
+    }, 1000);
+  };
+
+  const fillInitialState = () => {
+    setItemName(title);
+    setItemPrice(price ? price + "" : "0");
+    setItemDescription(description);
+  };
+
+  const closeLoadingScreen = () => {
+    setTimeout(() => {
+      setIsLoading(false);
+      //close the modal
+      onClose();
+    }, 750);
+  };
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  const checkInputFields = () => {
+    let filedError = false;
+    if (!itemName?.trim()) {
+      errorReturn.data.filed.item_name.required = true;
+      errorReturn.data.message.filed = "Filed Required";
+      filedError = true;
+    }
+    if (!itemDescription?.trim()) {
+      errorReturn.data.filed.item_description.required = true;
+      errorReturn.data.message.filed = "Filed Required";
+      filedError = true;
+    }
+    if (!itemPrice?.trim()) {
+      errorReturn.data.filed.item_price.required = true;
+      errorReturn.data.message.filed = "Filed Required";
+      filedError = true;
+    }
+    if (parseFloat(itemPrice) <= 0) {
+      errorReturn.data.filed.item_price.required = true;
+      errorReturn.data.message.price = "Price must be greater than 0";
+      filedError = true;
+    }
+    if (isNaN(parseFloat(itemPrice))) {
+      errorReturn.data.filed.item_price.required = true;
+      errorReturn.data.message.price = "Price must be a number";
+      filedError = true;
+    }
+
+    if (!imageFile && !image?.url) {
+      errorReturn.data.filed.item_image.required = true;
+      errorReturn.data.message.filed = "Filed Required";
+      filedError = true;
+    }
+    if (filedError) {
+      setError(errorReturn.data);
+      return false;
+    }
+    return true;
+  };
+
+  const handleAddNewItem = async () => {
+    if (!checkInputFields()) return;
+    const getImageInput = document.querySelector('input[name="item_image"]').files[0];
+    const image = await convertBase64(getImageInput);
     setIsLoading(true);
+
+    submit(
+      {
+        intent: "add 1",
+        item_name: itemName,
+        item_description: itemDescription,
+        item_price: itemPrice,
+        item_image: image,
+      },
+      { method: "post" }
+    );
+  };
+
+  const handleEditItem = async () => {
+    if (!checkInputFields()) return;
+    const getImageInput = document.querySelector('input[name="item_image"]').files[0];
+    let imageFile = "";
+    if (getImageInput) imageFile = await convertBase64(getImageInput);
+    setIsLoading(true);
+    submit(
+      {
+        intent: "edit 1",
+        id: item.id,
+        item_name: itemName,
+        item_description: itemDescription,
+        item_price: itemPrice,
+        item_image: imageFile,
+        imageUrl: image.url,
+      },
+      { method: "post" }
+    );
+  };
+
+  const handleCloseModal = () => {
+    onClose();
+    resetError();
+    if (!image) clearDataInputs();
   };
 
   return (
@@ -116,12 +214,7 @@ export default function AdminCardModal({ item, image, type }) {
         ))}
 
       {type === "edit" && (
-        <Button
-          variant="ghost"
-          //use this color #C6EBBE as colorScheme
-          colorScheme="green"
-          {...(item && { onClick: onOpen })}
-        >
+        <Button variant="ghost" colorScheme="green" {...(item && { onClick: onOpen })}>
           Edit
         </Button>
       )}
@@ -140,7 +233,7 @@ export default function AdminCardModal({ item, image, type }) {
           </Text>
         </Box>
       )}
-      <Modal isOpen={isOpen} onClose={onClose} size={windowSize} closeOnOverlayClick={false}>
+      <Modal isOpen={isOpen} onClose={() => handleCloseModal()} size={windowSize} closeOnOverlayClick={false}>
         <Form method="post" id="product form" encType="multipart/form-data">
           <ModalOverlay />
           <ModalContent>
@@ -163,7 +256,12 @@ export default function AdminCardModal({ item, image, type }) {
                     flexDirection="column"
                     h="90%"
                   >
-                    <AdminProductImage image={image} error={error} />
+                    <AdminProductImage
+                      image={image}
+                      error={error}
+                      setImageFile={setImageFile}
+                      imageFile={imageFile}
+                    />
                   </GridItem>
 
                   <GridItem
@@ -191,7 +289,7 @@ export default function AdminCardModal({ item, image, type }) {
                         }}
                       />
                       <FormErrorMessage>
-                        {error.filed.item_name?.required === true ? error.message : ""}
+                        {error.filed.item_name?.required === true ? error.message.filed : ""}
                       </FormErrorMessage>
                     </FormControl>
                   </GridItem>
@@ -225,7 +323,10 @@ export default function AdminCardModal({ item, image, type }) {
                           <NumberDecrementStepper />
                         </NumberInputStepper>
                       </NumberInput>
-                      <FormErrorMessage>{error.filed.item_price?.required ? error.message : ""}</FormErrorMessage>
+                      <FormErrorMessage>
+                        {!itemPrice && error.message.filed}
+                        {itemPrice && error.message.price}
+                      </FormErrorMessage>
                     </FormControl>
                   </GridItem>
                 </Grid>
@@ -251,7 +352,7 @@ export default function AdminCardModal({ item, image, type }) {
                     }}
                   />
                   <FormErrorMessage>
-                    {error.filed.item_description?.required ? error.message : ""}
+                    {error.filed.item_description?.required ? error.message.filed : ""}
                   </FormErrorMessage>
                 </FormControl>
               </Box>
@@ -261,7 +362,9 @@ export default function AdminCardModal({ item, image, type }) {
               <Button
                 colorScheme="red"
                 mr={3}
-                onClick={onClose}
+                onClick={() => {
+                  handleCloseModal();
+                }}
                 name="intent"
                 value="clear errors"
                 variant="ghost"
@@ -273,8 +376,7 @@ export default function AdminCardModal({ item, image, type }) {
                   colorScheme="green"
                   name="intent"
                   value="add 1"
-                  onClick={() => handleSubmit()}
-                  type="submit"
+                  onClick={() => handleAddNewItem()}
                   variant="ghost"
                 >
                   Add
@@ -288,8 +390,7 @@ export default function AdminCardModal({ item, image, type }) {
                     colorScheme="green"
                     name="intent"
                     value="edit 1"
-                    onClick={() => handleSubmit()}
-                    type="submit"
+                    onClick={() => handleEditItem()}
                     variant="ghost"
                   >
                     Edit

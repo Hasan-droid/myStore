@@ -57,8 +57,7 @@ const PreviewImage = forwardRef((props, ref) => {
   );
 });
 
-export default function AdminProductImage({ image, error }) {
-  const [imageFile, setImageFile] = useState(null);
+export default function AdminProductImage({ image, error, setImageFile, imageFile }) {
   const [imageError, setImageError] = useState(error);
   console.log("error props form image", imageError);
   const controls = useAnimation();
@@ -117,7 +116,6 @@ export default function AdminProductImage({ image, error }) {
                     <PreviewImage
                       variants={third}
                       backgroundImage={imageFile ? imageFile : image?.url ? image.url : addIcon}
-                      newprops="just checking in"
                     />
                   </Box>
                 </Stack>
@@ -145,7 +143,7 @@ export default function AdminProductImage({ image, error }) {
       <Box mt={-12} mb={10} mr={39} zIndex={20} position="relative">
         <FormControl isInvalid={imageError.filed.item_image?.required}>
           <FormErrorMessage>
-            {imageError.filed.item_image?.required === true ? imageError.message : ""}
+            {imageError.filed.item_image?.required === true ? imageError.message.filed : ""}
           </FormErrorMessage>
         </FormControl>
       </Box>
