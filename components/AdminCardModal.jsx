@@ -61,7 +61,6 @@ export default function AdminCardModal({ item, image, type }) {
   useEffect(() => {
     if (dataFromActions?.data?.type === "add") {
       clearDataInputs();
-      setImageFile(null);
       closeLoadingScreen();
     }
     if (dataFromActions?.data?.type === "edit") {
@@ -75,16 +74,18 @@ export default function AdminCardModal({ item, image, type }) {
   };
 
   const clearDataInputs = () => {
-    setItemPrice("0");
-    setItemDescription("");
-    setItemName("");
+    setTimeout(() => {
+      setItemPrice("0");
+      setItemDescription("");
+      setItemName("");
+      setImageFile(null);
+    }, 1000);
   };
 
   const fillInitialState = () => {
     setItemName(title);
     setItemPrice(price ? price + "" : "0");
     setItemDescription(description);
-    setImageFile(image?.url);
   };
 
   const closeLoadingScreen = () => {
