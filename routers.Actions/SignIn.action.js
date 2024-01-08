@@ -50,7 +50,7 @@ export default async function SignInaction({ request, params }) {
     if (error.message === "Network Error") {
       return { data: { state: true, type: "toast", message: "Network Error" } };
     }
-    if (error.response?.status === 401 || error.response.status === 404) {
+    if (error.response.status === 404) {
       fields = {
         username: {
           required: true,
@@ -62,6 +62,15 @@ export default async function SignInaction({ request, params }) {
         },
       };
       return { data: { state: true, type: "invalid", message: "Invalid username or password", fields } };
+    }
+    if (error.response.status === 401) {
+      return {
+        data: {
+          state: true,
+          type: "email-verification",
+          message: { title: "Email Verification", description: "Please check your E-mail inbox" },
+        },
+      };
     }
     console.log(error.response);
   }

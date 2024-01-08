@@ -14,9 +14,12 @@ import {
   useColorModeValue,
   FormErrorMessage,
   Divider,
-  Spinner,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
-import { Form, useActionData, Link, useSubmit } from "react-router-dom";
+import { Form, useActionData, Link, useSubmit, useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CustomToast from "./Toast";
 import LoadingScreen from "./LoadingScreen";
@@ -26,7 +29,12 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [AlertDescriptionText, setAlertDescriptionText] = useState("");
+  const [AlertTitleText, setAlertTitleText] = useState("");
+  const [userVerified, setUserVerified] = useState(""); //dataFromActions?.data?.verified
   const submit = useSubmit();
+  const { data } = useLoaderData();
+  console.log("data from loader", data);
   useEffect(() => {
     console.log("dataFromActions?.data", dataFromActions?.data);
     if (dataFromActions?.data?.state && dataFromActions?.data?.type === "toast") {
@@ -37,7 +45,7 @@ export default function SignIn() {
       }, 1000);
       return;
     }
-    if (dataFromActions?.data.state) {
+    if (dataFromActions?.data.state && dataFromActions?.data.type === "invalid") {
       setIsLoading(false);
       setError({
         state: true,
@@ -46,7 +54,23 @@ export default function SignIn() {
         fields: dataFromActions?.data.fields,
       });
     }
+    if (dataFromActions?.data.state && dataFromActions?.data.type === "email-verification") {
+      setIsLoading(false);
+      setAlertDescriptionText(dataFromActions?.data.message.description);
+      setAlertTitleText(dataFromActions?.data.message.title);
+      //this line of code just for remove the success alert if the user clicks and receives verification email message
+      if (userVerified) setUserVerified(false);
+    }
   }, [dataFromActions?.data]);
+
+  useEffect(() => {
+    console.log("data.verified", data.verified);
+    if (data.verified === true || data.verified === false) {
+      setAlertDescriptionText(data.message.description);
+      setAlertTitleText(data.message.title);
+      setUserVerified(data.verified);
+    }
+  }, []);
   let fields = {
     username: {
       required: false,
@@ -67,9 +91,6 @@ export default function SignIn() {
   const handleClick = () => {
     let trackError = errorContent;
     let isError = false;
-    //test if username mathch email regex
-    //i want to inclue all charcters in the regex
-
     const emailRegex = new RegExp(import.meta.env.VITE_TOKEN_EMAIL_REGEX, "i");
     if (!emailRegex.test(username)) {
       trackError.fields.username.required = true;
@@ -109,6 +130,20 @@ export default function SignIn() {
       <Flex minH={"100vh"} align={"center"} justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
+            {userVerified === true && (
+              <Alert status="success">
+                <AlertIcon />
+                <AlertTitle mr={2}>{AlertTitleText}</AlertTitle>
+                <AlertDescription>{AlertDescriptionText}</AlertDescription>
+              </Alert>
+            )}
+            {(userVerified === false || dataFromActions?.data.type === "email-verification") && (
+              <Alert status="error">
+                <AlertIcon />
+                <AlertTitle mr={2}>{AlertTitleText}</AlertTitle>
+                <AlertDescription>{AlertDescriptionText}</AlertDescription>
+              </Alert>
+            )}
             <Heading fontSize={"4xl"}>Sign in to your account</Heading>
             <Text fontSize={"lg"} color={"gray.600"}>
               to enjoy all of our cool <Text color={"blue.400"}>features</Text> ✌️
