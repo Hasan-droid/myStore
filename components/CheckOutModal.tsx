@@ -13,8 +13,6 @@ import {
 import { Box, FormControl, FormLabel, FormErrorMessage, Input, useBreakpointValue } from "@chakra-ui/react";
 import { Form, useActionData, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { closeModal } from "../Redux/features/LoginInSlicer";
 import jwtDecode from "jwt-decode";
 import LoadingScreen from "./LoadingScreen";
 
@@ -51,10 +49,6 @@ interface actionDataType {
 const CheckOutModal: React.FC<ITypes["props"]> = ({ size }) => {
   const windowSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
   const navigate = useNavigate();
-  const selector = useSelector((state: any) => state.LoginInSlicer);
-  const Dispatch = useDispatch();
-  console.log("selector", selector);
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -96,13 +90,14 @@ const CheckOutModal: React.FC<ITypes["props"]> = ({ size }) => {
   }, [dataFromAction]);
 
   useEffect(() => {
-    if (selector?.openModal === true) {
+    const checkModalStatus = localStorage.getItem("isCheckOutModalOpened");
+    if (checkModalStatus === "true") {
       onOpen();
     }
-  }, [selector]);
+  }, []);
 
   const handleClose = () => {
-    Dispatch(closeModal());
+    localStorage.removeItem("isCheckOutModalOpened");
     onClose();
   };
 

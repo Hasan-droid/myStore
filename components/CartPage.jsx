@@ -78,6 +78,7 @@ const CartPage = ({ currentItems }) => {
 
   const handleCheckOut = () => {
     const userToken = localStorage.getItem("token");
+    localStorage.setItem("isCheckOutModalOpened", "true");
     //check if the token expired
     if (CheckTokenExperimentData(userToken)) return navigate("/signin");
     const decodedToken = jwtDecode(userToken);

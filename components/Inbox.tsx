@@ -27,7 +27,6 @@ interface ITypes {
 export interface IState {
   LoginInSlicer: {
     windowSize: string;
-    openModal: boolean;
     loginFromHomePage: boolean;
     loginFromPhone: boolean;
   };
