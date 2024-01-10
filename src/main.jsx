@@ -21,6 +21,7 @@ import OrdersLoader from "../routers.loaders/orders.loader.ts";
 import InboxLoader from "../routers.loaders/Inbox.loader.ts";
 import InboxAction from "../routers.Actions/Inbox.action.ts";
 import PhoneOrdersPaginator from "../components/PhoneOrdersPaginator.tsx";
+import SignInLoader from "../routers.loaders/SignIn.loader.ts";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -73,6 +74,7 @@ const router = createBrowserRouter([
     path: "/signin",
     element: <SignIn />,
     action: SignInAction,
+    loader: SignInLoader,
   },
   {
     path: "/signup",

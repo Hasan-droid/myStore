@@ -1,10 +1,6 @@
 import axios from "axios";
-import { redirect } from "react-router-dom";
-import jwtDecode from "jwt-decode";
 
 export default async function SignUpAction({ request, params }) {
-  debugger;
-  const cart = JSON.parse(localStorage.getItem("state"));
   const signUpURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/user/signup";
   let status = {};
   let errorData = {
@@ -21,7 +17,6 @@ export default async function SignUpAction({ request, params }) {
   try {
     await axios.post(signUpURL, bodyRequest).then((res) => {
       if (res.status === 200) {
-        console.log("res ", res);
         status = { status: res.status, data: res.data };
       }
     });
@@ -30,20 +25,7 @@ export default async function SignUpAction({ request, params }) {
   }
 
   if (status.status === 200) {
-    const decodedToken = jwtDecode(status.data.token);
-    if (!decodedToken.role) {
-      return errorData;
-    }
-    if (decodedToken.role === "user") {
-      localStorage.setItem("token", status.data.token);
-      if (cart?.CartData) {
-        return redirect("/cart");
-      }
-      //save token in local storage
-      //save the token in the axios header
-      return redirect("/");
-    }
-    // return redirect("/");
+    return { data: { state: true, type: "signup-success", message: "Please Check your inbox" } };
   }
   return null;
 }

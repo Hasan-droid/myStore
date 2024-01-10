@@ -16,7 +16,10 @@ import {
   Text,
   useColorModeValue,
   FormErrorMessage,
-  Spinner,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { Link, useActionData, Form, useSubmit } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -45,6 +48,7 @@ export default function SignupCard() {
   const [lastname, setLastname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [AlertDescriptionText, setAlertDescriptionText] = useState("");
   const submit = useSubmit();
   const dataFromActions = useActionData();
   useEffect(() => {
@@ -61,6 +65,11 @@ export default function SignupCard() {
       const data = dataFromActions.data;
       setError({ state: data.state, type: data?.type, message: data?.message, filed: data?.filed });
     }
+    if (dataFromActions?.data?.state && dataFromActions?.data?.type === "signup-success") {
+      const data = dataFromActions.data;
+      setAlertDescriptionText(data?.message);
+    }
+
     setIsLoading(false);
     // return () => {
     //   setError({ state: false, type: "", message: "", filed: {} });
@@ -118,17 +127,11 @@ export default function SignupCard() {
   };
 
   const handleSignUp = () => {
-    debugger;
     if (!CheckFields()) return;
     // if (error.state) return;
     setIsLoading(true);
     submit({ username: username.toLowerCase(), password: password, firstname, lastname }, { method: "post" });
   };
-
-  useEffect(() => {
-    // debugger;
-    console.log("error", error);
-  }, [error]);
 
   return (
     <>
@@ -139,6 +142,13 @@ export default function SignupCard() {
       <Flex minH={"100vh"} align={"center"} justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
+            {AlertDescriptionText && (
+              <Alert status="success">
+                <AlertIcon />
+                <AlertTitle mr={2}>Email verification</AlertTitle>
+                <AlertDescription>{AlertDescriptionText}</AlertDescription>
+              </Alert>
+            )}
             <Heading fontSize={"4xl"} textAlign={"center"}>
               Sign up
             </Heading>
