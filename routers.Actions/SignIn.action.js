@@ -6,7 +6,6 @@ const userSignInURL = import.meta.env.VITE_BACKEND_URL_CARDS + "/user/signin";
 let status = {};
 export default async function SignInaction({ request, params }) {
   //check if the user username and password is empty
-
   const isUserLoginFromHomePage = store.getState().LoginInSlicer.loginFromHomePage;
   console.log("userSignInURL ", isUserLoginFromHomePage);
   const formData = await request.formData();
@@ -22,7 +21,7 @@ export default async function SignInaction({ request, params }) {
     },
   };
   try {
-    const response = await axios.post(userSignInURL, user).then((res) => {
+    await axios.post(userSignInURL, user).then((res) => {
       const token = res.data?.token;
       const decodedToken = jwtDecode(token);
       if (!token)
